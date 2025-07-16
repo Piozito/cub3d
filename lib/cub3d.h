@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 12:11:16 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:26:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@
 #include <fcntl.h>
 #include "./libft/libft.h"
 #include "./minilibx-linux/mlx.h"
+
+
 
 #endif
