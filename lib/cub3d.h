@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 12:26:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:47:10 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,27 @@
 #include "./libft/libft.h"
 #include "./minilibx-linux/mlx.h"
 
+#define NORTH "../textures/north"
+#define SOUTH "../textures/south"
+#define EAST "../textures/east"
+#define WEST "../textures/west"
 
+typedef struct	s_map
+{
+	int			fd;
+	void		*north;
+	void		*south;
+	void		*east;
+	void		*west;
+	void		*celling;
+	void		*floor;
+	char		**map;
+}				t_map;
+
+typedef struct	s_data
+{
+	void		*mlx;
+	t_map		map;
+}				t_data;
 
 #endif
