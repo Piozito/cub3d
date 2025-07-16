@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   imagetowindow.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:01:15 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/07/16 12:08:35 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:51:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../lib/cub3d.h"
 
 void	chars(t_data *data, int width, int i, int j)
 {

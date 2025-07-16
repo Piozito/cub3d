@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:12:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/07/16 12:16:23 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:51:24 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../lib/cub3d.h"
 
 int	handle_keypress(int keysym, t_data *data)
 {

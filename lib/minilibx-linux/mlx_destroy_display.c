@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mlx_destroy_display.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mg <mg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 12:55:20 by aaleixo-         ###   ########.fr       */
+/*   Created: 2020/10/03 18:56:35 by mg                #+#    #+#             */
+/*   Updated: 2020/10/04 01:55:35 by mg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/cub3d.h"
+#include "mlx_int.h"
 
-int main(int argc, char **argv)
+int	mlx_destroy_display(t_xvar *xvar)
 {
-	if(argc == 2)
-	{
-		t_data *data;
-
-		(void)argv;
-		data = malloc(sizeof(t_data *));
-		
-	}
-	else
-	{
-		printf("Incorrect amount of arguments\n");
-		return 1;
-	}
-	return 0;
+	XCloseDisplay(xvar->display);
 }
