@@ -6,18 +6,41 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 13:47:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:11:59 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/cub3d.h"
 
-void get_textures(t_data *data)
+void map_setter(t_data *data, ssize_t j, char **map)
 {
-	char *str;
-	while(1)
+	ssize_t i;
+
+	i = 0;
+	data->map.map = malloc(sizeof(char *) * (j + 1));
+	while(map[i])
+	{
+		data->map.map[i] = ft_strdup(map[i]);
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	data->map.map[i] = NULL;
+}
+
+void get_textures(t_data *data, char **argv)
+{
+	char *str = "";
+	char **map = malloc(sizeof(char *) * get_file_lines(argv));
+	ssize_t i = 0;
+	while(str)
 	{
 		str = get_next_line(data->map.fd);
+		if(str && str[0] == '\n')
+		{
+			free(str);
+			continue;
+		}
 		if(!str)
 			break;
 		else if(strncmp(str, "NO ", 3) == 0)
@@ -28,51 +51,53 @@ void get_textures(t_data *data)
 			data->map.west = ft_strndup(str, 3);
 		else if(strncmp(str, "EA ", 3) == 0)
 			data->map.east = ft_strndup(str, 3);
+		else if(strncmp(str, "F ", 2) == 0)
+			data->map.floor = ft_strndup(str, 2); 
+		else if(strncmp(str, "C ", 2) == 0)
+			data->map.celling = ft_strndup(str, 2);
+		else
+			map[i++] = ft_strndup(str, 0);
 		free(str);
 	}
+	map[i] = NULL;
+	map_setter(data, i, map);
 }
 
-void ft_debug(t_data *data)
+void init(t_data *data)
 {
-	if(data->map.north)
-		printf("North: %s\n", data->map.north);
-	if(data->map.south)
-		printf("South: %s\n", data->map.south);
-	if(data->map.west)
-		printf("West: %s\n", data->map.west);
-	if(data->map.east)
-		printf("East: %s\n", data->map.east);
-}
-
-void ft_clear(t_data *data)
-{
-	if(data->map.north)
-		free(data->map.north);
-	if(data->map.south)
-		free(data->map.south);
-	if(data->map.west)
-		free(data->map.west);
-	if(data->map.east)
-		free(data->map.east);
-	free(data);
+	data->map.spawn[0] = -1;
+	data->map.spawn[1] = -1;
+	data->map.map_height = 0;
+	data->map.map_lenght = 0;
 }
 
 int main(int argc, char **argv)
 {
+	t_data *data;
+
 	if(argc == 2)
 	{
-		t_data *data;
-
-		(void)argv;
 		data = malloc(sizeof(t_data));
 		data->map.fd = open(argv[1], O_RDONLY);
-		get_textures(data);
+		if(data->map.fd <= 0)
+		{
+			printf("Error\nInvalid map.\n");
+			free(data);
+			exit(1);
+		}
+		init(data);
+		get_textures(data, argv);
+		if(parsing(data) == 1)
+		{
+			printf("Error\nInvalid map.\n");
+			exit(1);
+		}
 		ft_debug(data);
 		ft_clear(data);
 	}
 	else
 	{
-		printf("Incorrect amount of arguments\n");
+		printf("Error\nIncorrect amount of arguments.\n");
 		return 1;
 	}
 	return 0;

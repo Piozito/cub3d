@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:17:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 13:21:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:13:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*ft_count(char *buf, int *newline, char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	tempbuf[BUFFER_SIZE];
+	static char	tempbuf[BUFFER_SIZE + 1];
 	int			res;
 	int			check;
 	char		*line;
