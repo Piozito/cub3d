@@ -6,13 +6,14 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/07/17 11:52:02 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/07/17 15:03:08 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 SOURCES = \
-	srcs/main.c srcs/utils/utils.c srcs/parsing/parsing.c
+	srcs/main.c srcs/utils/utils.c srcs/utils/utils2.c srcs/parsing/parsing.c \
+	srcs/parsing/parsing_help.c
 OBJECTS = $(SOURCES:.c=.o)
 MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux
