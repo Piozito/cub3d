@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 14:19:00 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:32:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@
 #define NUM_TEXTURES 4
 #define WINDOW_WIDTH 64
 #define WINDOW_HEIGHT 32
+
+
+typedef struct	s_map
+{
+	int			fd;
+	char		*north;
+	char		*south;
+	char		*east;
+	char		*west;
+	char		*celling;
+	char		*floor;
+	int			spawn[2];
+	int		map_height;
+	int		map_lenght;
+	char		**map;
+}				t_map;
 
 typedef struct	s_player
 {
@@ -58,21 +74,6 @@ typedef struct	s_player
 	t_map	map;
 
 }				t_player;
-
-typedef struct	s_map
-{
-	int			fd;
-	char		*north;
-	char		*south;
-	char		*east;
-	char		*west;
-	char		*celling;
-	char		*floor;
-	int			spawn[2];
-	int		map_height;
-	int		map_lenght;
-	char		**map;
-}				t_map;
 
 typedef struct s_im
 {
