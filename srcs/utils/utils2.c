@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:52:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:12:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:58:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,33 @@ int	line_check(char **map)
 			j++;
 		if (map[i][j] != '1' || check_last_char(map[i]) == 1)
 			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	player_check(char **map)
+{
+	int	i;
+	int	flag;
+	int	j;
+
+	i = 0;
+	j = 0;
+	flag = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (ft_strchr("NSWE", map[i][j]) != NULL)
+			{
+				if (flag == 1)
+					return (1);
+				flag = 1;
+			}
+			j++;
+		}
 		i++;
 	}
 	return (0);

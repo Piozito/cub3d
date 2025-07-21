@@ -6,78 +6,48 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:30:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:02:07 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/cub3d.h"
 
-void	map_setter(t_data *data, ssize_t j, char **map)
+void	flag(int *flags)
 {
 	ssize_t	i;
 
 	i = 0;
-	data->map.map = malloc(sizeof(char *) * (j + 1));
-	while (map[i])
-	{
-		data->map.map[i] = ft_strdup(map[i]);
-		free(map[i]);
-		i++;
-	}
-	free(map);
-	data->map.map[i] = NULL;
+	while (i < 6)
+		flags[i++] = 0;
 }
 
-int	texture_help(t_data *data, char *str)
-{
-	if (!strncmp(str, "NO ", 3))
-		data->map.north = ft_strndup(str, 3);
-	else if (!strncmp(str, "SO ", 3))
-		data->map.south = ft_strndup(str, 3);
-	else if (!strncmp(str, "WE ", 3))
-		data->map.west = ft_strndup(str, 3);
-	else if (!strncmp(str, "EA ", 3))
-		data->map.east = ft_strndup(str, 3);
-	else if (!strncmp(str, "F ", 2))
-		data->map.floor = ft_strndup(str, 2);
-	else if (!strncmp(str, "C ", 2))
-		data->map.celling = ft_strndup(str, 2);
-	else
-	{
-		free(str);
-		return (1);
-	}
-	free(str);
-	return (0);
-}
-
-void	get_textures(t_data *data, char **argv)
+int	get_textures(t_data *data, char **argv)
 {
 	char	*str;
 	char	**map;
 	ssize_t	i;
+	int		flags[6];
+	int		help;
 
 	i = 0;
-	map = malloc(sizeof(char *) * get_file_lines(argv));
+	help = 0;
 	str = "";
+	map = malloc(sizeof(char *) * get_file_lines(argv));
+	flag(flags);
 	while (str)
 	{
 		str = get_next_line(data->map.fd);
-		if (str && str[0] == '\n')
-		{
-			free(str);
-			continue ;
-		}
-		if (!str)
+		help = loop_help(data, str, flags);
+		if (help == 1)
 			break ;
-		else if (texture_help(data, str) == 0)
+		else if (help == 2)
 			continue ;
-		else
-			map[i++] = ft_strndup(str, 0);
+		map[i++] = ft_strndup(str, 0);
 		free(str);
 	}
 	map[i] = NULL;
 	map_setter(data, i, map);
+	return (check_flag(flags));
 }
 
 void	init(t_data *data)
@@ -94,6 +64,31 @@ void	init(t_data *data)
 	}
 }
 
+int	check_attribute(char *str)
+{
+	char	*attr[7];
+	ssize_t	i;
+
+	i = 0;
+	attr[0] = "NO ";
+	attr[1] = "SO ";
+	attr[2] = "WE ";
+	attr[3] = "EA ";
+	attr[4] = "F ";
+	attr[5] = "C ";
+	attr[6] = NULL;
+	while (attr[i])
+	{
+		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
+			break ;
+		i++;
+	}
+	if (i < 6)
+		return (i);
+	else
+		return (-1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -104,10 +99,10 @@ int	main(int argc, char **argv)
 		data = malloc(sizeof(t_data));
 		data->map.fd = open(argv[1], O_RDONLY);
 		init(data);
-		get_textures(data, argv);
-		if (parsing(data) == 1)
+		if (get_textures(data, argv) == 1 || parsing(data) == 1)
 		{
 			printf("Error\nInvalid map.\n");
+			ft_clear(data);
 			exit(1);
 		}
 		ft_debug(data);

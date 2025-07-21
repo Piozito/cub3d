@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:57:09 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:18:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:02:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	top_and_bottom(char **map)
 	size_t	biggest_line;
 	char	*first_line;
 	char	*last_line;
+	int		ret;
 
 	biggest_line = get_biggest_line(map);
 	first_line = ft_calloc(biggest_line + 1, sizeof(char));
@@ -64,9 +65,12 @@ int	top_and_bottom(char **map)
 		update_first_last(map[i++], first_line, last_line, biggest_line);
 	first_line[biggest_line] = '\0';
 	last_line[biggest_line] = '\0';
-	if (line_checker(first_line) == 1 || line_checker(last_line) == 1)
-		return (1);
-	return (0);
+	ret = 0;
+	if (line_checker(first_line) == 1)
+		ret = 1;
+	if (line_checker(last_line) == 1)
+		ret = 1;
+	return (ret);
 }
 
 int	find_spawn(t_data *data, char **map)

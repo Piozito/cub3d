@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:23:47 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:00:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,24 @@ typedef struct s_data
 
 void		ft_debug(t_data *data);
 void		ft_clear(t_data *data);
+void		ext_checker(char *path);
+void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);
+int			check_flag(int *flags);
 int			parsing(t_data *data);
+int			map_check(char *file);
 int			line_check(char **map);
 int			line_checker(char *line);
+int			player_check(char **map);
+int			check_attribute(char *str);
 int			top_and_bottom(char **map);
 int			check_last_char(char *line);
 int			find_spawn(t_data *data, char **map);
 int			check_visited(t_data *data, char **visited);
+int			loop_help(t_data *data, char *str, int *flags);
 char		*ft_strndup(char *s, int n);
-void		ext_checker(char *path);
-void		map_setter(t_data *data, ssize_t j, char **map);
-ssize_t		get_file_lines(char **argv);
 size_t		get_biggest_line(char **map);
+ssize_t		get_file_lines(char **argv);
 ssize_t		find_char(const char *str, char c, ssize_t len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:21:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/17 16:08:04 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	ft_clear(t_data *data)
 			free(data->map.map[i++]);
 		free(data->map.map);
 	}
+	close(data->map.fd);
 	free(data);
 }
 

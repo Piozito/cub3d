@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:18:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:58:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	parsing(t_data *data)
 	if (top_and_bottom(data->map.map) == 1)
 		return (1);
 	if (line_check(data->map.map) == 1)
+		return (1);
+	if (player_check(data->map.map) == 1)
 		return (1);
 	if (find_spawn(data, data->map.map) == 1)
 		return (1);
