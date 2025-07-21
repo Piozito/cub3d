@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:00:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:08:16 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <X11/keysym.h>
 # include <X11/X.h>
+# include <math.h>
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -29,8 +30,9 @@
 # define EAST "../textures/east"
 # define WEST "../textures/west"
 # define NUM_TEXTURES 4
-# define WINDOW_WIDTH 64
-# define WINDOW_HEIGHT 32
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
+# define TEXTURE_SIZE 64
 
 typedef struct s_map
 {
@@ -39,8 +41,8 @@ typedef struct s_map
 	char		*south;
 	char		*east;
 	char		*west;
-	char		*celling;
-	char		*floor;
+	int			celling;
+	int			floor;
 	int			spawn[2];
 	int			map_height;
 	int			map_lenght;
@@ -70,6 +72,9 @@ typedef struct s_player
 	int			line_height;
 	int			draw_start;
 	int			draw_end;
+	int			tex_x;
+	int			tex_y;
+	int			wall_x;
 	t_map		map;
 
 }				t_player;
@@ -79,8 +84,11 @@ typedef struct s_im
 	void		*mlx_img;
 	int			width;
 	int			height;
+	char		*addr;
+	int			bpp;
 	void		*ground;
 	int			line_length;
+	int			endian;
 
 }				t_im;
 
@@ -91,6 +99,7 @@ typedef struct s_data
 	void		*img_ptr;
 	int			*texture_buffer[NUM_TEXTURES];
 	t_im		image;
+	t_player	player;
 	t_map		map;
 }				t_data;
 
@@ -99,9 +108,11 @@ void		ft_clear(t_data *data);
 void		ext_checker(char *path);
 void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);
+int			rgb(char *str);
+void		vectors(t_data *data);
+void		mlx_starter(t_data *data);
 int			check_flag(int *flags);
 int			parsing(t_data *data);
-int			map_check(char *file);
 int			line_check(char **map);
 int			line_checker(char *line);
 int			player_check(char **map);
@@ -117,3 +128,5 @@ ssize_t		get_file_lines(char **argv);
 ssize_t		find_char(const char *str, char c, ssize_t len);
 
 #endif
+
+
