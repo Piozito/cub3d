@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 16:08:04 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:44:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	ft_debug(t_data *data)
 	if (data->map.east)
 		printf("East: %s\n", data->map.east);
 	if (data->map.floor)
-		printf("Floor: %s\n", data->map.floor);
+		printf("Floor: %d\n", data->map.floor);
 	if (data->map.celling)
-		printf("Celling: %s\n", data->map.celling);
+		printf("Celling: %d\n", data->map.celling);
 	printf("Map:\n");
 	while (data->map.map[i])
 		printf("%s\n", data->map.map[i++]);
@@ -47,10 +47,6 @@ void	ft_clear(t_data *data)
 		free(data->map.west);
 	if (data->map.east)
 		free(data->map.east);
-	if (data->map.floor)
-		free(data->map.floor);
-	if (data->map.celling)
-		free(data->map.celling);
 	if (data->map.map)
 	{
 		while (data->map.map[i])

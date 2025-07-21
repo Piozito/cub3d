@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:03:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:47:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	texture_help(t_data *data, char *str)
 	else if (ft_strncmp(str, "EA ", 3) == 0)
 		data->map.east = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "F ", 2) == 0)
-		data->map.floor = ft_strndup(str, 2);
+		data->map.floor = rgb(str + 2);
 	else if (ft_strncmp(str, "C ", 2) == 0)
-		data->map.celling = ft_strndup(str, 2);
+		data->map.celling = rgb(str + 2);
 	else
 		return (1);
 	free(str);

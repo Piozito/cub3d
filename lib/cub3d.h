@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:00:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:27:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef struct s_map
 	char		*south;
 	char		*east;
 	char		*west;
-	char		*celling;
-	char		*floor;
+	int		celling;
+	int		floor;
 	int			spawn[2];
 	int			map_height;
 	int			map_lenght;
@@ -99,6 +99,7 @@ void		ft_clear(t_data *data);
 void		ext_checker(char *path);
 void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);
+int			rgb(char *str);
 int			check_flag(int *flags);
 int			parsing(t_data *data);
 int			map_check(char *file);
