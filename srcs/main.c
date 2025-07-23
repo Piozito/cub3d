@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/23 16:34:46 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:07:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	get_textures(t_data *data, char **argv)
 	flag(flags);
 	while (str)
 	{
-		str = get_next_line(data->map.fd);
+		str = get_next_line(data->map->fd);
 		help = loop_help(data, str, flags);
 		if (help == 1)
 			break ;
@@ -50,66 +50,67 @@ int	get_textures(t_data *data, char **argv)
 	return (check_flag(flags));
 }
 
-void	init(t_data *data)
-{
-	data->map.spawn[0] = -1;
-	data->map.spawn[1] = -1;
-	data->map.map_height = 0;
-	data->map.map_lenght = 0;
-	if (data->map.fd <= 0)
-	{
-		printf("Error\nInvalid map.\n");
-		free(data);
-		exit(1);
-	}
-}
 
-void init_data_structs(t_data *data)
+void init_data_structs(t_data *data, char *file)
 {
 	data->mlx_ptr = NULL;
 	data->window_ptr = NULL;
 	data->img_ptr = NULL;
 
-	data->image.mlx_img = NULL;
-	data->image.addr = NULL;
-	data->image.bpp = 0;
-	data->image.line_length = 0;
-	data->image.endian = 0;
+	data->image = malloc(sizeof(t_im));
+	data->image->mlx_img = NULL;
+	data->image->addr = NULL;
+	data->image->bpp = 0;
+	data->image->line_length = 0;
+	data->image->endian = 0;
 
-	data->player.pos_x = 0.0;
-	data->player.pos_y = 0.0;
-	data->player.dir_x = 0.0;
-	data->player.dir_y = 0.0;
-	data->player.plane_x = 0.0;
-	data->player.plane_y = 0.0;
-	data->player.ray_dir_x = 0.0;
-	data->player.ray_dir_y = 0.0;
-	data->player.camera_x = 0.0;
+	data->player = malloc(sizeof(t_player));
+	data->player->pos_x = 0.0;
+	data->player->pos_y = 0.0;
+	data->player->dir_x = 0.0;
+	data->player->dir_y = 0.0;
+	data->player->plane_x = 0.0;
+	data->player->plane_y = 0.0;
+	data->player->ray_dir_x = 0.0;
+	data->player->ray_dir_y = 0.0;
+	data->player->camera_x = 0.0;
 
-	data->player.map_x = 0;
-	data->player.map_y = 0;
-	data->player.delta_dist_x = 0.0;
-	data->player.delta_dist_y = 0.0;
-	data->player.step_x = 0;
-	data->player.step_y = 0;
-	data->player.side_dist_x = 0.0;
-	data->player.side_dist_y = 0.0;
+	data->player->map_x = 0;
+	data->player->map_y = 0;
+	data->player->delta_dist_x = 0.0;
+	data->player->delta_dist_y = 0.0;
+	data->player->step_x = 0;
+	data->player->step_y = 0;
+	data->player->side_dist_x = 0.0;
+	data->player->side_dist_y = 0.0;
 
-	data->player.perp_wall_dist = 0.0;
-	data->player.wall_x = 0.0;
-	data->player.line_height = 0;
-	data->player.draw_start = 0;
-	data->player.draw_end = 0;
-	data->player.tex_x = 0;
-	data->player.tex_y = 0;
+	data->player->perp_wall_dist = 0.0;
+	data->player->wall_x = 0.0;
+	data->player->line_height = 0;
+	data->player->draw_start = 0;
+	data->player->draw_end = 0;
+	data->player->tex_x = 0;
+	data->player->tex_y = 0;
 
-	data->player.map.map = NULL;
-	data->player.map.north = NULL;
-	data->player.map.south = NULL;
-	data->player.map.east = NULL;
-	data->player.map.west = NULL;
-	data->player.map.celling = 0;
-	data->player.map.floor = 0;
+	data->map = malloc(sizeof(t_map));
+	data->map->map = NULL;
+	data->map->north = malloc(sizeof(t_im));
+	data->map->south = malloc(sizeof(t_im));
+	data->map->east = malloc(sizeof(t_im));
+	data->map->west = malloc(sizeof(t_im));
+	data->map->celling = 0;
+	data->map->floor = 0;
+	data->map->spawn[0] = -1;
+	data->map->spawn[1] = -1;
+	data->map->map_height = 0;
+	data->map->map_lenght = 0;
+	data->map->fd = open(file, O_RDONLY);
+	if (data->map->fd <= 0)
+	{
+		printf("Error\nInvalid map.\n");
+		free(data);
+		exit(1);
+	}
 
 }
 
@@ -147,12 +148,11 @@ int	main(int argc, char **argv)
 	{
 		ext_checker(argv[1]);
 		data = malloc(sizeof(t_data));
-		data->map.fd = open(argv[1], O_RDONLY);
-		init(data);
-		init_data_structs(data);
+		init_data_structs(data, argv[1]);
 		if (get_textures(data, argv) == 1 || parsing(data) == 1)
 		{
 			printf("Error\nInvalid map.\n");
+			ft_debug(data);
 			ft_clear(data);
 			exit(1);
 		}

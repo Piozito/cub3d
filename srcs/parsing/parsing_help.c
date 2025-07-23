@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:57:09 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 15:47:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:56:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	floodfill(t_data *data, char **visited, int x, int y)
 {
-	if (x < 0 || y < 0 || x >= data->map.map_height
-		|| y >= (int)get_biggest_line(data->map.map)
-		|| data->map.map[x][y] == '1' || visited[x][y])
+	if (x < 0 || y < 0 || x >= data->map->map_height
+		|| y >= (int)get_biggest_line(data->map->map)
+		|| data->map->map[x][y] == '1' || visited[x][y])
 		return ;
-	if (data->map.map[x][y] == ' ' || data->map.map[x][y] == '\t')
+	if (data->map->map[x][y] == ' ' || data->map->map[x][y] == '\t')
 	{
 		visited[x][y] = '2';
 		return ;
@@ -87,17 +87,17 @@ int	find_spawn(t_data *data, char **map)
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
-				if (data->map.spawn[0] != -1 || data->map.spawn[1] != -1)
+				if (data->map->spawn[0] != -1 || data->map->spawn[1] != -1)
 					return (1);
-				data->map.spawn[0] = i;
-				data->map.spawn[1] = j;
+				data->map->spawn[0] = i;
+				data->map->spawn[1] = j;
 			}
 			j++;
 		}
 		i++;
 	}
-	data->map.map_height = i;
-	if (data->map.spawn[0] == -1 || data->map.spawn[1] == -1)
+	data->map->map_height = i;
+	if (data->map->spawn[0] == -1 || data->map->spawn[1] == -1)
 		return (1);
 	return (0);
 }
@@ -110,8 +110,8 @@ int	check_visited(t_data *data, char **visited)
 
 	i = 0;
 	j = 0;
-	len = get_biggest_line(data->map.map);
-	while (i < data->map.map_height)
+	len = get_biggest_line(data->map->map);
+	while (i < data->map->map_height)
 	{
 		j = 0;
 		while (j < len)
@@ -119,7 +119,7 @@ int	check_visited(t_data *data, char **visited)
 			if (visited[i][j] == '2')
 			{
 				i = 0;
-				while (i < data->map.map_height)
+				while (i < data->map->map_height)
 					free(visited[i++]);
 				free(visited);
 				return (1);

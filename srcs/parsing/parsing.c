@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 15:48:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:56:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,22 @@ int	flood(t_data *data)
 	int		len;
 
 	i = 0;
-	len = get_biggest_line(data->map.map);
-	visited = ft_calloc(data->map.map_height + 1, sizeof(char *));
+	len = get_biggest_line(data->map->map);
+	visited = ft_calloc(data->map->map_height + 1, sizeof(char *));
 	if (!visited)
 		return (1);
-	while (i < data->map.map_height)
+	while (i < data->map->map_height)
 	{
 		visited[i] = (char *)ft_calloc(len + 1, sizeof(char));
 		if (!visited[i])
 			return (1);
 		i++;
 	}
-	floodfill(data, visited, data->map.spawn[0], data->map.spawn[1]);
+	floodfill(data, visited, data->map->spawn[0], data->map->spawn[1]);
 	if (check_visited(data, visited) == 1)
 		return (1);
 	i = 0;
-	while (i < data->map.map_height)
+	while (i < data->map->map_height)
 		free(visited[i++]);
 	free(visited);
 	return (0);
@@ -101,13 +101,13 @@ int	flood(t_data *data)
 
 int	parsing(t_data *data)
 {
-	if (top_and_bottom(data->map.map) == 1)
+	if (top_and_bottom(data->map->map) == 1)
 		return (1);
-	if (line_check(data->map.map) == 1)
+	if (line_check(data->map->map) == 1)
 		return (1);
-	if (player_check(data->map.map) == 1)
+	if (player_check(data->map->map) == 1)
 		return (1);
-	if (find_spawn(data, data->map.map) == 1)
+	if (find_spawn(data, data->map->map) == 1)
 		return (1);
 	if (flood(data) == 1)
 		return (1);

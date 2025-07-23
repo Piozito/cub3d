@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/23 17:11:21 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:55:22 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ typedef struct s_player
 	int			tex_x;
 	int			tex_y;
 	int			wall_x;
-	t_map		map;
-
 }				t_player;
 
 typedef struct s_data
@@ -98,9 +96,9 @@ typedef struct s_data
 	void		*window_ptr;
 	void		*img_ptr;
 	int			*texture_buffer[NUM_TEXTURES];
-	t_im		image;
-	t_player	player;
-	t_map		map;
+	t_im		*image;
+	t_player	*player;
+	t_map		*map;
 }				t_data;
 
 void		ft_debug(t_data *data);
