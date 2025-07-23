@@ -6,7 +6,7 @@
 #    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/07/21 16:25:39 by fragarc2         ###   ########.fr        #
+#    Updated: 2025/07/23 17:37:03 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,9 +31,6 @@ $(ADLIBS):
 
 $(NAME): $(OBJECTS) $(ADLIBS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(ADLIBS) $(MLX_FLAGS) -o $(NAME)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJECTS)
