@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/07/21 13:01:38 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/07/21 16:25:39 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 SOURCES = \
 	srcs/main.c srcs/utils/utils.c srcs/utils/utils2.c srcs/parsing/parsing.c \
-	srcs/parsing/parsing_help.c srcs/parsing/parsing_help2.c
+	srcs/parsing/parsing_help.c srcs/parsing/parsing_help2.c srcs/graphics/raycast.c
 OBJECTS = $(SOURCES:.c=.o)
 MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux

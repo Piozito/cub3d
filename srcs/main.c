@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 16:06:25 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:34:46 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,56 @@ void	init(t_data *data)
 	}
 }
 
+void init_data_structs(t_data *data)
+{
+	data->mlx_ptr = NULL;
+	data->window_ptr = NULL;
+	data->img_ptr = NULL;
+
+	data->image.mlx_img = NULL;
+	data->image.addr = NULL;
+	data->image.bpp = 0;
+	data->image.line_length = 0;
+	data->image.endian = 0;
+
+	data->player.pos_x = 0.0;
+	data->player.pos_y = 0.0;
+	data->player.dir_x = 0.0;
+	data->player.dir_y = 0.0;
+	data->player.plane_x = 0.0;
+	data->player.plane_y = 0.0;
+	data->player.ray_dir_x = 0.0;
+	data->player.ray_dir_y = 0.0;
+	data->player.camera_x = 0.0;
+
+	data->player.map_x = 0;
+	data->player.map_y = 0;
+	data->player.delta_dist_x = 0.0;
+	data->player.delta_dist_y = 0.0;
+	data->player.step_x = 0;
+	data->player.step_y = 0;
+	data->player.side_dist_x = 0.0;
+	data->player.side_dist_y = 0.0;
+
+	data->player.perp_wall_dist = 0.0;
+	data->player.wall_x = 0.0;
+	data->player.line_height = 0;
+	data->player.draw_start = 0;
+	data->player.draw_end = 0;
+	data->player.tex_x = 0;
+	data->player.tex_y = 0;
+
+	data->player.map.map = NULL;
+	data->player.map.north = NULL;
+	data->player.map.south = NULL;
+	data->player.map.east = NULL;
+	data->player.map.west = NULL;
+	data->player.map.celling = 0;
+	data->player.map.floor = 0;
+
+}
+
+
 int	check_attribute(char *str)
 {
 	char	*attr[7];
@@ -99,6 +149,7 @@ int	main(int argc, char **argv)
 		data = malloc(sizeof(t_data));
 		data->map.fd = open(argv[1], O_RDONLY);
 		init(data);
+		init_data_structs(data);
 		if (get_textures(data, argv) == 1 || parsing(data) == 1)
 		{
 			printf("Error\nInvalid map.\n");
@@ -106,6 +157,9 @@ int	main(int argc, char **argv)
 			exit(1);
 		}
 		ft_debug(data);
+		mlx_starter(data);
+		mlx_loop_hook(data->mlx_ptr, vectors, data);
+		mlx_loop(data->mlx_ptr);
 		ft_clear(data);
 	}
 	else
@@ -113,7 +167,5 @@ int	main(int argc, char **argv)
 		printf("Error\nIncorrect amount of arguments.\n");
 		return (1);
 	}
-	mlx_starter(data);
-	vectors(data);
 	return (0);
 }

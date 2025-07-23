@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/07/21 15:09:05 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:14:47 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 void mlx_starter(t_data *data)
 {
-	t_im	img;
 	data->mlx_ptr = mlx_init();
 	data->window_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D");
 	data->img_ptr = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
-	img.mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
-	img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_length, &img.endian);
+	data->image.mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->image.addr = mlx_get_data_addr(data->image.mlx_img, &data->image.bpp, &data->image.line_length, &data->image.endian);
 }
 
 void my_mlx_pixel_put(t_im *img, int x, int y, int color)
@@ -27,14 +26,14 @@ void my_mlx_pixel_put(t_im *img, int x, int y, int color)
 	char	*dst;
 
 	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	*(int *)dst = color;
 }
 void waller(t_data *data, int x, int y, int side)
 {
 	double step;
 	double tex_pos;
 	int color;
-	char *texture;
+	t_im *texture;
 
 	if (side == 0 && data->player.ray_dir_x > 0)
 		texture = data->map.east;
@@ -45,21 +44,25 @@ void waller(t_data *data, int x, int y, int side)
 	else
 		texture = data->map.north;
 
+
 	data->player.tex_x = (int)(data->player.wall_x * (double)TEXTURE_SIZE);
 	step = 1.0 * TEXTURE_SIZE / data->player.line_height;
 	tex_pos = (y - data->player.draw_start) * step;
 	data->player.tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
-	color = texture[TEXTURE_SIZE * data->player.tex_y + data->player.tex_x];
+	char *tex_addr = texture->addr + (data->player.tex_y * texture->line_length + data->player.tex_x * (texture->bpp / 8));
+	color = *(int *)tex_addr;
 	my_mlx_pixel_put(&data->image, x, y, color);
 }
-void vectors(t_data *data)
+int vectors(void *param)
 {
+	t_data *data = (t_data *)param;
 	int hit = 0;
 	int side = 0;
 	int x = 0;
 	int y = 0;
 	while (x < WINDOW_WIDTH)
 	{
+		y = 0;
 		hit = 0;
 		data->player.camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
 		data->player.ray_dir_x = data->player.dir_x + data->player.plane_x * data->player.camera_x;
@@ -106,6 +109,12 @@ void vectors(t_data *data)
 				data->player.map_y += data->player.step_y;
 				side = 1;
 			}
+			if (data->player.map_x < 0 || data->player.map_y < 0
+				|| data->player.map_x >= data->player.map.map_lenght
+				|| data->player.map_y >= data->player.map.map_height)
+			{
+				break;
+			}
 			if (data->player.map.map[data->player.map_x][data->player.map_y] == '1')
 				hit = 1;
 		}
@@ -121,6 +130,7 @@ void vectors(t_data *data)
 		data->player.line_height = (int)(WINDOW_HEIGHT / data->player.perp_wall_dist);
 		data->player.draw_start = -data->player.line_height / 2 + WINDOW_HEIGHT / 2;
 		data->player.draw_end = data->player.line_height / 2 + WINDOW_HEIGHT / 2;
+		y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
 			if (y < data->player.draw_start)
@@ -129,9 +139,12 @@ void vectors(t_data *data)
 				waller(data, x, y, side);
 			else
 				my_mlx_pixel_put(&data->image, x, y, data->player.map.floor);
+			y++;
 		}
 		x++;
 	}
+	mlx_put_image_to_window(data->mlx_ptr, data->window_ptr, data->image.mlx_img, 0, 0);
+	return(0);
 }
 
 

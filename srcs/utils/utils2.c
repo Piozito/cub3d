@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:52:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/17 15:58:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:51:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,24 @@ int	player_check(char **map)
 		i++;
 	}
 	return (0);
+}
+
+int	rgb(char *str)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = ft_atoi(str);
+	while (*str && *str != ',')
+		str++;
+	if (*str == ',')
+		str++;
+	g = ft_atoi(str);
+	while (*str && *str != ',')
+		str++;
+	if (*str == ',')
+		str++;
+	b = ft_atoi(str);
+	return (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
 }

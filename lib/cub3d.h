@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/21 16:08:16 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:11:21 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,26 @@
 # define WINDOW_HEIGHT 1080
 # define TEXTURE_SIZE 64
 
+typedef struct s_im
+{
+	void		*mlx_img;
+	int			width;
+	int			height;
+	char		*addr;
+	int			bpp;
+	void		*ground;
+	int			line_length;
+	int			endian;
+
+}				t_im;
+
 typedef struct s_map
 {
 	int			fd;
-	char		*north;
-	char		*south;
-	char		*east;
-	char		*west;
+	t_im		*north;
+	t_im		*south;
+	t_im		*east;
+	t_im		*west;
 	int			celling;
 	int			floor;
 	int			spawn[2];
@@ -79,19 +92,6 @@ typedef struct s_player
 
 }				t_player;
 
-typedef struct s_im
-{
-	void		*mlx_img;
-	int			width;
-	int			height;
-	char		*addr;
-	int			bpp;
-	void		*ground;
-	int			line_length;
-	int			endian;
-
-}				t_im;
-
 typedef struct s_data
 {
 	void		*mlx_ptr;
@@ -109,7 +109,7 @@ void		ext_checker(char *path);
 void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);
 int			rgb(char *str);
-void		vectors(t_data *data);
+int			vectors(void *param);
 void		mlx_starter(t_data *data);
 int			check_flag(int *flags);
 int			parsing(t_data *data);
