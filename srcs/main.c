@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/23 18:07:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:58:43 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,35 @@ void init_data_structs(t_data *data, char *file)
 
 	data->map = malloc(sizeof(t_map));
 	data->map->map = NULL;
+
 	data->map->north = malloc(sizeof(t_im));
+	data->map->north->mlx_img = NULL;
+	data->map->north->addr = NULL;
+	data->map->north->bpp = 0;
+	data->map->north->line_length = 0;
+	data->map->north->endian = 0;
+
 	data->map->south = malloc(sizeof(t_im));
+	data->map->south->mlx_img = NULL;
+	data->map->south->addr = NULL;
+	data->map->south->bpp = 0;
+	data->map->south->line_length = 0;
+	data->map->south->endian = 0;
+
 	data->map->east = malloc(sizeof(t_im));
+	data->map->east->mlx_img = NULL;
+	data->map->east->addr = NULL;
+	data->map->east->bpp = 0;
+	data->map->east->line_length = 0;
+	data->map->east->endian = 0;
+
 	data->map->west = malloc(sizeof(t_im));
+	data->map->west->mlx_img = NULL;
+	data->map->west->addr = NULL;
+	data->map->west->bpp = 0;
+	data->map->west->line_length = 0;
+	data->map->west->endian = 0;
+
 	data->map->celling = 0;
 	data->map->floor = 0;
 	data->map->spawn[0] = -1;
