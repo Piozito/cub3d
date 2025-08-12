@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 12:23:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:33:53 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,13 +182,13 @@ int	main(int argc, char **argv)
 			ft_clear(data);
 			exit(1);
 		}
-		data->player->pos_x = data->map->spawn[1];
-		data->player->pos_y = data->map->spawn[0] - 1;
+		data->player->pos_x = data->map->spawn[1] + 0.5;
+		data->player->pos_y = data->map->spawn[0] + 0.5;
 		ft_debug(data);
 		mlx_starter(data);
-		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
+		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);
 		mlx_hook(data->window_ptr, ClientMessage, LeaveWindowMask,
-			&handle_btnrelease, &data);
+			&handle_btnrelease, data);
 		mlx_loop_hook(data->mlx_ptr, vectors, data);
 		mlx_loop(data->mlx_ptr);
 		ft_clear(data);

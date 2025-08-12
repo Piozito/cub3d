@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:57:09 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/23 17:56:23 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:48:26 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,45 @@ int	find_spawn(t_data *data, char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'W' || map[i][j] == 'E')
+			if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 			{
-				if (data->map->spawn[0] != -1 || data->map->spawn[1] != -1)
-					return (1);
-				data->map->spawn[0] = i;
-				data->map->spawn[1] = j;
+			    if (data->map->spawn[0] != -1 || data->map->spawn[1] != -1)
+			        return (1);
+			
+			    if (map[i][j] == 'N')
+			    {
+			        data->player->dir_x = -1.0;
+			        data->player->dir_y = 0.0;
+			        data->player->plane_x = 0.0;
+			        data->player->plane_y = 0.90;
+			    }
+			    else if (map[i][j] == 'S')
+			    {
+			        data->player->dir_x = 1.0;
+			        data->player->dir_y = 0.0;
+			        data->player->plane_x = 0.0;
+			        data->player->plane_y = -0.66;
+			    }
+			    else if (map[i][j] == 'E')
+			    {
+			        data->player->dir_x = 0.0;
+			        data->player->dir_y = 1.0;
+			        data->player->plane_x = 0.66;
+			        data->player->plane_y = 0.0;
+			    }
+			    else if (map[i][j] == 'W')
+			    {
+			        data->player->dir_x = 0.0;
+			        data->player->dir_y = -1.0;
+			        data->player->plane_x = -0.66;
+			        data->player->plane_y = 0.0;
+			    }
+			
+			    data->player->pos_x = j + 0.5;
+			    data->player->pos_y = i + 0.5;
+			    map[i][j] = '0';
+			    data->map->spawn[0] = i;
+			    data->map->spawn[1] = j;
 			}
 			j++;
 		}

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/12 12:26:09 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:50:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,17 +133,19 @@ int vectors(void *param)
 			{
 				break;
 			}
-			if (data->map->map[data->player->map_x][data->player->map_y] == '1')
+			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 				hit = 1;
 		}
 		if (side == 0)
 			data->player->perp_wall_dist = (data->player->map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x;
 		else
 			data->player->perp_wall_dist = (data->player->map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y;
+		data->player->perp_wall_dist *= 5;
 		if (side == 0)
 			data->player->wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
 		else
 			data->player->wall_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
+		printf("PREP WALL: %f\n", data->player->perp_wall_dist);
 		data->player->wall_x -= floor(data->player->wall_x);
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
 		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
