@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/12 15:32:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:12:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void waller(t_data *data, int x, int y, int side)
 	color = *(int *)tex_addr;
 	my_mlx_pixel_put(data->image, x, y, color);
 }
+
 int vectors(void *param)
 {
 	t_data *data = (t_data *)param;
@@ -78,6 +79,8 @@ int vectors(void *param)
 	int side = 0;
 	int x = 0;
 	int y = 0;
+	int map_x = 0;
+	int map_y = 0;
 	while (x < WINDOW_WIDTH)
 	{
 		y = 0;
@@ -86,8 +89,8 @@ int vectors(void *param)
 		data->player->ray_dir_x = data->player->dir_x + data->player->plane_x * data->player->camera_x;
 		data->player->ray_dir_y = data->player->dir_y + data->player->plane_y * data->player->camera_x;
 
-		data->player->map_x = (int)data->player->pos_x;
-		data->player->map_y = (int)data->player->pos_y;
+		map_x = (int)data->player->pos_x;
+		map_y = (int)data->player->pos_y;
 
 		data->player->delta_dist_x = fabs(1 / data->player->ray_dir_x);
 		data->player->delta_dist_y = fabs(1 / data->player->ray_dir_y);
@@ -95,57 +98,51 @@ int vectors(void *param)
 		if (data->player->ray_dir_x < 0)
 		{
 			data->player->step_x = -1;
-			data->player->side_dist_x = (data->player->pos_x - data->player->map_x) * data->player->delta_dist_x;
+			data->player->side_dist_x = (data->player->pos_x - map_x) * data->player->delta_dist_x;
 		}
 		else
 		{
 			data->player->step_x = 1;
-			data->player->side_dist_x = (data->player->map_x + 1.0 - data->player->pos_x) * data->player->delta_dist_x;
+			data->player->side_dist_x = (map_x + 1.0 - data->player->pos_x) * data->player->delta_dist_x;
 		}
-
 		if (data->player->ray_dir_y < 0)
 		{
 			data->player->step_y = -1;
-			data->player->side_dist_y = (data->player->pos_y - data->player->map_y) * data->player->delta_dist_y;
+			data->player->side_dist_y = (data->player->pos_y - map_y) * data->player->delta_dist_y;
 		}
 		else
 		{
 			data->player->step_y = 1;
-			data->player->side_dist_y = (data->player->map_y + 1.0 - data->player->pos_y) * data->player->delta_dist_y;
+			data->player->side_dist_y = (map_y + 1.0 - data->player->pos_y) * data->player->delta_dist_y;
 		}
 		while (hit == 0)
 		{
 			if (data->player->side_dist_x < data->player->side_dist_y)
 			{
 				data->player->side_dist_x += data->player->delta_dist_x;
-				data->player->map_x += data->player->step_x;
+				map_x += data->player->step_x;
 				side = 0;
 			}
 			else
 			{
 				data->player->side_dist_y += data->player->delta_dist_y;
-				data->player->map_y += data->player->step_y;
+				map_y += data->player->step_y;
 				side = 1;
 			}
-			if (data->player->map_x < 0 || data->player->map_y < 0
-				|| data->player->map_x >= data->map->map_lenght
-				|| data->player->map_y >= data->map->map_height)
-			{
-				break;
-			}
-			if (data->map->map[data->player->map_x][data->player->map_y] == '1')
+			if (data->map->map[map_y][map_x] == '1')
 				hit = 1;
 		}
+		printf("Hit: %d\n\nMap X: %d\n\nMap Y: %d\n\nPlayer X: %f\n\nPlayer Y: %f\n\n", hit, map_x, map_y, data->player->pos_x, data->player->pos_y);
 		if (side == 0)
-			data->player->perp_wall_dist = (data->player->map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x;
+			data->player->perp_wall_dist = (map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x;
 		else
-			data->player->perp_wall_dist = (data->player->map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y;
+			data->player->perp_wall_dist = (map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y;
 		data->player->perp_wall_dist *= 5;
 		if (side == 0)
 			data->player->wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
 		else
 			data->player->wall_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
-		printf("PREP WALL: %f\n", data->player->perp_wall_dist);
+		//printf("PREP WALL: %f\n", data->player->perp_wall_dist);
 		data->player->wall_x -= floor(data->player->wall_x);
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
 		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;

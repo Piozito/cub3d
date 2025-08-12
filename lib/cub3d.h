@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 13:27:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:38:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,10 @@ ssize_t		get_file_lines(char **argv);
 ssize_t		find_char(const char *str, char c, ssize_t len);
 
 void draw_square(void *mlx_ptr, void *win_ptr, int x, int y, int size, int color);
-void draw_circle(void *mlx_ptr, void *win_ptr, int cx, int cy, int radius, int color);
+void draw_circle(void *mlx_ptr, void *win_ptr, int cx, int cy, int radius);
 void draw_minimap(t_data *data);
 
 int	handle_keypress(int keysym, t_data *data);
 int	handle_btnrelease(t_data *data);
 
 #endif
-
-

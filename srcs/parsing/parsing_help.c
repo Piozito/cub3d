@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:57:09 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 13:48:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:19:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	find_spawn(t_data *data, char **map)
 			        data->player->dir_x = -1.0;
 			        data->player->dir_y = 0.0;
 			        data->player->plane_x = 0.0;
-			        data->player->plane_y = 0.90;
+			        data->player->plane_y = 0.66;
 			    }
 			    else if (map[i][j] == 'S')
 			    {
