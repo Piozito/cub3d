@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/12 13:50:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 15:32:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int vectors(void *param)
 			{
 				break;
 			}
-			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
+			if (data->map->map[data->player->map_x][data->player->map_y] == '1')
 				hit = 1;
 		}
 		if (side == 0)
