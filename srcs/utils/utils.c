@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/23 17:55:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:09:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	ft_debug(t_data *data)
 		printf("Floor: %d\n", data->map->floor);
 	if (data->map->celling)
 		printf("Celling: %d\n", data->map->celling);
+	if (data->map->spawn[0] && data->map->spawn[1])
+		printf("Spawn X: %d\nSpawn Y: %d\n", data->map->spawn[0], data->map->spawn[1]);
 	printf("Map:\n");
 	while (data->map->map[i])
 		printf("%s\n", data->map->map[i++]);

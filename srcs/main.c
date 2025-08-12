@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/04 12:13:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:23:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void init_data_structs(t_data *data, char *file)
 	data->player->ray_dir_x = 0.0;
 	data->player->ray_dir_y = 0.0;
 	data->player->camera_x = 0.0;
+	data->player->angle = 0.0;
 
 	data->player->map_x = 0;
 	data->player->map_y = 0;
@@ -181,6 +182,8 @@ int	main(int argc, char **argv)
 			ft_clear(data);
 			exit(1);
 		}
+		data->player->pos_x = data->map->spawn[1];
+		data->player->pos_y = data->map->spawn[0] - 1;
 		ft_debug(data);
 		mlx_starter(data);
 		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
@@ -197,3 +200,4 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
+

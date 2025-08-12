@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/04 12:13:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:58:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_player
 	double		plane_x;
 	double		plane_y;
 	double		camera_x;
+	double		angle;
 	double		ray_dir_x;
 	double		ray_dir_y;
 	int			map_x;

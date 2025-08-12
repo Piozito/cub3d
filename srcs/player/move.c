@@ -6,25 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:12:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/07/16 12:51:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:45:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-int	handle_keypress(int keysym, t_data *data)
-{
-	if (keysym == XK_Escape)
-	{
-		mlx_destroy_window(data->mlx, data->win);
-		data->win = NULL;
-	}
-	else if (ft_strchr("wasd", keysym))
-		move_player(data, keysym);
-	return (0);
-}
-
-int	check_next_tile(t_data *data, char direction, char tile)
+/* int	check_next_tile(t_data *data, char direction, char tile)
 {
 	if ((direction == 'd' && data->map.map[data->p_i][data->p_j + 1] == tile)
 		|| (direction == 'a' && data->map.map[data->p_i][data->p_j - 1] == tile)
@@ -54,4 +42,4 @@ void	move_player(t_data *data, char direction)
 		data->p_i--;
 	move_msg(data);
 	data->map.map[data->p_i][data->p_j] = 'P';
-}
+} */

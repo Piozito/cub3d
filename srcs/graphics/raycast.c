@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/04 12:05:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:26:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,3 @@ int vectors(void *param)
 	draw_minimap(data);
 	return(0);
 }
-
-
-

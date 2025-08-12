@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:00:02 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/04 12:10:20 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:30:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,17 @@ void draw_minimap(t_data *data)
     {
         for (int x = 0; data->map->map[y][x]; x++)
         {
-            int color = (data->map->map[y][x] == '1') ? 0xCCCCCC : 0x333333;
+            int color;
+            if (data->map->map[y][x] == '1')
+                color = 0xCCCCCC;
+            else if (data->map->map[y][x] == '0'
+                || data->map->map[y][x] == 'N'
+                || data->map->map[y][x] == 'S'
+                || data->map->map[y][x] == 'W'
+                || data->map->map[y][x] == 'E')
+                color = 0x333333;
+            else
+                continue;
             draw_square(data->mlx_ptr, data->window_ptr, 10 + x * cell_size, 10 + y * cell_size, cell_size, color);
         }
     }
