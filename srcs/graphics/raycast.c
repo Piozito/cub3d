@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/12 18:12:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:46:50 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ void tex_initialiser(t_data *data)
 
 	data->map->west->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->west->addr, &data->image->width, &data->image->height);
 	data->map->west->addr = mlx_get_data_addr(data->map->west->mlx_img, &data->map->west->bpp, &data->map->west->line_length, &data->map->west->endian);
+
+	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->addr, &data->image->width, &data->image->height);
+	data->map->door->addr = mlx_get_data_addr(data->map->door->mlx_img, &data->map->door->bpp, &data->map->door->line_length, &data->map->door->endian);
 }
 
 void mlx_starter(t_data *data)
@@ -46,13 +49,13 @@ void mlx_starter(t_data *data)
 }
 
 
-void waller(t_data *data, int x, int y, int side)
+void waller(t_data *data, int x, int y, int side, int tex_y, int tex_x, int hit)
 {
-	double step;
-	double tex_pos;
 	int color;
 	t_im *texture;
 
+	if (hit == 2)
+		texture = data->map->door;
 	if (side == 0 && data->player->ray_dir_x > 0)
 		texture = data->map->east;
 	else if (side == 0 && data->player->ray_dir_x < 0)
@@ -61,15 +64,15 @@ void waller(t_data *data, int x, int y, int side)
 		texture = data->map->south;
 	else
 		texture = data->map->north;
-
-
-	data->player->tex_x = (int)(data->player->wall_x * (double)TEXTURE_SIZE);
-	step = 1.0 * TEXTURE_SIZE / data->player->line_height;
-	tex_pos = (y - data->player->draw_start) * step;
-	data->player->tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
-	char *tex_addr = texture->addr + (data->player->tex_y * texture->line_length + data->player->tex_x * (texture->bpp / 8));
+	
+	char *tex_addr = texture->addr + (tex_y * texture->line_length + tex_x * (texture->bpp / 8));
 	color = *(int *)tex_addr;
-	my_mlx_pixel_put(data->image, x, y, color);
+	if(color == -16777216)
+	{
+
+	}
+	else
+		my_mlx_pixel_put(data->image, x, y, color);
 }
 
 int vectors(void *param)
@@ -81,6 +84,8 @@ int vectors(void *param)
 	int y = 0;
 	int map_x = 0;
 	int map_y = 0;
+	movement_handler(data);
+    mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	while (x < WINDOW_WIDTH)
 	{
 		y = 0;
@@ -131,31 +136,69 @@ int vectors(void *param)
 			}
 			if (data->map->map[map_y][map_x] == '1')
 				hit = 1;
+			else if (data->map->map[map_y][map_x] == '2')
+				hit = 2;
 		}
-		printf("Hit: %d\n\nMap X: %d\n\nMap Y: %d\n\nPlayer X: %f\n\nPlayer Y: %f\n\n", hit, map_x, map_y, data->player->pos_x, data->player->pos_y);
+		//printf("Hit: %d\n\nMap X: %d\n\nMap Y: %d\n\nPlayer X: %f\n\nPlayer Y: %f\n\n", hit, map_x, map_y, data->player->pos_x, data->player->pos_y);
 		if (side == 0)
 			data->player->perp_wall_dist = (map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x;
 		else
 			data->player->perp_wall_dist = (map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y;
-		data->player->perp_wall_dist *= 5;
 		if (side == 0)
 			data->player->wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
 		else
 			data->player->wall_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
 		//printf("PREP WALL: %f\n", data->player->perp_wall_dist);
-		data->player->wall_x -= floor(data->player->wall_x);
+		data->player->wall_x -= floor(data->player->wall_x + 1e-6);
+		if(data->player->wall_x < 0)
+			data->player->wall_x += 1.0;
+		else if(data->player->wall_x >= 1)
+			data->player->wall_x -= 1.0;
+		int tex_x = (int)(data->player->wall_x * (double)TEXTURE_SIZE);
+		if(tex_x < 0)
+			tex_x = 0;
+		if(tex_x >= TEXTURE_SIZE)
+			tex_x = TEXTURE_SIZE - 1;
+		if(side == 0 && data->player->ray_dir_x > 0)
+			tex_x = TEXTURE_SIZE - tex_x - 1;
+		if(side == 1 && data->player->ray_dir_y < 0)
+			tex_x = TEXTURE_SIZE - tex_x - 1;
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
 		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
 		data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2;
 		y = 0;
+
+
+
+		double step = (double)TEXTURE_SIZE / data->player->line_height;
+		double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
+		int tex_y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
 			if (y < data->player->draw_start)
 				my_mlx_pixel_put(data->image, x, y, data->map->celling);
-			else if (y >= data->player->draw_start && y <= data->player->draw_end)
-				waller(data, x, y, side);
-			else
+			else if(y > data->player->draw_end)
 				my_mlx_pixel_put(data->image, x, y, data->map->floor);
+			else if(hit == 2)
+			{
+				tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
+				if (tex_y < 0)
+					tex_y = 0;
+				if (tex_y >= TEXTURE_SIZE)
+					tex_y = TEXTURE_SIZE - 1;
+				waller(data, x, y, side, tex_y, tex_x, hit);
+				tex_pos += step;
+			}
+			else if (y >= data->player->draw_start && y <= data->player->draw_end)
+			{
+				tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
+				if (tex_y < 0)
+					tex_y = 0;
+				if (tex_y >= TEXTURE_SIZE)
+					tex_y = TEXTURE_SIZE - 1;
+				waller(data, x, y, side, tex_y, tex_x, hit);
+				tex_pos += step;
+			}
 			y++;
 		}
 		x++;

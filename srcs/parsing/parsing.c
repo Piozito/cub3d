@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 12:15:16 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:37:10 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,43 @@ int	flood(t_data *data)
 	return (0);
 }
 
+int	check_next(char **map, int x, int y)
+{
+	if (map[x + 1][y] && map[x + 1][y] != '0' && map[x + 1][y] != '1' && map[x + 1][y] != '2')
+		return (1);
+	if (map[x - 1][y] && map[x - 1][y] != '0' && map[x - 1][y] != '1' && map[x - 1][y] != '2')
+		return (1);
+	if (map[x][y + 1] && map[x][y + 1] != '0' && map[x][y + 1] != '1' && map[x][y + 1] != '2')
+		return (1);
+	if (map[x][y - 1] && map[x][y - 1] != '0' && map[x][y - 1] != '1' && map[x][y - 1] != '2')
+		return (1);
+	return (0);
+}
+
+int	check_spaces(char **map)
+{
+	int	i;
+	int	x;
+	int	y;
+
+	i = 0;
+	x = 0;
+	y = 0;
+	while (map[x])
+	{
+		y = 0;
+		while (map[x][y])
+		{
+			if (map[x][y] == '0' || map[x][y] == '2')
+				if (check_next(map, x, y) == 1)
+					return (1);
+			y++;
+		}
+		x++;
+	}
+	return (0);
+}
+
 int	parsing(t_data *data)
 {
 	if (top_and_bottom(data->map->map) == 1)
@@ -108,6 +145,8 @@ int	parsing(t_data *data)
 	if (player_check(data->map->map) == 1)
 		return (1);
 	if (find_spawn(data, data->map->map) == 1)
+		return (1);
+	if (check_spaces(data->map->map) == 1)
 		return (1);
 	if (flood(data) == 1)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 16:38:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/18 16:52:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <stdbool.h>
 # include "./libft/libft.h"
 # include "./minilibx-linux/mlx.h"
 
@@ -33,6 +34,9 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define TEXTURE_SIZE 64
+
+#define WLK_SPEED 0.075
+#define ROT_SPEED 0.0015
 
 typedef struct s_im
 {
@@ -54,6 +58,7 @@ typedef struct s_map
 	t_im		*south;
 	t_im		*east;
 	t_im		*west;
+	t_im		*door;
 	int			celling;
 	int			floor;
 	int			spawn[2];
@@ -88,8 +93,16 @@ typedef struct s_player
 	int			draw_end;
 	int			tex_x;
 	int			tex_y;
-	int			wall_x;
+	double			wall_x;
+	int			key_states[5];
 }				t_player;
+
+//key_states[0] W
+//key_states[1] S
+//key_states[2] D
+//key_states[3] A
+//key_states[4] Shift
+
 
 typedef struct s_data
 {
@@ -131,6 +144,9 @@ void draw_circle(void *mlx_ptr, void *win_ptr, int cx, int cy, int radius);
 void draw_minimap(t_data *data);
 
 int	handle_keypress(int keysym, t_data *data);
-int	handle_btnrelease(t_data *data);
+int	handle_btnrelease(int keysym, t_data *data);
+
+int		camera_handler(int x, int y, t_player *player);
+void	movement_handler(t_data *data);
 
 #endif

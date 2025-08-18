@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/12 13:33:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:29:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	flag(int *flags)
 	ssize_t	i;
 
 	i = 0;
-	while (i < 6)
+	while (i < 7)
 		flags[i++] = 0;
 }
 
@@ -26,7 +26,7 @@ int	get_textures(t_data *data, char **argv)
 	char	*str;
 	char	**map;
 	ssize_t	i;
-	int		flags[6];
+	int		flags[7];
 	int		help;
 
 	i = 0;
@@ -92,6 +92,11 @@ void init_data_structs(t_data *data, char *file)
 	data->player->draw_end = 0;
 	data->player->tex_x = 0;
 	data->player->tex_y = 0;
+	data->player->key_states[0] = 0;
+	data->player->key_states[1] = 0;
+	data->player->key_states[2] = 0;
+	data->player->key_states[3] = 0;
+	data->player->key_states[4] = 0;
 
 	data->map = malloc(sizeof(t_map));
 	data->map->map = NULL;
@@ -124,6 +129,13 @@ void init_data_structs(t_data *data, char *file)
 	data->map->west->line_length = 0;
 	data->map->west->endian = 0;
 
+	data->map->door = malloc(sizeof(t_im));
+	data->map->door->mlx_img = NULL;
+	data->map->door->addr = NULL;
+	data->map->door->bpp = 0;
+	data->map->door->line_length = 0;
+	data->map->door->endian = 0;
+
 	data->map->celling = 0;
 	data->map->floor = 0;
 	data->map->spawn[0] = -1;
@@ -143,7 +155,7 @@ void init_data_structs(t_data *data, char *file)
 
 int	check_attribute(char *str)
 {
-	char	*attr[7];
+	char	*attr[8];
 	ssize_t	i;
 
 	i = 0;
@@ -153,14 +165,15 @@ int	check_attribute(char *str)
 	attr[3] = "EA ";
 	attr[4] = "F ";
 	attr[5] = "C ";
-	attr[6] = NULL;
+	attr[6] = "D ";
+	attr[7] = NULL;
 	while (attr[i])
 	{
 		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
 			break ;
 		i++;
 	}
-	if (i < 6)
+	if (i < 7)
 		return (i);
 	else
 		return (-1);
@@ -186,8 +199,10 @@ int	main(int argc, char **argv)
 		data->player->pos_y = data->map->spawn[0] + 0.5;
 		ft_debug(data);
 		mlx_starter(data);
+		mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+		mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask, &camera_handler, data->player);
 		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);
-		mlx_hook(data->window_ptr, ClientMessage, LeaveWindowMask,
+		mlx_hook(data->window_ptr, KeyRelease, KeyReleaseMask,
 			&handle_btnrelease, data);
 		mlx_loop_hook(data->mlx_ptr, vectors, data);
 		mlx_loop(data->mlx_ptr);
