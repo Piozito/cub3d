@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/18 17:46:50 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:06:59 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void waller(t_data *data, int x, int y, int side, int tex_y, int tex_x, int hit)
 
 	if (hit == 2)
 		texture = data->map->door;
-	if (side == 0 && data->player->ray_dir_x > 0)
+	else if (side == 0 && data->player->ray_dir_x > 0)
 		texture = data->map->east;
 	else if (side == 0 && data->player->ray_dir_x < 0)
 		texture = data->map->west;
@@ -139,7 +139,6 @@ int vectors(void *param)
 			else if (data->map->map[map_y][map_x] == '2')
 				hit = 2;
 		}
-		//printf("Hit: %d\n\nMap X: %d\n\nMap Y: %d\n\nPlayer X: %f\n\nPlayer Y: %f\n\n", hit, map_x, map_y, data->player->pos_x, data->player->pos_y);
 		if (side == 0)
 			data->player->perp_wall_dist = (map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x;
 		else
@@ -148,7 +147,6 @@ int vectors(void *param)
 			data->player->wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
 		else
 			data->player->wall_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
-		//printf("PREP WALL: %f\n", data->player->perp_wall_dist);
 		data->player->wall_x -= floor(data->player->wall_x + 1e-6);
 		if(data->player->wall_x < 0)
 			data->player->wall_x += 1.0;
@@ -159,15 +157,16 @@ int vectors(void *param)
 			tex_x = 0;
 		if(tex_x >= TEXTURE_SIZE)
 			tex_x = TEXTURE_SIZE - 1;
-		if(side == 0 && data->player->ray_dir_x > 0)
-			tex_x = TEXTURE_SIZE - tex_x - 1;
-		if(side == 1 && data->player->ray_dir_y < 0)
+		if((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 			tex_x = TEXTURE_SIZE - tex_x - 1;
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
 		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
 		data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2;
+		if (data->player->draw_start < 0)
+			data->player->draw_start = 0;
+		if (data->player->draw_end >= WINDOW_HEIGHT)
+			data->player->draw_end = WINDOW_HEIGHT - 1;
 		y = 0;
-
 
 
 		double step = (double)TEXTURE_SIZE / data->player->line_height;

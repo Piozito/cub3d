@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 16:43:16 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:03:24 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int    camera_handler(int x, int y, t_player *player)
     delta_x = x - last_x;
     if (delta_x == 0)
         return (0);
-    rot_speed = 0.00025 * delta_x;
+    rot_speed = (0.00025 * delta_x) * -1;
     old_dir_x = player->dir_x;
     player->dir_x = player->dir_x * cos(-rot_speed) - player->dir_y * sin(-rot_speed);
     player->dir_y = old_dir_x * sin(-rot_speed) + player->dir_y * cos(-rot_speed);
