@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 17:29:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:14:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void init_data_structs(t_data *data, char *file)
 	data->player->key_states[2] = 0;
 	data->player->key_states[3] = 0;
 	data->player->key_states[4] = 0;
+	data->player->key_states[5] = 0;
 
 	data->map = malloc(sizeof(t_map));
 	data->map->map = NULL;

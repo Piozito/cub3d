@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 16:52:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:44:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@
 # define TEXTURE_SIZE 64
 
 #define WLK_SPEED 0.075
-#define ROT_SPEED 0.0015
+#define ROT_SPEED 0.00025
+#define JUMP_HEIGHT 250
 
 typedef struct s_im
 {
@@ -94,7 +95,7 @@ typedef struct s_player
 	int			tex_x;
 	int			tex_y;
 	double			wall_x;
-	int			key_states[5];
+	int			key_states[6];
 }				t_player;
 
 //key_states[0] W
@@ -102,6 +103,7 @@ typedef struct s_player
 //key_states[2] D
 //key_states[3] A
 //key_states[4] Shift
+//key_states[5] Space
 
 
 typedef struct s_data
@@ -139,8 +141,8 @@ size_t		get_biggest_line(char **map);
 ssize_t		get_file_lines(char **argv);
 ssize_t		find_char(const char *str, char c, ssize_t len);
 
-void draw_square(void *mlx_ptr, void *win_ptr, int x, int y, int size, int color);
-void draw_circle(void *mlx_ptr, void *win_ptr, int cx, int cy, int radius);
+void draw_square(void *mlx_ptr, int x, int y, int size, int color);
+void draw_circle(void *mlx_ptr, int coords, int radius, int color);
 void draw_minimap(t_data *data);
 
 int	handle_keypress(int keysym, t_data *data);
@@ -148,5 +150,7 @@ int	handle_btnrelease(int keysym, t_data *data);
 
 int		camera_handler(int x, int y, t_player *player);
 void	movement_handler(t_data *data);
+
+void my_mlx_pixel_put(t_im *img, int x, int y, int color);
 
 #endif

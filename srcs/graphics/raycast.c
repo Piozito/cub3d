@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/19 13:06:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:28:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,28 @@ void waller(t_data *data, int x, int y, int side, int tex_y, int tex_x, int hit)
 		my_mlx_pixel_put(data->image, x, y, color);
 }
 
+int set_jump(t_data *data)
+{
+	static unsigned int jump = 0;
+	static int increase;
+
+	if (jump >= JUMP_HEIGHT)
+		increase = 0;
+	if (increase == 1)
+	{
+		jump += JUMP_HEIGHT / 12;
+		return jump;
+	}
+	if (jump > 0)
+	{
+		jump -= JUMP_HEIGHT / 12;
+		return jump;
+	}
+	if (data->player->key_states[5] == 1)
+		increase = 1;
+	return jump;
+}
+
 int vectors(void *param)
 {
 	t_data *data = (t_data *)param;
@@ -84,6 +106,7 @@ int vectors(void *param)
 	int y = 0;
 	int map_x = 0;
 	int map_y = 0;
+	int jump = set_jump(data);
 	movement_handler(data);
     mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	while (x < WINDOW_WIDTH)
@@ -160,8 +183,8 @@ int vectors(void *param)
 		if((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 			tex_x = TEXTURE_SIZE - tex_x - 1;
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
-		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
-		data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2;
+		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
+		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
 		if (data->player->draw_start < 0)
 			data->player->draw_start = 0;
 		if (data->player->draw_end >= WINDOW_HEIGHT)
@@ -170,7 +193,7 @@ int vectors(void *param)
 
 
 		double step = (double)TEXTURE_SIZE / data->player->line_height;
-		double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
+		double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2 - (jump / data->player->perp_wall_dist)) * step;
 		int tex_y = 0;
 		while (y < WINDOW_HEIGHT)
 		{
@@ -202,7 +225,7 @@ int vectors(void *param)
 		}
 		x++;
 	}
-	mlx_put_image_to_window(data->mlx_ptr, data->window_ptr, data->image->mlx_img, 0, 0);
 	draw_minimap(data);
+	mlx_put_image_to_window(data->mlx_ptr, data->window_ptr, data->image->mlx_img, 0, 0);
 	return(0);
 }

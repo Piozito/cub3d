@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 17:35:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/19 14:04:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	check_flag(int *flags)
 	i = 0;
 	while (i < 7)
 	{
-		printf("flags[%zd]: %d\n", i, flags[i]);
 		if (flags[i] != 1)
 			return (1);
 		i++;

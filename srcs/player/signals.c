@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/19 13:03:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/26 12:31:29 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int handle_keypress(int keysym, t_data *data)
         data->player->key_states[3] = 1;
     if (keysym == XK_Shift_L)
         data->player->key_states[4] = 1;
+    if (keysym == XK_space)
+        data->player->key_states[5] = 1;
     return (0);
 }
 
@@ -48,7 +50,7 @@ int    camera_handler(int x, int y, t_player *player)
     delta_x = x - last_x;
     if (delta_x == 0)
         return (0);
-    rot_speed = (0.00025 * delta_x) * -1;
+    rot_speed = (ROT_SPEED * delta_x) * -1;
     old_dir_x = player->dir_x;
     player->dir_x = player->dir_x * cos(-rot_speed) - player->dir_y * sin(-rot_speed);
     player->dir_y = old_dir_x * sin(-rot_speed) + player->dir_y * cos(-rot_speed);
@@ -118,5 +120,7 @@ int	handle_btnrelease(int keysym, t_data *data)
         data->player->key_states[3] = 0;
     if (keysym == XK_Shift_L)
         data->player->key_states[4] = 0;
+    if (keysym == XK_space)
+        data->player->key_states[5] = 0;
     return (0);
 }
