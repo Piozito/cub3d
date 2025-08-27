@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/19 13:14:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 11:11:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,23 @@ int	get_textures(t_data *data, char **argv)
 	return (check_flag(flags));
 }
 
+t_im *prep_img()
+{
+	t_im *im;
+
+	im = malloc(sizeof(t_im));
+	im->mlx_img = NULL;
+	im->addr = NULL;
+	im->bpp = 0;
+	im->line_length = 0;
+	im->endian = 0;
+	return(im);
+}
 
 void init_data_structs(t_data *data, char *file)
 {
 	data->mlx_ptr = NULL;
 	data->window_ptr = NULL;
-	data->img_ptr = NULL;
 
 	data->image = malloc(sizeof(t_im));
 	data->image->mlx_img = NULL;
@@ -102,40 +113,11 @@ void init_data_structs(t_data *data, char *file)
 	data->map = malloc(sizeof(t_map));
 	data->map->map = NULL;
 
-	data->map->north = malloc(sizeof(t_im));
-	data->map->north->mlx_img = NULL;
-	data->map->north->addr = NULL;
-	data->map->north->bpp = 0;
-	data->map->north->line_length = 0;
-	data->map->north->endian = 0;
-
-	data->map->south = malloc(sizeof(t_im));
-	data->map->south->mlx_img = NULL;
-	data->map->south->addr = NULL;
-	data->map->south->bpp = 0;
-	data->map->south->line_length = 0;
-	data->map->south->endian = 0;
-
-	data->map->east = malloc(sizeof(t_im));
-	data->map->east->mlx_img = NULL;
-	data->map->east->addr = NULL;
-	data->map->east->bpp = 0;
-	data->map->east->line_length = 0;
-	data->map->east->endian = 0;
-
-	data->map->west = malloc(sizeof(t_im));
-	data->map->west->mlx_img = NULL;
-	data->map->west->addr = NULL;
-	data->map->west->bpp = 0;
-	data->map->west->line_length = 0;
-	data->map->west->endian = 0;
-
-	data->map->door = malloc(sizeof(t_im));
-	data->map->door->mlx_img = NULL;
-	data->map->door->addr = NULL;
-	data->map->door->bpp = 0;
-	data->map->door->line_length = 0;
-	data->map->door->endian = 0;
+	data->map->north = prep_img();
+	data->map->south = prep_img();
+	data->map->east = prep_img();
+	data->map->west = prep_img();
+	data->map->door = prep_img();
 
 	data->map->celling = 0;
 	data->map->floor = 0;
@@ -147,10 +129,8 @@ void init_data_structs(t_data *data, char *file)
 	if (data->map->fd <= 0)
 	{
 		printf("Error\nInvalid map.\n");
-		free(data);
-		exit(1);
+		ft_clear(data);
 	}
-
 }
 
 
@@ -194,7 +174,6 @@ int	main(int argc, char **argv)
 			printf("Error\nInvalid map.\n");
 			ft_debug(data);
 			ft_clear(data);
-			exit(1);
 		}
 		data->player->pos_x = data->map->spawn[1] + 0.5;
 		data->player->pos_y = data->map->spawn[0] + 0.5;

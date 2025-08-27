@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 17:18:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:59:36 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,6 @@ void	ft_debug(t_data *data)
 	printf("Map:\n");
 	while (data->map->map[i])
 		printf("%s\n", data->map->map[i++]);
-}
-
-void	ft_clear(t_data *data)
-{
-	ssize_t	i;
-
-	i = 0;
-	if (data->map->north)
-		free(data->map->north);
-	if (data->map->south)
-		free(data->map->south);
-	if (data->map->west)
-		free(data->map->west);
-	if (data->map->east)
-		free(data->map->east);
-	if (data->map->map)
-	{
-		while (data->map->map[i])
-			free(data->map->map[i++]);
-		free(data->map->map);
-	}
-	close(data->map->fd);
-	free(data);
 }
 
 ssize_t	find_char(const char *str, char c, ssize_t len)
