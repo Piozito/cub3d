@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/27 11:49:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:08:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ void wallberg(t_data *data, int x, int y, int tex_y, int tex_x)
 		my_mlx_pixel_put(data->image, x, y, color);
 }
 
-void do_y(t_data *data, int x, int tex_x, int side, int hit)
+void do_y(t_data *data, int x, int tex_x, int side, int hit, int jump)
 {
 	double step = (double)TEXTURE_SIZE / data->player->line_height;
-	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
+	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2 - (jump / data->player->perp_wall_dist)) * step;
 	int tex_y;
 	int y = 0;
 	while (y < WINDOW_HEIGHT)
@@ -121,26 +121,24 @@ void do_y(t_data *data, int x, int tex_x, int side, int hit)
 	}
 }
 
-void do_door(t_data *data, int x, int map_x, int map_y, int side)
+void do_door(t_data *data, int x, int map_x, int map_y, int side, int jump)
 {
-	double perp_door_dist;
 	double door_x;
 	int tex_x;
-
 	if (data->map->map[map_y][map_x] == '2')
 	{
 		if (side == 0 && data->player->ray_dir_x > 0)
-			perp_door_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
+			data->player->perp_wall_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
 		else if(side == 0)
-			perp_door_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
+			data->player->perp_wall_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
 		else if(data->player->ray_dir_y > 0)
-			perp_door_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
+			data->player->perp_wall_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
 		else
-			perp_door_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
+			data->player->perp_wall_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
 		if (side == 0)
-			door_x = data->player->pos_y + perp_door_dist * data->player->ray_dir_y;
+			door_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
 		else
-			door_x = data->player->pos_x + perp_door_dist * data->player->ray_dir_x;
+			door_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
 
 		door_x -= floor(door_x + 1e-6);
 		if (door_x < 0)
@@ -157,16 +155,16 @@ void do_door(t_data *data, int x, int map_x, int map_y, int side)
 		if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 			tex_x = TEXTURE_SIZE - tex_x - 1;
 
-		data->player->line_height = (int)(WINDOW_HEIGHT / perp_door_dist);
-		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2);
-		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) - 1;
+		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
+		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
+		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) - 1 + (jump / data->player->perp_wall_dist);
 
 		if (data->player->draw_start < 0)
 			data->player->draw_start = 0;
 		if (data->player->draw_end >= WINDOW_HEIGHT)
 			data->player->draw_end = WINDOW_HEIGHT - 1;
 
-		do_y(data, x, tex_x, side, 2);
+		do_y(data, x, tex_x, side, 2, jump);
 	}
 }
 
@@ -180,6 +178,7 @@ int vectors(void *param)
 	int map_y;
 	int flag = 0;
 	int door[5];
+	int jump = set_jump(data);
 
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -270,17 +269,17 @@ int vectors(void *param)
 			tex_x = TEXTURE_SIZE - tex_x - 1;
 
 		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
-		data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
-		data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2;
+		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
+		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
 
 		if (data->player->draw_start < 0)
 			data->player->draw_start = 0;
 		if (data->player->draw_end >= WINDOW_HEIGHT)
 			data->player->draw_end = WINDOW_HEIGHT - 1;
 
-		do_y(data, x, tex_x, side, hit);
+		do_y(data, x, tex_x, side, hit, jump);
 		if (flag == 1)
-			do_door(data, door[0], door[1], door[2], door[3]);
+			do_door(data, door[0], door[1], door[2], door[3], jump);
 		x++;
 	}
 	draw_minimap(data);

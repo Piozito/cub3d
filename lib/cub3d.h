@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/26 16:44:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 11:53:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int	handle_keypress(int keysym, t_data *data);
 int	handle_btnrelease(int keysym, t_data *data);
 
 int		camera_handler(int x, int y, t_player *player);
+int		set_jump(t_data *data);
 void	movement_handler(t_data *data);
 
 void my_mlx_pixel_put(t_im *img, int x, int y, int color);

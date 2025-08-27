@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/26 16:55:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 11:53:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,28 @@ int handle_keypress(int keysym, t_data *data)
     if (keysym == XK_space)
         data->player->key_states[5] = 1;
     return (0);
+}
+
+int set_jump(t_data *data)
+{
+	static unsigned int jump = 0;
+	static int increase;
+
+	if (jump >= JUMP_HEIGHT)
+		increase = 0;
+	if (increase == 1)
+	{
+		jump += JUMP_HEIGHT / 12;
+		return jump;
+	}
+	if (jump > 0)
+	{
+		jump -= JUMP_HEIGHT / 12;
+		return jump;
+	}
+	if (data->player->key_states[5] == 1)
+		increase = 1;
+	return jump;
 }
 
 int    camera_handler(int x, int y, t_player *player)
