@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 11:53:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:06:21 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_data
 }				t_data;
 
 void		ft_debug(t_data *data);
-void		ft_clear(t_data *data);
+int			ft_clear(t_data *data);
 void		ext_checker(char *path);
 void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);

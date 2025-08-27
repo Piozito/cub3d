@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 11:11:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:06:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int	main(int argc, char **argv)
 		data->player->pos_y = data->map->spawn[0] + 0.5;
 		ft_debug(data);
 		mlx_starter(data);
-		mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+		//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+		mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
 		mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask, &camera_handler, data->player);
 		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);
 		mlx_hook(data->window_ptr, KeyRelease, KeyReleaseMask,

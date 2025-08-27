@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/27 12:08:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:06:26 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ void my_mlx_pixel_put(t_im *img, int x, int y, int color)
 void tex_initialiser(t_data *data)
 {
 	data->map->east->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->east->addr, &data->image->width, &data->image->height);
+	free(data->map->east->addr);
 	data->map->east->addr = mlx_get_data_addr(data->map->east->mlx_img, &data->map->east->bpp, &data->map->east->line_length, &data->map->east->endian);
-
 	data->map->north->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->north->addr, &data->image->width, &data->image->height);
+	free(data->map->north->addr);
 	data->map->north->addr = mlx_get_data_addr(data->map->north->mlx_img, &data->map->north->bpp, &data->map->north->line_length, &data->map->north->endian);
-
 	data->map->south->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->south->addr, &data->image->width, &data->image->height);
+	free(data->map->south->addr);
 	data->map->south->addr = mlx_get_data_addr(data->map->south->mlx_img, &data->map->south->bpp, &data->map->south->line_length, &data->map->south->endian);
-
 	data->map->west->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->west->addr, &data->image->width, &data->image->height);
+	free(data->map->west->addr);
 	data->map->west->addr = mlx_get_data_addr(data->map->west->mlx_img, &data->map->west->bpp, &data->map->west->line_length, &data->map->west->endian);
-
 	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->addr, &data->image->width, &data->image->height);
+	free(data->map->door->addr);
 	data->map->door->addr = mlx_get_data_addr(data->map->door->mlx_img, &data->map->door->bpp, &data->map->door->line_length, &data->map->door->endian);
 }
 
