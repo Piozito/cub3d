@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/01 14:26:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:56:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void tex_initialiser(t_data *data)
 	data->map->west->addr = mlx_get_data_addr(data->map->west->mlx_img, &data->map->west->bpp, &data->map->west->line_length, &data->map->west->endian);
 	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->file, &data->image->width, &data->image->height);
 	data->map->door->addr = mlx_get_data_addr(data->map->door->mlx_img, &data->map->door->bpp, &data->map->door->line_length, &data->map->door->endian);
+	data->map->door_1->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_1->file, &data->image->width, &data->image->height);
+	data->map->door_1->addr = mlx_get_data_addr(data->map->door_1->mlx_img, &data->map->door_1->bpp, &data->map->door_1->line_length, &data->map->door_1->endian);
+	data->map->door_2->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_2->file, &data->image->width, &data->image->height);
+	data->map->door_2->addr = mlx_get_data_addr(data->map->door_2->mlx_img, &data->map->door_2->bpp, &data->map->door_2->line_length, &data->map->door_2->endian);
+	data->map->door_3->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_3->file, &data->image->width, &data->image->height);
+	data->map->door_3->addr = mlx_get_data_addr(data->map->door_3->mlx_img, &data->map->door_3->bpp, &data->map->door_3->line_length, &data->map->door_3->endian);
 }
 
 void mlx_starter(t_data *data)
@@ -66,7 +72,7 @@ int vectors(void *param)
 	int x = 0;
 	int jump = set_jump(data);
 	int side;
-
+	
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 

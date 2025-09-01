@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 11:53:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:56:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 
 int handle_keypress(int keysym, t_data *data)
 {
-    if (keysym == XK_Escape)
+	if (keysym == XK_Escape)
 		ft_clear(data);
 	if (keysym == XK_w)
-        data->player->key_states[0] = 1;
-    if (keysym == XK_s)
-        data->player->key_states[1] = 1;
-    if (keysym == XK_d)
-        data->player->key_states[2] = 1;
-    if (keysym == XK_a)
-        data->player->key_states[3] = 1;
-    if (keysym == XK_Shift_L)
-        data->player->key_states[4] = 1;
-    if (keysym == XK_space)
-        data->player->key_states[5] = 1;
-    return (0);
+		data->player->key_states[0] = 1;
+	if (keysym == XK_s)
+		data->player->key_states[1] = 1;
+	if (keysym == XK_d)
+		data->player->key_states[2] = 1;
+	if (keysym == XK_a)
+		data->player->key_states[3] = 1;
+	if (keysym == XK_Shift_L)
+		data->player->key_states[4] = 1;
+	if (keysym == XK_space)
+		data->player->key_states[5] = 1;
+	if (keysym == XK_e)
+		data->player->key_states[6] = 1;
+	return (0);
 }
 
 int set_jump(t_data *data)
@@ -128,17 +130,19 @@ void    movement_handler(t_data *data)
 
 int	handle_btnrelease(int keysym, t_data *data)
 {
-    if (keysym == XK_w)
-        data->player->key_states[0] = 0;
-    else if (keysym == XK_s)
-        data->player->key_states[1] = 0;
-    else if (keysym == XK_d)
-        data->player->key_states[2] = 0;
-    else if (keysym == XK_a)
-        data->player->key_states[3] = 0;
-    if (keysym == XK_Shift_L)
-        data->player->key_states[4] = 0;
-    if (keysym == XK_space)
-        data->player->key_states[5] = 0;
-    return (0);
+	if (keysym == XK_w)
+		data->player->key_states[0] = 0;
+	else if (keysym == XK_s)
+		data->player->key_states[1] = 0;
+	else if (keysym == XK_d)
+		data->player->key_states[2] = 0;
+	else if (keysym == XK_a)
+		data->player->key_states[3] = 0;
+	if (keysym == XK_Shift_L)
+		data->player->key_states[4] = 0;
+	if (keysym == XK_space)
+		data->player->key_states[5] = 0;
+	if (keysym == XK_e)
+		data->player->key_states[6] = 0;
+	return (0);
 }

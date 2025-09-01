@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 12:30:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:35:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ int	texture_help(t_data *data, char *str)
 		data->map->east->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "D ", 2) == 0)
 		data->map->door->file = ft_strndup(str, 2);
+	else if (ft_strncmp(str, "D1 ", 3) == 0)
+		data->map->door_1->file = ft_strndup(str, 3);
+	else if (ft_strncmp(str, "D2 ", 3) == 0)
+		data->map->door_2->file = ft_strndup(str, 3);
+	else if (ft_strncmp(str, "D3 ", 3) == 0)
+		data->map->door_3->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "F ", 2) == 0)
 		data->map->floor = rgb(str + 2);
 	else if (ft_strncmp(str, "C ", 2) == 0)
@@ -74,7 +80,7 @@ int	check_flag(int *flags)
 	ssize_t	i;
 
 	i = 0;
-	while (i < 7)
+	while (i < 10)
 	{
 		if (flags[i] != 1)
 			return (1);

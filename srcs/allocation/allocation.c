@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 12:28:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:03:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ int	ft_clear(t_data *data)
 	free_img(data->mlx_ptr, data->map->east);
 	free_img(data->mlx_ptr, data->map->west);
 	free_img(data->mlx_ptr, data->map->door);
+	free_img(data->mlx_ptr, data->map->door_1);
+	free_img(data->mlx_ptr, data->map->door_2);
+	free_img(data->mlx_ptr, data->map->door_3);
 	free_img(data->mlx_ptr, data->image);
 	free_map(data->map);
 	if(data->player)

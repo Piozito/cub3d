@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 14:12:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:35:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	flag(int *flags)
 	ssize_t	i;
 
 	i = 0;
-	while (i < 7)
+	while (i < 10)
 		flags[i++] = 0;
 }
 
@@ -26,7 +26,7 @@ int	get_textures(t_data *data, char **argv)
 	char	*str;
 	char	**map;
 	ssize_t	i;
-	int		flags[7];
+	int		flags[10];
 	int		help;
 
 	i = 0;
@@ -120,6 +120,9 @@ void init_data_structs(t_data *data, char *file)
 	data->map->east = prep_img();
 	data->map->west = prep_img();
 	data->map->door = prep_img();
+	data->map->door_1 = prep_img();
+	data->map->door_2 = prep_img();
+	data->map->door_3 = prep_img();
 
 	data->map->celling = 0;
 	data->map->floor = 0;
@@ -138,7 +141,7 @@ void init_data_structs(t_data *data, char *file)
 
 int	check_attribute(char *str)
 {
-	char	*attr[8];
+	char	*attr[11];
 	ssize_t	i;
 
 	i = 0;
@@ -149,14 +152,17 @@ int	check_attribute(char *str)
 	attr[4] = "F ";
 	attr[5] = "C ";
 	attr[6] = "D ";
-	attr[7] = NULL;
+	attr[7] = "D1 ";
+	attr[8] = "D2 ";
+	attr[9] = "D3 ";
+	attr[10] = NULL;
 	while (attr[i])
 	{
 		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
 			break ;
 		i++;
 	}
-	if (i < 7)
+	if (i < 10)
 		return (i);
 	else
 		return (-1);

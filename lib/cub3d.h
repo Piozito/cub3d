@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 14:28:08 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:38:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # include "./minilibx-linux/mlx.h"
 
 # define NUM_TEXTURES 4
-# define WINDOW_WIDTH 1920
+# define WINDOW_WIDTH 1920 
 # define WINDOW_HEIGHT 1080
-# define TEXTURE_SIZE 64
+# define TEXTURE_SIZE 256
 
 #define WLK_SPEED 0.075
 #define ROT_SPEED 0.00025
@@ -56,6 +56,9 @@ typedef struct s_map
 	t_im		*east;
 	t_im		*west;
 	t_im		*door;
+	t_im		*door_1;
+	t_im		*door_2;
+	t_im		*door_3;
 	int			celling;
 	int			floor;
 	int			spawn[2];
@@ -91,7 +94,7 @@ typedef struct s_player
 	int			tex_x;
 	int			tex_y;
 	double			wall_x;
-	int			key_states[6];
+	int			key_states[7];
 }				t_player;
 
 //key_states[0] W
@@ -100,6 +103,7 @@ typedef struct s_player
 //key_states[3] A
 //key_states[4] Shift
 //key_states[5] Space
+//key_states[6] E
 
 
 typedef struct s_data
