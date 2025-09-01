@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/08/27 13:06:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:23:55 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,75 +49,62 @@ void mlx_starter(t_data *data)
 	tex_initialiser(data);
 }
 
-void waller(t_data *data, int x, int y, int side, int tex_y, int tex_x)
-{
-	int	 color;
-	t_im	*texture;
 
+
+static t_im	*get_texture(t_data *data, int side)
+{
 	if (side == 0 && data->player->ray_dir_x > 0)
-		texture = data->map->east;
-	else if (side == 0 && data->player->ray_dir_x < 0)
-		texture = data->map->west;
-	else if (side == 1 && data->player->ray_dir_y > 0)
-		texture = data->map->south;
-	else
-		texture = data->map->north;
-
-	char *tex_addr = texture->addr + (tex_y * texture->line_length + tex_x * (texture->bpp / 8));
-	color = *(int *)tex_addr;
-	if (color == -16777216)
-	{
-		while (y < data->player->draw_start || y > data->player->draw_end)
-		{
-			if (y < data->player->draw_start)
-				my_mlx_pixel_put(data->image, x, y, data->map->celling);
-			else if (y > data->player->draw_end)
-				my_mlx_pixel_put(data->image, x, y, data->map->floor);
-		}
-	}
-	else
-		my_mlx_pixel_put(data->image, x, y, color);
+		return (data->map->east);
+	if (side == 0 && data->player->ray_dir_x < 0)
+		return (data->map->west);
+	if (side == 1 && data->player->ray_dir_y > 0)
+		return (data->map->south);
+	return (data->map->north);
 }
 
-void wallberg(t_data *data, int x, int y, int tex_y, int tex_x)
+void	draw_column(t_data *data, int x, int tex_x, int side, int hit, int jump)
 {
-	int	 color;
+	double	step;
+	double	tex_pos;
+	int		y;
+	int		tex_y;
+	int		color;
 	t_im	*texture;
+	char	*tex_addr;
 
-	texture = data->map->door;
-	char *tex_addr = texture->addr + (tex_y * texture->line_length + tex_x * (texture->bpp / 8));
-	color = *(int *)tex_addr;
-	if (color == -16777216)
+	step = (double)TEXTURE_SIZE / data->player->line_height;
+	tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2
+			+ data->player->line_height / 2 - (jump / data->player->perp_wall_dist)) * step;
+	y = 0;
+	while (y < data->player->draw_start)
 	{
-		return;
+		my_mlx_pixel_put(data->image, x, y, data->map->celling);
+		y++;
 	}
-	else
-		my_mlx_pixel_put(data->image, x, y, color);
-}
-
-void do_y(t_data *data, int x, int tex_x, int side, int hit, int jump)
-{
-	double step = (double)TEXTURE_SIZE / data->player->line_height;
-	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2 - (jump / data->player->perp_wall_dist)) * step;
-	int tex_y;
-	int y = 0;
+	while (y <= data->player->draw_end && y < WINDOW_HEIGHT)
+	{
+		tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= TEXTURE_SIZE)
+			tex_y = TEXTURE_SIZE - 1;
+		if (hit == 2)
+			texture = data->map->door;
+		else
+			texture = get_texture(data, side);
+		tex_addr = texture->addr + (tex_y * texture->line_length
+				+ tex_x * (texture->bpp / 8));
+		color = *(int *)tex_addr;
+		if (color != -16777216)
+		{
+			my_mlx_pixel_put(data->image, x, y, color);
+		}
+		tex_pos += step;
+		y++;
+	}
 	while (y < WINDOW_HEIGHT)
 	{
-		if (y < data->player->draw_start)
-			my_mlx_pixel_put(data->image, x, y, data->map->celling);
-		else if (y > data->player->draw_end)
-			my_mlx_pixel_put(data->image, x, y, data->map->floor);
-		else if (y >= data->player->draw_start && y <= data->player->draw_end)
-		{
-			tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
-			if (tex_y < 0) tex_y = 0;
-			if (tex_y >= TEXTURE_SIZE) tex_y = TEXTURE_SIZE - 1;
-			if(hit != 2)
-				waller(data, x, y, side, tex_y, tex_x);
-			if (hit == 2)
-				wallberg(data, x, y, tex_y, tex_x);
-			tex_pos += step;
-		}
+		my_mlx_pixel_put(data->image, x, y, data->map->floor);
 		y++;
 	}
 }
@@ -165,7 +152,7 @@ void do_door(t_data *data, int x, int map_x, int map_y, int side, int jump)
 		if (data->player->draw_end >= WINDOW_HEIGHT)
 			data->player->draw_end = WINDOW_HEIGHT - 1;
 
-		do_y(data, x, tex_x, side, 2, jump);
+		draw_column(data, x, tex_x, side, 2, jump);
 	}
 }
 
@@ -278,7 +265,7 @@ int vectors(void *param)
 		if (data->player->draw_end >= WINDOW_HEIGHT)
 			data->player->draw_end = WINDOW_HEIGHT - 1;
 
-		do_y(data, x, tex_x, side, hit, jump);
+		draw_column(data, x, tex_x, side, hit, jump);
 		if (flag == 1)
 			do_door(data, door[0], door[1], door[2], door[3], jump);
 		x++;
