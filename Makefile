@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/08/27 12:16:47 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/09/01 13:05:28 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = cub3d
 SOURCES = \
 	srcs/main.c srcs/utils/utils.c srcs/utils/utils2.c srcs/parsing/parsing.c \
 	srcs/parsing/parsing_help.c srcs/parsing/parsing_help2.c srcs/graphics/raycast.c \
-	srcs/minimap/minimap.c srcs/player/signals.c srcs/allocation/allocation.c
+	srcs/minimap/minimap.c srcs/player/signals.c srcs/allocation/allocation.c \
+	srcs/graphics/raycast_help.c
 OBJECTS = $(SOURCES:.c=.o)
 MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux

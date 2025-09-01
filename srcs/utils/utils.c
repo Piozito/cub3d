@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/26 16:59:36 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:48:21 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	ft_debug(t_data *data)
 	ssize_t	i;
 
 	i = 0;
-	if (data->map->north->addr)
-		printf("North: %s\n", data->map->north->addr);
-	if (data->map->south->addr)
-		printf("South: %s\n", data->map->south->addr);
-	if (data->map->west->addr)
-		printf("West: %s\n", data->map->west->addr);
-	if (data->map->east->addr)
-		printf("East: %s\n", data->map->east->addr);
-	if (data->map->door)
-		printf("Door: %s\n", data->map->door->addr);
+	if (data->map->north->file)
+		printf("North: %s\n", data->map->north->file);
+	if (data->map->south->file)
+		printf("South: %s\n", data->map->south->file);
+	if (data->map->west->file)
+		printf("West: %s\n", data->map->west->file);
+	if (data->map->east->file)
+		printf("East: %s\n", data->map->east->file);
+	if (data->map->door->file)
+		printf("Door: %s\n", data->map->door->file);
 	if (data->map->floor)
 		printf("Floor: %d\n", data->map->floor);
 	if (data->map->celling)

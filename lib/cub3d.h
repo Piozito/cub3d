@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 13:06:21 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:28:08 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@
 # include "./libft/libft.h"
 # include "./minilibx-linux/mlx.h"
 
-# define NORTH "../textures/north"
-# define SOUTH "../textures/south"
-# define EAST "../textures/east"
-# define WEST "../textures/west"
 # define NUM_TEXTURES 4
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
@@ -49,7 +45,7 @@ typedef struct s_im
 	void		*ground;
 	int			line_length;
 	int			endian;
-
+	char		*file;
 }				t_im;
 
 typedef struct s_map
@@ -153,5 +149,13 @@ int		set_jump(t_data *data);
 void	movement_handler(t_data *data);
 
 void my_mlx_pixel_put(t_im *img, int x, int y, int color);
+
+double get_wall_x(t_data *data, int side);
+void helper(t_data *data);
+int set_side(t_data *data);
+void do_y(t_data *data, int x, int *column_drawn);
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x);
+int get_texel_color(t_im *texture, int tex_x, int tex_y);
+t_im *get_wall_texture(t_data *data, int side);
 
 #endif

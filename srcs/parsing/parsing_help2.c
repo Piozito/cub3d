@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 12:52:29 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:30:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ void	map_setter(t_data *data, ssize_t j, char **map)
 int	texture_help(t_data *data, char *str)
 {
 	if (ft_strncmp(str, "NO ", 3) == 0)
-		data->map->north->addr = ft_strndup(str, 3);
+		data->map->north->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "SO ", 3) == 0)
-		data->map->south->addr = ft_strndup(str, 3);
+		data->map->south->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "WE ", 3) == 0)
-		data->map->west->addr = ft_strndup(str, 3);
+		data->map->west->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "EA ", 3) == 0)
-		data->map->east->addr = ft_strndup(str, 3);
+		data->map->east->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "D ", 2) == 0)
-		data->map->door->addr = ft_strndup(str, 2);
+		data->map->door->file = ft_strndup(str, 2);
 	else if (ft_strncmp(str, "F ", 2) == 0)
 		data->map->floor = rgb(str + 2);
 	else if (ft_strncmp(str, "C ", 2) == 0)

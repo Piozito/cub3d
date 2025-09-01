@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 13:06:10 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:28:26 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 void	free_img(void *mlx, t_im *im)
 {
-	if (im->mlx_img)
-		mlx_destroy_image(mlx, im->mlx_img);
-	free(im);
+	if(im)
+	{
+		if (im->file)
+			free(im->file);
+		if (im->mlx_img)
+			mlx_destroy_image(mlx, im->mlx_img);
+		free(im);
+	}
 }
 
 void	free_map(t_map *map)
@@ -47,7 +52,6 @@ int	ft_clear(t_data *data)
 	free_img(data->mlx_ptr, data->map->west);
 	free_img(data->mlx_ptr, data->map->door);
 	free_img(data->mlx_ptr, data->image);
-	mlx_destroy_image(data->mlx_ptr, data->img_ptr);
 	free_map(data->map);
 	if(data->player)
 		free(data->player);

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/27 13:06:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:12:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_im *prep_img()
 	im->bpp = 0;
 	im->line_length = 0;
 	im->endian = 0;
+	im->file = NULL;
 	return(im);
 }
 
@@ -74,6 +75,7 @@ void init_data_structs(t_data *data, char *file)
 	data->image->bpp = 0;
 	data->image->line_length = 0;
 	data->image->endian = 0;
+	data->image->file = NULL;
 
 	data->player = malloc(sizeof(t_player));
 	data->player->pos_x = 0.0;

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/18 17:37:10 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:12:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,15 @@ int	flood(t_data *data)
 {
 	char	**visited;
 	int		i;
-	int		len;
 
 	i = 0;
-	len = get_biggest_line(data->map->map);
+	data->map->map_lenght = get_biggest_line(data->map->map);
 	visited = ft_calloc(data->map->map_height + 1, sizeof(char *));
 	if (!visited)
 		return (1);
 	while (i < data->map->map_height)
 	{
-		visited[i] = (char *)ft_calloc(len + 1, sizeof(char));
+		visited[i] = (char *)ft_calloc(data->map->map_lenght + 1, sizeof(char));
 		if (!visited[i])
 			return (1);
 		i++;

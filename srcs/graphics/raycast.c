@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/01 12:23:55 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:26:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,263 +14,141 @@
 
 void my_mlx_pixel_put(t_im *img, int x, int y, int color)
 {
-	char	*dst;
-
+	char *dst;
 	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
 	*(int *)dst = color;
 }
 
 void tex_initialiser(t_data *data)
 {
-	data->map->east->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->east->addr, &data->image->width, &data->image->height);
-	free(data->map->east->addr);
+	data->map->east->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->east->file, &data->image->width, &data->image->height);
 	data->map->east->addr = mlx_get_data_addr(data->map->east->mlx_img, &data->map->east->bpp, &data->map->east->line_length, &data->map->east->endian);
-	data->map->north->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->north->addr, &data->image->width, &data->image->height);
-	free(data->map->north->addr);
+	data->map->north->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->north->file, &data->image->width, &data->image->height);
 	data->map->north->addr = mlx_get_data_addr(data->map->north->mlx_img, &data->map->north->bpp, &data->map->north->line_length, &data->map->north->endian);
-	data->map->south->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->south->addr, &data->image->width, &data->image->height);
-	free(data->map->south->addr);
+	data->map->south->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->south->file, &data->image->width, &data->image->height);
 	data->map->south->addr = mlx_get_data_addr(data->map->south->mlx_img, &data->map->south->bpp, &data->map->south->line_length, &data->map->south->endian);
-	data->map->west->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->west->addr, &data->image->width, &data->image->height);
-	free(data->map->west->addr);
+	data->map->west->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->west->file, &data->image->width, &data->image->height);
 	data->map->west->addr = mlx_get_data_addr(data->map->west->mlx_img, &data->map->west->bpp, &data->map->west->line_length, &data->map->west->endian);
-	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->addr, &data->image->width, &data->image->height);
-	free(data->map->door->addr);
+	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->file, &data->image->width, &data->image->height);
 	data->map->door->addr = mlx_get_data_addr(data->map->door->mlx_img, &data->map->door->bpp, &data->map->door->line_length, &data->map->door->endian);
 }
 
 void mlx_starter(t_data *data)
 {
 	data->mlx_ptr = mlx_init();
-	data->window_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D");
-	data->img_ptr = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->window_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D - Made by fragarc2 and aaleixo-");
 	data->image->mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data->image->addr = mlx_get_data_addr(data->image->mlx_img, &data->image->bpp, &data->image->line_length, &data->image->endian);
 	tex_initialiser(data);
 }
 
+int get_texel_color(t_im *texture, int tex_x, int tex_y)
+{
+	char *tex_addr = texture->addr + (tex_y * texture->line_length + tex_x * (texture->bpp / 8));
+	return *(int *)tex_addr;
+}
 
-
-static t_im	*get_texture(t_data *data, int side)
+t_im *get_wall_texture(t_data *data, int side)
 {
 	if (side == 0 && data->player->ray_dir_x > 0)
-		return (data->map->east);
-	if (side == 0 && data->player->ray_dir_x < 0)
-		return (data->map->west);
-	if (side == 1 && data->player->ray_dir_y > 0)
-		return (data->map->south);
-	return (data->map->north);
-}
-
-void	draw_column(t_data *data, int x, int tex_x, int side, int hit, int jump)
-{
-	double	step;
-	double	tex_pos;
-	int		y;
-	int		tex_y;
-	int		color;
-	t_im	*texture;
-	char	*tex_addr;
-
-	step = (double)TEXTURE_SIZE / data->player->line_height;
-	tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2
-			+ data->player->line_height / 2 - (jump / data->player->perp_wall_dist)) * step;
-	y = 0;
-	while (y < data->player->draw_start)
-	{
-		my_mlx_pixel_put(data->image, x, y, data->map->celling);
-		y++;
-	}
-	while (y <= data->player->draw_end && y < WINDOW_HEIGHT)
-	{
-		tex_y = (int)tex_pos & (TEXTURE_SIZE - 1);
-		if (tex_y < 0)
-			tex_y = 0;
-		if (tex_y >= TEXTURE_SIZE)
-			tex_y = TEXTURE_SIZE - 1;
-		if (hit == 2)
-			texture = data->map->door;
-		else
-			texture = get_texture(data, side);
-		tex_addr = texture->addr + (tex_y * texture->line_length
-				+ tex_x * (texture->bpp / 8));
-		color = *(int *)tex_addr;
-		if (color != -16777216)
-		{
-			my_mlx_pixel_put(data->image, x, y, color);
-		}
-		tex_pos += step;
-		y++;
-	}
-	while (y < WINDOW_HEIGHT)
-	{
-		my_mlx_pixel_put(data->image, x, y, data->map->floor);
-		y++;
-	}
-}
-
-void do_door(t_data *data, int x, int map_x, int map_y, int side, int jump)
-{
-	double door_x;
-	int tex_x;
-	if (data->map->map[map_y][map_x] == '2')
-	{
-		if (side == 0 && data->player->ray_dir_x > 0)
-			data->player->perp_wall_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
-		else if(side == 0)
-			data->player->perp_wall_dist = fabs(((map_x) - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
-		else if(data->player->ray_dir_y > 0)
-			data->player->perp_wall_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
-		else
-			data->player->perp_wall_dist = fabs(((map_y) - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
-		if (side == 0)
-			door_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
-		else
-			door_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
-
-		door_x -= floor(door_x + 1e-6);
-		if (door_x < 0)
-			door_x += 1.0;
-		else if (door_x >= 1)
-			door_x -= 1.0;
-
-		tex_x = (int)(door_x * (double)TEXTURE_SIZE);
-		if (tex_x < 0)
-			tex_x = 0;
-		if (tex_x >= TEXTURE_SIZE)
-			tex_x = TEXTURE_SIZE - 1;
-
-		if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
-			tex_x = TEXTURE_SIZE - tex_x - 1;
-
-		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
-		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
-		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) - 1 + (jump / data->player->perp_wall_dist);
-
-		if (data->player->draw_start < 0)
-			data->player->draw_start = 0;
-		if (data->player->draw_end >= WINDOW_HEIGHT)
-			data->player->draw_end = WINDOW_HEIGHT - 1;
-
-		draw_column(data, x, tex_x, side, 2, jump);
-	}
+		return data->map->east;
+	else if (side == 0 && data->player->ray_dir_x < 0)
+		return data->map->west;
+	else if (side == 1 && data->player->ray_dir_y > 0)
+		return data->map->south;
+	else
+		return data->map->north;
 }
 
 int vectors(void *param)
 {
 	t_data *data = (t_data *)param;
-	int hit = 0;
-	int side = 0;
 	int x = 0;
-	int map_x;
-	int map_y;
-	int flag = 0;
-	int door[5];
 	int jump = set_jump(data);
+	int side;
 
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 	while (x < WINDOW_WIDTH)
 	{
-		hit = 0;
+		int column_drawn[WINDOW_HEIGHT] = {0};
+		int i = 0;
+
 		data->player->camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
-		data->player->ray_dir_x = data->player->dir_x + data->player->plane_x * data->player->camera_x;
-		data->player->ray_dir_y = data->player->dir_y + data->player->plane_y * data->player->camera_x;
+		helper(data);
+		while (i < TEXTURE_SIZE)
+		{
+			side = set_side(data);
 
-		map_x = (int)data->player->pos_x;
-		map_y = (int)data->player->pos_y;
+			if (data->map->map[data->player->map_y][data->player->map_x] != '1' && data->map->map[data->player->map_y][data->player->map_x] != '2')
+				continue;
 
-		data->player->delta_dist_x = fabs(1 / data->player->ray_dir_x);
-		data->player->delta_dist_y = fabs(1 / data->player->ray_dir_y);
-
-		if (data->player->ray_dir_x < 0)
-		{
-			data->player->step_x = -1;
-			data->player->side_dist_x = (data->player->pos_x - map_x) * data->player->delta_dist_x;
-		}
-		else
-		{
-			data->player->step_x = 1;
-			data->player->side_dist_x = (map_x + 1.0 - data->player->pos_x) * data->player->delta_dist_x;
-		}
-		if (data->player->ray_dir_y < 0)
-		{
-			data->player->step_y = -1;
-			data->player->side_dist_y = (data->player->pos_y - map_y) * data->player->delta_dist_y;
-		}
-		else
-		{
-			data->player->step_y = 1;
-			data->player->side_dist_y = (map_y + 1.0 - data->player->pos_y) * data->player->delta_dist_y;
-		}
-
-		while (hit == 0)
-		{
-			if (data->player->side_dist_x < data->player->side_dist_y)
-			{
-				data->player->side_dist_x += data->player->delta_dist_x;
-				map_x += data->player->step_x;
-				side = 0;
-			}
+			if (side == 0)
+				data->player->perp_wall_dist = fabs((data->player->map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
 			else
-			{
-				data->player->side_dist_y += data->player->delta_dist_y;
-				map_y += data->player->step_y;
-				side = 1;
-			}
-			if (data->map->map[map_y][map_x] == '2')
-			{
-				door[0] = x;
-				door[1] = map_x;
-				door[2] = map_y;
-				door[3] = side;
-				flag = 1;
-			}
-			if (data->map->map[map_y][map_x] == '1')
-				hit = 1;
+				data->player->perp_wall_dist = fabs((data->player->map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
+			if (data->player->perp_wall_dist < 0.01)
+				data->player->perp_wall_dist = 0.01;
+			data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
+			data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2 + (jump / data->player->perp_wall_dist);
+			data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2 + (jump / data->player->perp_wall_dist);
+			if (data->player->draw_start < 0) data->player->draw_start = 0;
+			if (data->player->draw_end > WINDOW_HEIGHT) data->player->draw_end = WINDOW_HEIGHT -1;
+
+			
+			int tex_x = (int)(get_wall_x(data, side) * (double)TEXTURE_SIZE);
+			if (tex_x < 0)
+				tex_x = 0;
+			if (tex_x >= TEXTURE_SIZE)
+				tex_x = TEXTURE_SIZE - 1;
+			if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
+				tex_x = TEXTURE_SIZE - tex_x - 1;
+			draw_texture(data, side, column_drawn, tex_x, x);
+			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
+				break;
+			i++;
 		}
-
-		if (side == 0)
-			data->player->perp_wall_dist = fabs((map_x - data->player->pos_x + (1 - data->player->step_x) / 2) / data->player->ray_dir_x);
-		else
-			data->player->perp_wall_dist = fabs((map_y - data->player->pos_y + (1 - data->player->step_y) / 2) / data->player->ray_dir_y);
-
-		if (side == 0)
-			data->player->wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
-		else
-			data->player->wall_x = data->player->pos_x + data->player->perp_wall_dist * data->player->ray_dir_x;
-
-		data->player->wall_x -= floor(data->player->wall_x + 1e-6);
-		if (data->player->wall_x < 0)
-			data->player->wall_x += 1.0;
-		else if (data->player->wall_x >= 1)
-			data->player->wall_x -= 1.0;
-
-		int tex_x = (int)(data->player->wall_x * (double)TEXTURE_SIZE);
-		if (tex_x < 0)
-			tex_x = 0;
-		if (tex_x >= TEXTURE_SIZE)
-			tex_x = TEXTURE_SIZE - 1;
-
-		if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
-			tex_x = TEXTURE_SIZE - tex_x - 1;
-
-		data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
-		data->player->draw_start = (-data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
-		data->player->draw_end = (data->player->line_height / 2 + WINDOW_HEIGHT / 2) + (jump / data->player->perp_wall_dist);
-
-		if (data->player->draw_start < 0)
-			data->player->draw_start = 0;
-		if (data->player->draw_end >= WINDOW_HEIGHT)
-			data->player->draw_end = WINDOW_HEIGHT - 1;
-
-		draw_column(data, x, tex_x, side, hit, jump);
-		if (flag == 1)
-			do_door(data, door[0], door[1], door[2], door[3], jump);
+		do_y(data, x, column_drawn);
 		x++;
 	}
 	draw_minimap(data);
 	mlx_put_image_to_window(data->mlx_ptr, data->window_ptr, data->image->mlx_img, 0, 0);
 	return 0;
+}
+
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x)
+{
+	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
+	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
+	t_im *texture = NULL;
+	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
+		texture = get_wall_texture(data, side);
+	else
+		texture = data->map->door;
+	for (int y = data->player->draw_start; y < data->player->draw_end; y++)
+	{
+	    if (y < 0 || y >= WINDOW_HEIGHT)
+	    {
+	        tex_pos += step;
+	        continue;
+	    }
+	    if (column_drawn[y])
+	    {
+	        tex_pos += step;
+	        continue;
+	    }
+	    int tex_y = (int)tex_pos;
+	    if (tex_y < 0) tex_y = 0;
+	    if (tex_y >= TEXTURE_SIZE) tex_y = TEXTURE_SIZE - 1;
+	    int color = get_texel_color(texture, tex_x, tex_y);
+	    if (data->map->map[data->player->map_y][data->player->map_x] == '2' && color == -16777216)
+	    {
+	        tex_pos += step;
+	        continue;
+	    }
+	    my_mlx_pixel_put(data->image, x, y, color);
+	    column_drawn[y] = 1;
+	    tex_pos += step;
+	}
 }
