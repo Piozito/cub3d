@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/01 14:56:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 16:58:25 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,47 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->north;
 }
 
+int door(t_data *data)
+{
+	static int door = 100;
+	static int flag = 1;
+	static int key = 0;
+	if(data->player->key_states[6] == 1)
+		key = 1;
+	if(flag == 0 && key == 1)
+	{
+		if(door < 100)
+			door+= 2;
+		if(door == 100)
+		{
+			key = 0;
+			flag = 1;
+		}
+	}
+	if(flag == 1 && key == 1)
+	{
+		if(door > 10)
+			door-= 2;
+		if(door == 10)
+		{
+			key = 0;
+			flag = 0;
+		}
+	}
+	return door;
+}
+
 int vectors(void *param)
 {
 	t_data *data = (t_data *)param;
 	int x = 0;
 	int jump = set_jump(data);
 	int side;
-	
+	int z = 0;
+
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	z = door(data);
 
 	while (x < WINDOW_WIDTH)
 	{
@@ -102,7 +134,7 @@ int vectors(void *param)
 			if (data->player->draw_start < 0) data->player->draw_start = 0;
 			if (data->player->draw_end > WINDOW_HEIGHT) data->player->draw_end = WINDOW_HEIGHT -1;
 
-			
+
 			int tex_x = (int)(get_wall_x(data, side) * (double)TEXTURE_SIZE);
 			if (tex_x < 0)
 				tex_x = 0;
@@ -110,7 +142,8 @@ int vectors(void *param)
 				tex_x = TEXTURE_SIZE - 1;
 			if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 				tex_x = TEXTURE_SIZE - tex_x - 1;
-			draw_texture(data, side, column_drawn, tex_x, x);
+			printf("%d \n", z);
+			draw_texture(data, side, column_drawn, tex_x, x, z);
 			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 				break;
 			i++;
@@ -123,15 +156,21 @@ int vectors(void *param)
 	return 0;
 }
 
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x)
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, int z)
 {
 	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
 	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
 	t_im *texture = NULL;
 	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 		texture = get_wall_texture(data, side);
-	else
+	else if (z > 75)
 		texture = data->map->door;
+	else if (z > 50)
+		texture = data->map->door_1;
+	else if (z > 25)
+		texture = data->map->door_2;
+	else if (z > 0)
+		texture = data->map->door_3;
 	for (int y = data->player->draw_start; y < data->player->draw_end; y++)
 	{
 	    if (y < 0 || y >= WINDOW_HEIGHT)

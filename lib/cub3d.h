@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 15:38:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/01 16:21:35 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "./minilibx-linux/mlx.h"
 
 # define NUM_TEXTURES 4
-# define WINDOW_WIDTH 1920 
+# define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define TEXTURE_SIZE 256
 
@@ -158,7 +158,7 @@ double get_wall_x(t_data *data, int side);
 void helper(t_data *data);
 int set_side(t_data *data);
 void do_y(t_data *data, int x, int *column_drawn);
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x);
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, int z);
 int get_texel_color(t_im *texture, int tex_x, int tex_y);
 t_im *get_wall_texture(t_data *data, int side);
 
