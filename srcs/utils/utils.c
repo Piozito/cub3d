@@ -92,8 +92,6 @@ char	*ft_strndup(char *s, int n)
 	i = 0;
 	while (s[i] != '\0')
 		i++;
-	if (i - n < 0)
-		return (NULL);
 	ptr = (char *)malloc((i - n + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);

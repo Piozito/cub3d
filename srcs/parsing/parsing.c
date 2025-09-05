@@ -113,11 +113,9 @@ int	check_next(char **map, int x, int y)
 
 int	check_spaces(char **map)
 {
-	int	i;
 	int	x;
 	int	y;
 
-	i = 0;
 	x = 0;
 	y = 0;
 	while (map[x])

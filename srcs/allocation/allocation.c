@@ -43,9 +43,6 @@ void	free_map(t_map *map)
 
 int	ft_clear(t_data *data)
 {
-	ssize_t	i;
-
-	i = 0;
 	free_img(data->mlx_ptr, data->map->north);
 	free_img(data->mlx_ptr, data->map->south);
 	free_img(data->mlx_ptr, data->map->east);
