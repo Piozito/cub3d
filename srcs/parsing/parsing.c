@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 14:12:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/05 13:38:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,39 @@ int	check_spaces(char **map)
 	return (0);
 }
 
+int check_door(char **map)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(map[i])
+	{
+		j = 0;
+		while(map[i][j])
+		{
+			if(map[i][j] == '2')
+			{
+				if(map[i][j - 1] && map[i][j + 1]
+				&& map[i][j - 1] == '1' && map[i][j + 1] == '1')
+				{
+
+				}
+				else if(map[i - 1][j] && map[i + 1][j]
+				&& map[i - 1][j] == '1' && map[i + 1][j] == '1')
+				{
+					
+				}
+				else	
+					return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	parsing(t_data *data)
 {
 	if (top_and_bottom(data->map->map) == 1)
@@ -146,6 +179,8 @@ int	parsing(t_data *data)
 	if (check_spaces(data->map->map) == 1)
 		return (1);
 	if (flood(data) == 1)
+		return (1);
+	if (check_door(data->map->map) == 1)
 		return (1);
 	return (0);
 }

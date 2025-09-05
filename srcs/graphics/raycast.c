@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/01 16:58:25 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/05 13:55:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ int vectors(void *param)
 				tex_x = TEXTURE_SIZE - 1;
 			if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 				tex_x = TEXTURE_SIZE - tex_x - 1;
-			printf("%d \n", z);
 			draw_texture(data, side, column_drawn, tex_x, x, z);
 			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 				break;
