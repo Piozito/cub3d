@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 15:35:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:27:57 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ int	texture_help(t_data *data, char *str)
 		data->map->celling = rgb(str + 2);
 	else
 		return (1);
-	if(data->map->floor == -1 || data->map->celling == -1)
+	if (data->map->floor == -1 || data->map->celling == -1)
 		return (-1);
-	free(str);
 	return (0);
 }
 
@@ -70,6 +69,7 @@ int	attr_check(t_data *data, char *str, int *flags)
 		flags[attr] = 1;
 		if (texture_help(data, str) == -1)
 			return (1);
+		free(str);
 		return (2);
 	}
 	return (0);

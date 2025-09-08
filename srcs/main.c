@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 15:35:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:07:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,95 +50,6 @@ int	get_textures(t_data *data, char **argv)
 	return (check_flag(flags));
 }
 
-t_im *prep_img()
-{
-	t_im *im;
-
-	im = malloc(sizeof(t_im));
-	im->mlx_img = NULL;
-	im->addr = NULL;
-	im->bpp = 0;
-	im->line_length = 0;
-	im->endian = 0;
-	im->file = NULL;
-	return(im);
-}
-
-void init_data_structs(t_data *data, char *file)
-{
-	data->mlx_ptr = NULL;
-	data->window_ptr = NULL;
-
-	data->image = malloc(sizeof(t_im));
-	data->image->mlx_img = NULL;
-	data->image->addr = NULL;
-	data->image->bpp = 0;
-	data->image->line_length = 0;
-	data->image->endian = 0;
-	data->image->file = NULL;
-
-	data->player = malloc(sizeof(t_player));
-	data->player->pos_x = 0.0;
-	data->player->pos_y = 0.0;
-	data->player->dir_x = 0.0;
-	data->player->dir_y = 0.0;
-	data->player->plane_x = 0.0;
-	data->player->plane_y = 0.0;
-	data->player->ray_dir_x = 0.0;
-	data->player->ray_dir_y = 0.0;
-	data->player->camera_x = 0.0;
-	data->player->angle = 0.0;
-
-	data->player->map_x = 0;
-	data->player->map_y = 0;
-	data->player->delta_dist_x = 0.0;
-	data->player->delta_dist_y = 0.0;
-	data->player->step_x = 0;
-	data->player->step_y = 0;
-	data->player->side_dist_x = 0.0;
-	data->player->side_dist_y = 0.0;
-
-	data->player->perp_wall_dist = 0.0;
-	data->player->wall_x = 0.0;
-	data->player->line_height = 0;
-	data->player->draw_start = 0;
-	data->player->draw_end = 0;
-	data->player->tex_x = 0;
-	data->player->tex_y = 0;
-	data->player->key_states[0] = 0;
-	data->player->key_states[1] = 0;
-	data->player->key_states[2] = 0;
-	data->player->key_states[3] = 0;
-	data->player->key_states[4] = 0;
-	data->player->key_states[5] = 0;
-
-	data->map = malloc(sizeof(t_map));
-	data->map->map = NULL;
-
-	data->map->north = prep_img();
-	data->map->south = prep_img();
-	data->map->east = prep_img();
-	data->map->west = prep_img();
-	data->map->door = prep_img();
-	data->map->door_1 = prep_img();
-	data->map->door_2 = prep_img();
-	data->map->door_3 = prep_img();
-
-	data->map->celling = 0;
-	data->map->floor = 0;
-	data->map->spawn[0] = -1;
-	data->map->spawn[1] = -1;
-	data->map->map_height = 0;
-	data->map->map_lenght = 0;
-	data->map->fd = open(file, O_RDONLY);
-	if (data->map->fd <= 0)
-	{
-		printf("Error\nInvalid map.\n");
-		ft_clear(data);
-	}
-}
-
-
 int	check_attribute(char *str)
 {
 	char	*attr[11];
@@ -168,6 +79,18 @@ int	check_attribute(char *str)
 		return (-1);
 }
 
+void	set_hooks(t_data *data)
+{
+	mlx_starter(data);
+	//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+	mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
+	mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask, &camera_handler, data->player);
+	mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);
+	mlx_hook(data->window_ptr, KeyRelease, KeyReleaseMask,
+		&handle_btnrelease, data);
+	mlx_loop_hook(data->mlx_ptr, vectors, data);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -183,25 +106,13 @@ int	main(int argc, char **argv)
 			ft_debug(data);
 			ft_clear(data);
 		}
-		data->player->pos_x = data->map->spawn[1] + 0.5;
-		data->player->pos_y = data->map->spawn[0] + 0.5;
 		ft_debug(data);
-		mlx_starter(data);
-		//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
-		mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
-		mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask, &camera_handler, data->player);
-		mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);
-		mlx_hook(data->window_ptr, KeyRelease, KeyReleaseMask,
-			&handle_btnrelease, data);
-		mlx_loop_hook(data->mlx_ptr, vectors, data);
+		set_hooks(data);
 		mlx_loop(data->mlx_ptr);
 		ft_clear(data);
+		return (0);
 	}
 	else
-	{
 		printf("Error\nIncorrect amount of arguments.\n");
-		return (1);
-	}
-	return (0);
+	return (1);
 }
-

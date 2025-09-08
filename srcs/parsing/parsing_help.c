@@ -6,29 +6,11 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:57:09 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/08/19 12:57:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:16:41 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
-
-void	floodfill(t_data *data, char **visited, int x, int y)
-{
-	if (x < 0 || y < 0 || x >= data->map->map_height
-		|| y >= (int)get_biggest_line(data->map->map)
-		|| data->map->map[x][y] == '1' || visited[x][y])
-		return ;
-	if (data->map->map[x][y] == ' ' || data->map->map[x][y] == '\t')
-	{
-		visited[x][y] = '2';
-		return ;
-	}
-	visited[x][y] = '1';
-	floodfill(data, visited, x + 1, y);
-	floodfill(data, visited, x - 1, y);
-	floodfill(data, visited, x, y + 1);
-	floodfill(data, visited, x, y - 1);
-}
 
 void	update_first_last(char *line, char *first, char *last, size_t len)
 {
@@ -73,6 +55,35 @@ int	top_and_bottom(char **map)
 	return (ret);
 }
 
+void	set_spawn(t_data *data, char **map, int i, int j)
+{
+	if (map[i][j] == 'N')
+	{
+		data->player->dir_y = -1.0;
+		data->player->plane_x = 0.66;
+	}
+	else if (map[i][j] == 'S')
+	{
+		data->player->dir_y = 1.0;
+		data->player->plane_x = -0.66;
+	}
+	else if (map[i][j] == 'W')
+	{
+		data->player->dir_x = 1.0;
+		data->player->plane_y = 0.66;
+	}
+	else if (map[i][j] == 'E')
+	{
+		data->player->dir_x = -1.0;
+		data->player->plane_y = -0.66;
+	}
+	data->player->pos_x = j + 0.5;
+	data->player->pos_y = i + 0.5;
+	map[i][j] = '0';
+	data->map->spawn[0] = i;
+	data->map->spawn[1] = j;
+}
+
 int	find_spawn(t_data *data, char **map)
 {
 	size_t	i;
@@ -84,45 +95,12 @@ int	find_spawn(t_data *data, char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
+			if (map[i][j] == 'N' || map[i][j] == 'S'
+			|| map[i][j] == 'E' || map[i][j] == 'W')
 			{
-			    if (data->map->spawn[0] != -1 || data->map->spawn[1] != -1)
-			        return (1);
-			
-			    if (map[i][j] == 'N')
-			    {
-			        data->player->dir_x = 0.0;
-			        data->player->dir_y = -1.0;
-			        data->player->plane_x = 0.66;
-			        data->player->plane_y = 0.00;
-			    }
-			    else if (map[i][j] == 'S')
-			    {
-			        data->player->dir_x = 0.0;
-			        data->player->dir_y = 1.0;
-			        data->player->plane_x = -0.66;
-			        data->player->plane_y = 0.0;
-			    }
-			    else if (map[i][j] == 'W')
-			    {
-			        data->player->dir_x = 1.0;
-			        data->player->dir_y = 0.0;
-			        data->player->plane_x = 0.0;
-			        data->player->plane_y = 0.66;
-			    }
-			    else if (map[i][j] == 'E')
-			    {
-			        data->player->dir_x = -1.0;
-			        data->player->dir_y = 0.0;
-			        data->player->plane_x = 0.0;
-			        data->player->plane_y = -0.66;
-			    }
-			
-			    data->player->pos_x = j + 0.5;
-			    data->player->pos_y = i + 0.5;
-			    map[i][j] = '0';
-			    data->map->spawn[0] = i;
-			    data->map->spawn[1] = j;
+				if (data->map->spawn[0] != -1 || data->map->spawn[1] != -1)
+					return (1);
+				set_spawn(data, map, i, j);
 			}
 			j++;
 		}

@@ -6,12 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 15:04:40 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:50:57 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
+//delete before delivery
 void	ft_debug(t_data *data)
 {
 	ssize_t	i;
@@ -27,18 +28,15 @@ void	ft_debug(t_data *data)
 		printf("East: %s\n", data->map->east->file);
 	if (data->map->door->file)
 		printf("Door: %s\n", data->map->door->file);
-	if (data->map->door_1->file)
-		printf("Door_1: %s\n", data->map->door_1->file);
-	if (data->map->door_2->file)
-		printf("Door_2: %s\n", data->map->door_2->file);
-	if (data->map->door_1->file)
-		printf("Door_3: %s\n", data->map->door_3->file);
 	if (data->map->floor)
 		printf("Floor: %d\n", data->map->floor);
 	if (data->map->celling)
 		printf("Celling: %d\n", data->map->celling);
 	if (data->map->spawn[0] && data->map->spawn[1])
-		printf("Spawn X: %d\nSpawn Y: %d\n", data->map->spawn[0], data->map->spawn[1]);
+	{
+		printf("Spawn X: %d\n", data->map->spawn[0]);
+		printf("Spawn Y: %d\n", data->map->spawn[1]);
+	}
 	printf("Map:\n");
 	while (data->map->map[i])
 		printf("%s\n", data->map->map[i++]);

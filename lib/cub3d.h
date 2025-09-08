@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 16:21:35 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:06:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 #define WLK_SPEED 0.075
 #define ROT_SPEED 0.00025
 #define JUMP_HEIGHT 250
+
+#define MP_ZOOM 15.0
+#define MP_RDS 75
+#define MP_CTR 120
 
 typedef struct s_im
 {
@@ -141,10 +145,6 @@ size_t		get_biggest_line(char **map);
 ssize_t		get_file_lines(char **argv);
 ssize_t		find_char(const char *str, char c, ssize_t len);
 
-void draw_square(void *mlx_ptr, int x, int y, int size, int color);
-void draw_circle(void *mlx_ptr, int coords, int radius, int color);
-void draw_minimap(t_data *data);
-
 int	handle_keypress(int keysym, t_data *data);
 int	handle_btnrelease(int keysym, t_data *data);
 
@@ -161,5 +161,23 @@ void do_y(t_data *data, int x, int *column_drawn);
 void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, int z);
 int get_texel_color(t_im *texture, int tex_x, int tex_y);
 t_im *get_wall_texture(t_data *data, int side);
+
+int check_door(char **map);
+int	check_next(char **map, int x, int y);
+int	check_spaces(char **map);
+int	line_checker(char *line);
+
+void	draw_circle(void *mlx_ptr, int radius, int color);
+void	draw_help(int *delta, int *step, int *err, int *crds);
+void	draw_line(void *mlx_ptr, int *ends, int color);
+void	circle_help(void *mlx_ptr, int *crds, int color);
+void	draw_cone(t_data *data);
+void	draw_minimap(t_data *data);
+void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color);
+void	draw_circle_outline(void *mlx_ptr, int radius, int color);
+
+void	init_file(t_data *data, char *file);
+void	init_data_structs(t_data *data, char *file);
+t_im	*prep_img(void);
 
 #endif

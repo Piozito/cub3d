@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/05 13:38:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:17:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,6 @@ size_t	get_biggest_line(char **map)
 	return (biggest_line);
 }
 
-int	line_checker(char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	if (line[i] == '\0')
-	{
-		free(line);
-		return (1);
-	}
-	while (line[i])
-	{
-		if (line[i] != '1')
-		{
-			free(line);
-			return (1);
-		}
-		i++;
-	}
-	free(line);
-	return (0);
-}
-
 int	flood(t_data *data)
 {
 	char	**visited;
@@ -100,69 +75,18 @@ int	flood(t_data *data)
 
 int	check_next(char **map, int x, int y)
 {
-	if (map[x + 1][y] && map[x + 1][y] != '0' && map[x + 1][y] != '1' && map[x + 1][y] != '2')
+	if (map[x + 1][y] && map[x + 1][y] != '0'
+	&& map[x + 1][y] != '1' && map[x + 1][y] != '2')
 		return (1);
-	if (map[x - 1][y] && map[x - 1][y] != '0' && map[x - 1][y] != '1' && map[x - 1][y] != '2')
+	if (map[x - 1][y] && map[x - 1][y] != '0'
+	&& map[x - 1][y] != '1' && map[x - 1][y] != '2')
 		return (1);
-	if (map[x][y + 1] && map[x][y + 1] != '0' && map[x][y + 1] != '1' && map[x][y + 1] != '2')
+	if (map[x][y + 1] && map[x][y + 1] != '0'
+	&& map[x][y + 1] != '1' && map[x][y + 1] != '2')
 		return (1);
-	if (map[x][y - 1] && map[x][y - 1] != '0' && map[x][y - 1] != '1' && map[x][y - 1] != '2')
+	if (map[x][y - 1] && map[x][y - 1] != '0'
+	&& map[x][y - 1] != '1' && map[x][y - 1] != '2')
 		return (1);
-	return (0);
-}
-
-int	check_spaces(char **map)
-{
-	int	x;
-	int	y;
-
-	x = 0;
-	y = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == '0' || map[x][y] == '2')
-				if (check_next(map, x, y) == 1)
-					return (1);
-			y++;
-		}
-		x++;
-	}
-	return (0);
-}
-
-int check_door(char **map)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while(map[i])
-	{
-		j = 0;
-		while(map[i][j])
-		{
-			if(map[i][j] == '2')
-			{
-				if(map[i][j - 1] && map[i][j + 1]
-				&& map[i][j - 1] == '1' && map[i][j + 1] == '1')
-				{
-
-				}
-				else if(map[i - 1][j] && map[i + 1][j]
-				&& map[i - 1][j] == '1' && map[i + 1][j] == '1')
-				{
-					
-				}
-				else	
-					return (1);
-			}
-			j++;
-		}
-		i++;
-	}
 	return (0);
 }
 
