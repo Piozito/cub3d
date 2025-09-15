@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 13:06:40 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/15 18:41:58 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,37 +92,37 @@ void    movement_handler(t_data *data)
     if (data->player->key_states[0] == 1)
     {
         next_x = data->player->pos_x + data->player->dir_x * (WLK_SPEED * mult);
-        if (data->map->map[(int)data->player->pos_y][(int)next_x] != '1')
+        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
             data->player->pos_x = next_x;
         next_y = data->player->pos_y + data->player->dir_y * (WLK_SPEED * mult);
-        if (data->map->map[(int)next_y][(int)data->player->pos_x] != '1')
+        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
             data->player->pos_y = next_y;
     }
     if (data->player->key_states[1] == 1)
     {
         next_x = data->player->pos_x - data->player->dir_x * (WLK_SPEED * mult);
-        if (data->map->map[(int)data->player->pos_y][(int)next_x] != '1')
+        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
             data->player->pos_x = next_x;
         next_y = data->player->pos_y - data->player->dir_y * (WLK_SPEED * mult);
-        if (data->map->map[(int)next_y][(int)data->player->pos_x] != '1')
+        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
             data->player->pos_y = next_y;
     }
     if (data->player->key_states[2] == 1)
     {
         next_x = data->player->pos_x + data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if (data->map->map[(int)data->player->pos_y][(int)next_x] != '1')
+        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
             data->player->pos_x = next_x;
         next_y = data->player->pos_y + data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if (data->map->map[(int)next_y][(int)data->player->pos_x] != '1')
+        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
             data->player->pos_y = next_y;
     }
     if (data->player->key_states[3] == 1)
     {
         next_x = data->player->pos_x - data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if (data->map->map[(int)data->player->pos_y][(int)next_x] != '1')
+        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
             data->player->pos_x = next_x;
         next_y = data->player->pos_y - data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if (data->map->map[(int)next_y][(int)data->player->pos_x] != '1')
+        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
             data->player->pos_y = next_y;
     }
 }

@@ -3,46 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/05 13:55:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/15 18:31:59 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-void my_mlx_pixel_put(t_im *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_im *img, int x, int y, int color)
 {
-	char *dst;
+	char	*dst;
+
 	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
 	*(int *)dst = color;
 }
 
-void tex_initialiser(t_data *data)
+void	*my_mlx_xpm_image(t_data *data, char *file)
 {
-	data->map->east->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->east->file, &data->image->width, &data->image->height);
-	data->map->east->addr = mlx_get_data_addr(data->map->east->mlx_img, &data->map->east->bpp, &data->map->east->line_length, &data->map->east->endian);
-	data->map->north->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->north->file, &data->image->width, &data->image->height);
-	data->map->north->addr = mlx_get_data_addr(data->map->north->mlx_img, &data->map->north->bpp, &data->map->north->line_length, &data->map->north->endian);
-	data->map->south->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->south->file, &data->image->width, &data->image->height);
-	data->map->south->addr = mlx_get_data_addr(data->map->south->mlx_img, &data->map->south->bpp, &data->map->south->line_length, &data->map->south->endian);
-	data->map->west->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->west->file, &data->image->width, &data->image->height);
-	data->map->west->addr = mlx_get_data_addr(data->map->west->mlx_img, &data->map->west->bpp, &data->map->west->line_length, &data->map->west->endian);
-	data->map->door->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door->file, &data->image->width, &data->image->height);
-	data->map->door->addr = mlx_get_data_addr(data->map->door->mlx_img, &data->map->door->bpp, &data->map->door->line_length, &data->map->door->endian);
-	data->map->door_1->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_1->file, &data->image->width, &data->image->height);
-	data->map->door_1->addr = mlx_get_data_addr(data->map->door_1->mlx_img, &data->map->door_1->bpp, &data->map->door_1->line_length, &data->map->door_1->endian);
-	data->map->door_2->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_2->file, &data->image->width, &data->image->height);
-	data->map->door_2->addr = mlx_get_data_addr(data->map->door_2->mlx_img, &data->map->door_2->bpp, &data->map->door_2->line_length, &data->map->door_2->endian);
-	data->map->door_3->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, data->map->door_3->file, &data->image->width, &data->image->height);
-	data->map->door_3->addr = mlx_get_data_addr(data->map->door_3->mlx_img, &data->map->door_3->bpp, &data->map->door_3->line_length, &data->map->door_3->endian);
+	int	width;
+	int	height;
+
+	width = data->image->width;
+	height = data->image->height;
+	return (mlx_xpm_file_to_image(data->mlx_ptr, file, &width, &height));
+}
+
+void	*my_addr(t_im *dir)
+{
+	return (mlx_get_data_addr(dir->mlx_img, &dir->bpp,
+			&dir->line_length, &dir->endian));
+}
+
+void	door_initialiser(t_data *data)
+{
+	data->map->door->mlx_img = my_mlx_xpm_image(data,
+			data->map->door->file);
+	data->map->door->addr = my_addr(data->map->door);
+	data->map->door_1->mlx_img = my_mlx_xpm_image(data,
+			data->map->door_1->file);
+	data->map->door_1->addr = my_addr(data->map->door_1);
+	data->map->door_2->mlx_img = my_mlx_xpm_image(data,
+			data->map->door_2->file);
+	data->map->door_2->addr = my_addr(data->map->door_2);
+	data->map->door_3->mlx_img = my_mlx_xpm_image(data,
+			data->map->door_3->file);
+	data->map->door_3->addr = my_addr(data->map->door_3);
+}
+
+void	tex_initialiser(t_data *data)
+{
+	data->map->east->mlx_img = my_mlx_xpm_image(data, data->map->east->file);
+	data->map->east->addr = my_addr(data->map->east);
+	data->map->north->mlx_img = my_mlx_xpm_image(data, data->map->north->file);
+	data->map->north->addr = my_addr(data->map->north);
+	data->map->south->mlx_img = my_mlx_xpm_image(data, data->map->south->file);
+	data->map->south->addr = my_addr(data->map->south);
+	data->map->west->mlx_img = my_mlx_xpm_image(data, data->map->west->file);
+	data->map->west->addr = my_addr(data->map->west);
+	door_initialiser(data);
 }
 
 void mlx_starter(t_data *data)
 {
+	char *t;
+
+	t = "cub3D - Made by fragarc2 and aaleixo-";
 	data->mlx_ptr = mlx_init();
-	data->window_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D - Made by fragarc2 and aaleixo-");
+	data->window_ptr = mlx_new_window(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, t);
 	data->image->mlx_img = mlx_new_image(data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data->image->addr = mlx_get_data_addr(data->image->mlx_img, &data->image->bpp, &data->image->line_length, &data->image->endian);
 	tex_initialiser(data);
@@ -69,28 +98,28 @@ t_im *get_wall_texture(t_data *data, int side)
 int door(t_data *data)
 {
 	static int door = 100;
-	static int flag = 1;
 	static int key = 0;
 	if(data->player->key_states[6] == 1)
-		key = 1;
-	if(flag == 0 && key == 1)
+			key = 1;
+	if(data->player->flag == 0 && key == 1 && data->map->map[data->player->map_y][data->player->map_x] != '2')
 	{
+		printf("%c \n", data->map->map[data->player->map_y][data->player->map_x]);
 		if(door < 100)
 			door+= 2;
 		if(door == 100)
 		{
 			key = 0;
-			flag = 1;
+			data->player->flag = 1;
 		}
 	}
-	if(flag == 1 && key == 1)
+	if(data->player->flag == 1 && key == 1 && data->map->map[data->player->map_y][data->player->map_x] != '2')
 	{
 		if(door > 10)
 			door-= 2;
 		if(door == 10)
 		{
 			key = 0;
-			flag = 0;
+			data->player->flag = 0;
 		}
 	}
 	return door;
@@ -115,6 +144,7 @@ int vectors(void *param)
 
 		data->player->camera_x = 2 * x / (double)WINDOW_WIDTH - 1;
 		helper(data);
+
 		while (i < TEXTURE_SIZE)
 		{
 			side = set_side(data);

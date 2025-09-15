@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 13:06:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/15 18:34:21 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_player
 	int			draw_end;
 	int			tex_x;
 	int			tex_y;
+	int			flag;
 	double			wall_x;
 	int			key_states[7];
 }				t_player;

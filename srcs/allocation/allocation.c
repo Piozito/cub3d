@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 13:09:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/15 18:39:21 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	init_data_structs(t_data *data, char *file)
 	data->player->plane_y = 0.0;
 	data->player->tex_x = 0;
 	data->player->tex_y = 0;
+	data->player->flag = 1;
 	while(i < 7)
 		data->player->key_states[i++] = 0;
 	data->map = malloc(sizeof(t_map));
