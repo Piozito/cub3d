@@ -6,7 +6,7 @@
 /*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/15 18:31:59 by pio              ###   ########.fr       */
+/*   Updated: 2025/09/16 15:29:41 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,34 +95,52 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->north;
 }
 
-int door(t_data *data)
+int open_closest_door(t_data *data)
 {
-	static int door = 100;
+	t_doors *closest = NULL;
 	static int key = 0;
-	if(data->player->key_states[6] == 1)
+	double min_dist = 1e9;
+	int px = (int)data->player->pos_x;
+	int py = (int)data->player->pos_y;
+	for (int i = 0; i < data->map->door_num; i++)
+	{
+		t_doors *door = data->map->doors[i];
+		double dx = door->coords[0] + 0.5 - px;
+		double dy = door->coords[1] + 0.5 - py;
+		double dist = dx * dx + dy * dy;
+		if (dist < min_dist)
+		{
+			min_dist = dist;
+			closest = door;
+		}
+	}
+	if (closest >= 0)
+	{
+		if(data->player->key_states[6] == 1)
 			key = 1;
-	if(data->player->flag == 0 && key == 1 && data->map->map[data->player->map_y][data->player->map_x] != '2')
-	{
-		printf("%c \n", data->map->map[data->player->map_y][data->player->map_x]);
-		if(door < 100)
-			door+= 2;
-		if(door == 100)
+		if(data->player->flag == 0 && key == 1)
 		{
-			key = 0;
-			data->player->flag = 1;
+			if(closest->open < 100)
+				closest->open+= 2;
+			if(closest->open == 100)
+			{
+				key = 0;
+				data->player->flag = 1;
+			}
 		}
-	}
-	if(data->player->flag == 1 && key == 1 && data->map->map[data->player->map_y][data->player->map_x] != '2')
-	{
-		if(door > 10)
-			door-= 2;
-		if(door == 10)
+		if(data->player->flag == 1 && key == 1)
 		{
-			key = 0;
-			data->player->flag = 0;
+			if(closest->open > 10)
+				closest->open-= 2;
+			if(closest->open == 10)
+			{
+				key = 0;
+				data->player->flag = 0;
+			}
 		}
-	}
-	return door;
+		return closest->open;
+    }
+    return 100;
 }
 
 int vectors(void *param)
@@ -135,7 +153,7 @@ int vectors(void *param)
 
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	z = door(data);
+	z = open_closest_door(data);
 
 	while (x < WINDOW_WIDTH)
 	{
@@ -190,15 +208,16 @@ void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, i
 	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
 	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
 	t_im *texture = NULL;
+	int open_val = doors->open;
 	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 		texture = get_wall_texture(data, side);
-	else if (z > 75)
+	else if (open_val > 75)
 		texture = data->map->door;
-	else if (z > 50)
+	else if (open_val > 50)
 		texture = data->map->door_1;
-	else if (z > 25)
+	else if (open_val > 25)
 		texture = data->map->door_2;
-	else if (z > 0)
+	else if (open_val > 0)
 		texture = data->map->door_3;
 	for (int y = data->player->draw_start; y < data->player->draw_end; y++)
 	{
