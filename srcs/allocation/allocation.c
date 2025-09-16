@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/16 13:35:47 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:37:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	free_map(t_map *map)
 		free(map);
 }
 
-void	ft_clear(t_data *data)
+int	ft_clear(t_data *data)
 {
 	int	i;
 
@@ -115,4 +115,5 @@ void	ft_clear(t_data *data)
 	free(data->mlx_ptr);
 	free(data);
 	exit(0);
+	return (0);
 }
