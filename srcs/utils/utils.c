@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 12:50:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:32:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ void	ft_debug(t_data *data)
 	printf("Map:\n");
 	while (data->map->map[i])
 		printf("%s\n", data->map->map[i++]);
+
+	i = 0;
+	printf("Amount of doors: %d\n", data->map->door_num);
+	while(i < data->map->door_num)
+	{
+		printf("//////////////\n");
+		printf("Door number %d\n", data->map->doors[i]->id + 1);
+		printf("id: %d\n", data->map->doors[i]->id);
+		printf("x: %d\n", data->map->doors[i]->coords[0]);
+		printf("y: %d\n", data->map->doors[i]->coords[1]);
+		printf("open: %d\n", data->map->doors[i]->open);
+		printf("Next: %p\n", data->map->doors[i]->next);
+		i++;
+	}
 }
 
 ssize_t	find_char(const char *str, char c, ssize_t len)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/15 18:34:21 by pio              ###   ########.fr       */
+/*   Updated: 2025/09/16 13:34:56 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ typedef struct s_im
 	char		*file;
 }				t_im;
 
+typedef struct	s_doors
+{
+	int id;
+	int coords[2];
+	int open;
+	void *next;
+}				t_doors;
+
 typedef struct s_map
 {
 	int			fd;
@@ -63,12 +71,14 @@ typedef struct s_map
 	t_im		*door_1;
 	t_im		*door_2;
 	t_im		*door_3;
+	int			door_num;
 	int			celling;
 	int			floor;
 	int			spawn[2];
 	int			map_height;
 	int			map_lenght;
 	char		**map;
+	t_doors		**doors;
 }				t_map;
 
 typedef struct s_player
@@ -123,7 +133,7 @@ typedef struct s_data
 }				t_data;
 
 void		ft_debug(t_data *data);
-int			ft_clear(t_data *data);
+void		ft_clear(t_data *data);
 void		ext_checker(char *path);
 void		map_setter(t_data *data, ssize_t j, char **map);
 void		floodfill(t_data *data, char **visited, int x, int y);
@@ -163,7 +173,7 @@ void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, i
 int get_texel_color(t_im *texture, int tex_x, int tex_y);
 t_im *get_wall_texture(t_data *data, int side);
 
-int check_door(char **map);
+int check_door(t_data *data, char **map, int flag);
 int	check_next(char **map, int x, int y);
 int	check_spaces(char **map);
 int	line_checker(char *line);
