@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/15 18:41:58 by pio              ###   ########.fr       */
+/*   Updated: 2025/09/17 14:08:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,9 @@ int handle_keypress(int keysym, t_data *data)
 		data->player->key_states[3] = 1;
 	if (keysym == XK_Shift_L)
 		data->player->key_states[4] = 1;
-	if (keysym == XK_space)
-		data->player->key_states[5] = 1;
 	if (keysym == XK_e)
 		data->player->key_states[6] = 1;
 	return (0);
-}
-
-int set_jump(t_data *data)
-{
-	static unsigned int jump = 0;
-	static int increase;
-
-	if (jump >= JUMP_HEIGHT)
-		increase = 0;
-	if (increase == 1)
-	{
-		jump += JUMP_HEIGHT / 12;
-		return jump;
-	}
-	if (jump > 0)
-	{
-		jump -= JUMP_HEIGHT / 12;
-		return jump;
-	}
-	if (data->player->key_states[5] == 1)
-		increase = 1;
-	return jump;
 }
 
 int    camera_handler(int x, int y, t_player *player)
@@ -80,53 +56,69 @@ int    camera_handler(int x, int y, t_player *player)
     return (0);
 }
 
-void    movement_handler(t_data *data)
+int check_movement(t_data *data, double next_x, double next_y)
 {
-    static int mult = 1;
-    double  next_x;
-    double  next_y;
+    int next[2];
+    int i[2];
+    double offsets[2];
 
-    mult = 1;
-    if (data->player->key_states[4] == 1)
-        mult = 2;
+    offsets[0] = -PLR_HITBOX;
+    offsets[1] = PLR_HITBOX;
+
+    i[0] = 0;
+    while (i[0] < 2)
+    {
+        i[1] = 0;
+        while (i[1] < 2)
+        {
+            next[0] = (int)(next_x + offsets[i[0]]);
+            next[1] = (int)(next_y + offsets[i[1]]);
+            if (data->map->map[next[1]][next[0]] == '1')
+                return 1;
+            if (data->player->flag == 1 && data->map->map[next[1]][next[0]] == '2')
+                return 1;
+            i[1]++;
+        }
+        i[0]++;
+    }
+    return 0;
+}
+
+void movement_handler(t_data *data)
+{
+    double move_x = 0, move_y = 0;
+    int speed_mult = (data->player->key_states[4] == 1) ? 2 : 1;
+    double move_speed = WLK_SPEED * speed_mult;
+
     if (data->player->key_states[0] == 1)
     {
-        next_x = data->player->pos_x + data->player->dir_x * (WLK_SPEED * mult);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y + data->player->dir_y * (WLK_SPEED * mult);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
-            data->player->pos_y = next_y;
+        move_x += data->player->dir_x * move_speed;
+        move_y += data->player->dir_y * move_speed;
     }
     if (data->player->key_states[1] == 1)
     {
-        next_x = data->player->pos_x - data->player->dir_x * (WLK_SPEED * mult);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y - data->player->dir_y * (WLK_SPEED * mult);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
-            data->player->pos_y = next_y;
+        move_x -= data->player->dir_x * move_speed;
+        move_y -= data->player->dir_y * move_speed;
     }
     if (data->player->key_states[2] == 1)
     {
-        next_x = data->player->pos_x + data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y + data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
-            data->player->pos_y = next_y;
+        move_x += data->player->plane_x * (move_speed + 0.025);
+        move_y += data->player->plane_y * (move_speed + 0.025);
     }
     if (data->player->key_states[3] == 1)
     {
-        next_x = data->player->pos_x - data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->player->flag == 0 || data->map->map[(int)data->player->pos_y][(int)next_x] != '2')))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y - data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->player->flag == 0 || data->map->map[(int)next_y][(int)data->player->pos_x] != '2')))
-            data->player->pos_y = next_y;
+        move_x -= data->player->plane_x * (move_speed + 0.025);
+        move_y -= data->player->plane_y * (move_speed + 0.025);
     }
-}
 
+    double next_x = data->player->pos_x + move_x;
+    double next_y = data->player->pos_y + move_y;
+
+    if (!check_movement(data, next_x, data->player->pos_y))
+        data->player->pos_x = next_x;
+    if (!check_movement(data, data->player->pos_x, next_y))
+        data->player->pos_y = next_y;
+}
 
 int	handle_btnrelease(int keysym, t_data *data)
 {
@@ -140,8 +132,6 @@ int	handle_btnrelease(int keysym, t_data *data)
 		data->player->key_states[3] = 0;
 	if (keysym == XK_Shift_L)
 		data->player->key_states[4] = 0;
-	if (keysym == XK_space)
-		data->player->key_states[5] = 0;
 	if (keysym == XK_e)
 		data->player->key_states[6] = 0;
 	return (0);

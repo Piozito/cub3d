@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/16 15:29:41 by pio              ###   ########.fr       */
+/*   Updated: 2025/09/17 13:03:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ int vectors(void *param)
 {
 	t_data *data = (t_data *)param;
 	int x = 0;
-	int jump = set_jump(data);
 	int side;
 	int z = 0;
 
@@ -177,8 +176,8 @@ int vectors(void *param)
 			if (data->player->perp_wall_dist < 0.01)
 				data->player->perp_wall_dist = 0.01;
 			data->player->line_height = (int)(WINDOW_HEIGHT / data->player->perp_wall_dist);
-			data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2 + (jump / data->player->perp_wall_dist);
-			data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2 + (jump / data->player->perp_wall_dist);
+			data->player->draw_start = -data->player->line_height / 2 + WINDOW_HEIGHT / 2;
+			data->player->draw_end = data->player->line_height / 2 + WINDOW_HEIGHT / 2;
 			if (data->player->draw_start < 0) data->player->draw_start = 0;
 			if (data->player->draw_end > WINDOW_HEIGHT) data->player->draw_end = WINDOW_HEIGHT -1;
 
@@ -208,7 +207,8 @@ void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, i
 	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
 	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
 	t_im *texture = NULL;
-	int open_val = doors->open;
+	(void)z;
+	int open_val = 100;
 	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 		texture = get_wall_texture(data, side);
 	else if (open_val > 75)

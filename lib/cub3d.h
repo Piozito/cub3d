@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/16 13:37:03 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/17 14:08:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@
 
 #define WLK_SPEED 0.075
 #define ROT_SPEED 0.00025
-#define JUMP_HEIGHT 250
+#define PLR_HITBOX 0.15
 
-#define MP_ZOOM 15.0
+#define MP_ZOOM 12.5
 #define MP_RDS 75
 #define MP_CTR 120
 
@@ -160,7 +160,6 @@ int	handle_keypress(int keysym, t_data *data);
 int	handle_btnrelease(int keysym, t_data *data);
 
 int		camera_handler(int x, int y, t_player *player);
-int		set_jump(t_data *data);
 void	movement_handler(t_data *data);
 
 void my_mlx_pixel_put(t_im *img, int x, int y, int color);
@@ -185,7 +184,6 @@ void	circle_help(void *mlx_ptr, int *crds, int color);
 void	draw_cone(t_data *data);
 void	draw_minimap(t_data *data);
 void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color);
-void	draw_circle_outline(void *mlx_ptr, int radius, int color);
 
 void	init_file(t_data *data, char *file);
 void	init_data_structs(t_data *data, char *file);

@@ -69,6 +69,10 @@ void	draw_line(void *mlx_ptr, int *ends, int color)
 	while (1)
 	{
 		my_mlx_pixel_put(mlx_ptr, cords[0], cords[1], color);
+		my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] - 1, color);
+		my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] - 1, color);
+		my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] + 1, color);
+		my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] + 1, color);
 		if (cords[0] == ends[0] && cords[1] == ends[1])
 			break ;
 		draw_help(delta, step, err, cords);

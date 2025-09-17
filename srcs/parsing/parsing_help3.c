@@ -54,7 +54,7 @@ int	check_spaces(char **map)
 
 t_doors *prep_door(int x, int y)
 {
-	static void *old_ptr;
+	static t_doors *old_ptr = NULL;
 	static int i = 0;
 
 	t_doors *door = malloc(sizeof(t_doors));
@@ -62,7 +62,7 @@ t_doors *prep_door(int x, int y)
 	door->coords[0] = x;
 	door->coords[1] = y;
 	door->open = 0;
-	door->next = &old_ptr;
+	door->next = old_ptr;
 	old_ptr = door;
 	i++;
 	return door;
