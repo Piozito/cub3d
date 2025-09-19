@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/19 11:57:13 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:15:47 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->north;
 }
 
-t_doors *open_closest_door(t_data *data, t_doors *closest)
+t_doors *open_closest_door(t_data *data, t_doors *closest, int open)
 {
 	static int key = 0;
 	double min_dist = 1e9;
@@ -113,7 +113,7 @@ t_doors *open_closest_door(t_data *data, t_doors *closest)
 			closest = door;
 		}
 	}
-	if (closest)
+	if (closest && open == 1)
 	{
 		if(data->player->key_states[6] == 1)
 			key = 1;
@@ -150,7 +150,7 @@ int vectors(void *param)
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	t_doors *closest = NULL;
-	closest = open_closest_door(data, closest);
+	closest = open_closest_door(data, closest, 1);
 	while (x < WINDOW_WIDTH)
 	{
 		int column_drawn[WINDOW_HEIGHT] = {0};
