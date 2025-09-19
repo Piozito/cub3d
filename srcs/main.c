@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/17 14:07:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:07:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ int	check_attribute(char *str)
 void	set_hooks(t_data *data)
 {
 	mlx_starter(data);
-	//mlx_mouse_hide causes leaks!!!
-	mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+	//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
 	mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
 	mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask, &camera_handler, data->player);
 	mlx_hook(data->window_ptr, KeyPress, KeyPressMask, &handle_keypress, data);

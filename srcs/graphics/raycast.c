@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/17 13:03:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/19 11:57:13 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,17 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->north;
 }
 
-int open_closest_door(t_data *data)
+t_doors *open_closest_door(t_data *data, t_doors *closest)
 {
-	t_doors *closest = NULL;
 	static int key = 0;
 	double min_dist = 1e9;
 	int px = (int)data->player->pos_x;
 	int py = (int)data->player->pos_y;
-	for (int i = 0; i < data->map->door_num; i++)
+	for (int i = data->map->door_num - 1; i >= 0; i--)
 	{
 		t_doors *door = data->map->doors[i];
-		double dx = door->coords[0] + 0.5 - px;
-		double dy = door->coords[1] + 0.5 - py;
+		double dx = door->coords[1] + 0.5 - px;
+		double dy = door->coords[0] + 0.5 - py;
 		double dist = dx * dx + dy * dy;
 		if (dist < min_dist)
 		{
@@ -114,7 +113,7 @@ int open_closest_door(t_data *data)
 			closest = door;
 		}
 	}
-	if (closest >= 0)
+	if (closest)
 	{
 		if(data->player->key_states[6] == 1)
 			key = 1;
@@ -138,9 +137,8 @@ int open_closest_door(t_data *data)
 				data->player->flag = 0;
 			}
 		}
-		return closest->open;
     }
-    return 100;
+	return closest;
 }
 
 int vectors(void *param)
@@ -148,12 +146,11 @@ int vectors(void *param)
 	t_data *data = (t_data *)param;
 	int x = 0;
 	int side;
-	int z = 0;
 
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	z = open_closest_door(data);
-
+	t_doors *closest = NULL;
+	closest = open_closest_door(data, closest);
 	while (x < WINDOW_WIDTH)
 	{
 		int column_drawn[WINDOW_HEIGHT] = {0};
@@ -189,7 +186,7 @@ int vectors(void *param)
 				tex_x = TEXTURE_SIZE - 1;
 			if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 				tex_x = TEXTURE_SIZE - tex_x - 1;
-			draw_texture(data, side, column_drawn, tex_x, x, z);
+			draw_texture(data, side, column_drawn, tex_x, x, closest);
 			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 				break;
 			i++;
@@ -202,23 +199,36 @@ int vectors(void *param)
 	return 0;
 }
 
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, int z)
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, t_doors *closest)
 {
 	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
 	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
 	t_im *texture = NULL;
-	(void)z;
-	int open_val = 100;
+
+
 	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 		texture = get_wall_texture(data, side);
-	else if (open_val > 75)
-		texture = data->map->door;
-	else if (open_val > 50)
-		texture = data->map->door_1;
-	else if (open_val > 25)
-		texture = data->map->door_2;
-	else if (open_val > 0)
-		texture = data->map->door_3;
+	else if (data->map->map[data->player->map_y][data->player->map_x] == '2')
+	{
+		if (closest && data->player->map_y == closest->coords[0] && data->player->map_x == closest->coords[1])
+		{
+			int open_val = closest->open;
+			if (open_val > 75)
+				texture = data->map->door;
+			else if (open_val > 50)
+				texture = data->map->door_1;
+			else if (open_val > 25)
+				texture = data->map->door_2;
+			else if (open_val > 0)
+				texture = data->map->door_3;
+			else
+				texture = data->map->door;
+		}
+		else
+			texture = data->map->door;
+	}
+
+
 	for (int y = data->player->draw_start; y < data->player->draw_end; y++)
 	{
 	    if (y < 0 || y >= WINDOW_HEIGHT)
