@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/17 14:25:07 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:18:44 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int set_side(t_data *data);
 void do_y(t_data *data, int x, int *column_drawn);
 int get_texel_color(t_im *texture, int tex_x, int tex_y);
 t_im *get_wall_texture(t_data *data, int side);
+t_doors *open_closest_door(t_data *data,t_doors *closest, int open);
 
 int check_door(t_data *data, char **map, int flag);
 int	check_next(char **map, int x, int y);
