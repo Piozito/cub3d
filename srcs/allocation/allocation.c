@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/16 13:37:03 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:34:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ void	init_file(t_data *data, char *file)
 	data->map->south = prep_img();
 	data->map->east = prep_img();
 	data->map->west = prep_img();
-	data->map->door = prep_img();
-	data->map->door_1 = prep_img();
-	data->map->door_2 = prep_img();
-	data->map->door_3 = prep_img();
+	data->map->door_top = prep_img();
+	data->map->door_bot = prep_img();
 	data->map->fd = open(file, O_RDONLY);
 	if (data->map->fd <= 0)
 	{
@@ -96,10 +94,8 @@ int	ft_clear(t_data *data)
 	free_img(data->mlx_ptr, data->map->south);
 	free_img(data->mlx_ptr, data->map->east);
 	free_img(data->mlx_ptr, data->map->west);
-	free_img(data->mlx_ptr, data->map->door);
-	free_img(data->mlx_ptr, data->map->door_1);
-	free_img(data->mlx_ptr, data->map->door_2);
-	free_img(data->mlx_ptr, data->map->door_3);
+	free_img(data->mlx_ptr, data->map->door_top);
+	free_img(data->mlx_ptr, data->map->door_bot);
 	free_img(data->mlx_ptr, data->image);
 	i = data->map->door_num - 1;
 	while(i >= 0)

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 11:27:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:54:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ int	texture_help(t_data *data, char *str)
 		data->map->west->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "EA ", 3) == 0)
 		data->map->east->file = ft_strndup(str, 3);
-	else if (ft_strncmp(str, "D ", 2) == 0)
-		data->map->door->file = ft_strndup(str, 2);
-	else if (ft_strncmp(str, "D1 ", 3) == 0)
-		data->map->door_1->file = ft_strndup(str, 3);
-	else if (ft_strncmp(str, "D2 ", 3) == 0)
-		data->map->door_2->file = ft_strndup(str, 3);
-	else if (ft_strncmp(str, "D3 ", 3) == 0)
-		data->map->door_3->file = ft_strndup(str, 3);
+	else if (ft_strncmp(str, "DT ", 3) == 0)
+		data->map->door_top->file = ft_strndup(str, 3);
+	else if (ft_strncmp(str, "DB ", 3) == 0)
+		data->map->door_bot->file = ft_strndup(str, 3);
 	else if (ft_strncmp(str, "F ", 2) == 0)
 		data->map->floor = rgb(str + 2);
 	else if (ft_strncmp(str, "C ", 2) == 0)
@@ -80,7 +76,7 @@ int	check_flag(int *flags)
 	ssize_t	i;
 
 	i = 0;
-	while (i < 10)
+	while (i < 8)
 	{
 		if (flags[i] != 1)
 			return (1);

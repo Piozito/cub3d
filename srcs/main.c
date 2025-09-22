@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 13:07:18 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:55:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	flag(int *flags)
 	ssize_t	i;
 
 	i = 0;
-	while (i < 10)
+	while (i < 8)
 		flags[i++] = 0;
 }
 
@@ -26,7 +26,7 @@ int	get_textures(t_data *data, char **argv)
 	char	*str;
 	char	**map;
 	ssize_t	i;
-	int		flags[10];
+	int		flags[8];
 	int		help;
 
 	i = 0;
@@ -52,7 +52,7 @@ int	get_textures(t_data *data, char **argv)
 
 int	check_attribute(char *str)
 {
-	char	*attr[11];
+	char	*attr[8];
 	ssize_t	i;
 
 	i = 0;
@@ -62,18 +62,16 @@ int	check_attribute(char *str)
 	attr[3] = "EA ";
 	attr[4] = "F ";
 	attr[5] = "C ";
-	attr[6] = "D ";
-	attr[7] = "D1 ";
-	attr[8] = "D2 ";
-	attr[9] = "D3 ";
-	attr[10] = NULL;
+	attr[6] = "DT ";
+	attr[7] = "DB ";
+	attr[8] = NULL;
 	while (attr[i])
 	{
 		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
 			break ;
 		i++;
 	}
-	if (i < 10)
+	if (i < 8)
 		return (i);
 	else
 		return (-1);

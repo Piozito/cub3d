@@ -2,10 +2,8 @@ NO ./textures/north.xpm
 SO ./textures/south.xpm
 WE ./textures/west.xpm
 EA ./textures/east.xpm
-D ./textures/door.xpm
-D1 ./textures/door_1.xpm
-D2 ./textures/door_2.xpm
-D3 ./textures/door_3.xpm
+DT ./textures/upper_door.xpm
+DB ./textures/lower_door.xpm
 
 F 40,87,0
 C 66,135,245

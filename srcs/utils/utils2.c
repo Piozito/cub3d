@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:52:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 12:49:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:50:33 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	line_check(char **map)
 int	player_check(char **map)
 {
 	int	i;
-	int	flag;
 	int	j;
+	int	flag;
 
 	i = 0;
 	j = 0;

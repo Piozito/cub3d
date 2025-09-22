@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/16 13:32:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:42:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ void	ft_debug(t_data *data)
 		printf("West: %s\n", data->map->west->file);
 	if (data->map->east->file)
 		printf("East: %s\n", data->map->east->file);
-	if (data->map->door->file)
-		printf("Door: %s\n", data->map->door->file);
+	if (data->map->door_top->file)
+		printf("Door top: %s\n", data->map->door_top->file);
+	if (data->map->door_bot->file)
+		printf("Door bot: %s\n", data->map->door_bot->file);
 	if (data->map->floor)
 		printf("Floor: %d\n", data->map->floor);
 	if (data->map->celling)

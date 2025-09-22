@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/19 12:15:47 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:50:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,12 @@ void	*my_addr(t_im *dir)
 
 void	door_initialiser(t_data *data)
 {
-	data->map->door->mlx_img = my_mlx_xpm_image(data,
-			data->map->door->file);
-	data->map->door->addr = my_addr(data->map->door);
-	data->map->door_1->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_1->file);
-	data->map->door_1->addr = my_addr(data->map->door_1);
-	data->map->door_2->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_2->file);
-	data->map->door_2->addr = my_addr(data->map->door_2);
-	data->map->door_3->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_3->file);
-	data->map->door_3->addr = my_addr(data->map->door_3);
+	data->map->door_top->mlx_img = my_mlx_xpm_image(data,
+			data->map->door_top->file);
+	data->map->door_top->addr = my_addr(data->map->door_top);
+	data->map->door_bot->mlx_img = my_mlx_xpm_image(data,
+			data->map->door_bot->file);
+	data->map->door_bot->addr = my_addr(data->map->door_bot);
 }
 
 void	tex_initialiser(t_data *data)
@@ -113,7 +107,7 @@ t_doors *open_closest_door(t_data *data, t_doors *closest, int open)
 			closest = door;
 		}
 	}
-	if (closest && open == 1)
+	if (closest && open == 1 && min_dist < 5)
 	{
 		if(data->player->key_states[6] == 1)
 			key = 1;
@@ -199,59 +193,101 @@ int vectors(void *param)
 	return 0;
 }
 
+t_doors *find_door(t_doors **array, int map_y, int map_x)
+{
+	ssize_t i;
+	t_doors *door;
+
+	i = 0;
+	while(array[i])
+	{
+		if(array[i]->coords[0] == map_y && array[i]->coords[1] == map_x)
+		{
+			door = array[i];
+			return door;
+		}
+		i++;
+	}
+	return NULL;
+}
+
 void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, t_doors *closest)
 {
-	double step = 1.0 * TEXTURE_SIZE / data->player->line_height;
-	double tex_pos = (data->player->draw_start - WINDOW_HEIGHT / 2 + data->player->line_height / 2) * step;
-	t_im *texture = NULL;
+    int draw_start = data->player->draw_start;
+    int draw_end = data->player->draw_end;
 
+	(void)closest;
+    if (draw_start < 0) draw_start = 0;
+    if (draw_end > WINDOW_HEIGHT) draw_end = WINDOW_HEIGHT;
 
-	if (data->map->map[data->player->map_y][data->player->map_x] == '1')
-		texture = get_wall_texture(data, side);
-	else if (data->map->map[data->player->map_y][data->player->map_x] == '2')
-	{
-		if (closest && data->player->map_y == closest->coords[0] && data->player->map_x == closest->coords[1])
+    double wall_height = fabs((double)WINDOW_HEIGHT / data->player->perp_wall_dist);
+    double step = (double)TEXTURE_SIZE / wall_height;
+    double tex_pos = (draw_start - WINDOW_HEIGHT / 2.0 + wall_height / 2.0) * step;
+
+    if (data->map->map[data->player->map_y][data->player->map_x] == '2' && closest)
+    {
+		t_doors *door = find_door(data->map->doors, data->player->map_y, data->player->map_x);
+        int percent = (100 - door->open);
+		int open_px = 0;
+        if(percent > 80)
+            percent = 80;
+		if(data->player->map_y == door->coords[0] && data->player->map_x == door->coords[1])
+			open_px = percent;
+
+        int top_limit = TEXTURE_SIZE - open_px;
+        int bot_limit = open_px;
+
+        for (int y = draw_start; y < draw_end; y++)
+        {
+            if (y < 0 || y >= WINDOW_HEIGHT) continue;
+            if (column_drawn[y]) { tex_pos += step; continue; }
+
+            int tex_y = (int)tex_pos;
+            tex_pos += step;
+
+            if (tex_y < 0) tex_y = 0;
+            if (tex_y >= TEXTURE_SIZE) tex_y = TEXTURE_SIZE - 1;
+
+            int drew = 0;
+            if (tex_y < top_limit)
+            {
+                int color = get_texel_color(data->map->door_top, tex_x, tex_y + open_px);
+                if (color != -16777216)
+				{
+                    my_mlx_pixel_put(data->image, x, y, color);
+                    column_drawn[y] = 1;
+                    drew = 1;
+                }
+            }
+            if (!drew && tex_y >= bot_limit)
+            {
+                int color = get_texel_color(data->map->door_bot, tex_x, tex_y - bot_limit);
+                if (color != -16777216)
+				{
+                    my_mlx_pixel_put(data->image, x, y, color);
+                    column_drawn[y] = 1;
+                }
+            }
+        }
+        return;
+    }
+
+    t_im *texture = get_wall_texture(data, side);
+    for (int y = draw_start; y < draw_end; y++)
+    {
+        if (y < 0 || y >= WINDOW_HEIGHT) continue;
+        if (column_drawn[y])
 		{
-			int open_val = closest->open;
-			if (open_val > 75)
-				texture = data->map->door;
-			else if (open_val > 50)
-				texture = data->map->door_1;
-			else if (open_val > 25)
-				texture = data->map->door_2;
-			else if (open_val > 0)
-				texture = data->map->door_3;
-			else
-				texture = data->map->door;
-		}
-		else
-			texture = data->map->door;
-	}
-
-
-	for (int y = data->player->draw_start; y < data->player->draw_end; y++)
-	{
-	    if (y < 0 || y >= WINDOW_HEIGHT)
-	    {
-	        tex_pos += step;
-	        continue;
-	    }
-	    if (column_drawn[y])
-	    {
-	        tex_pos += step;
-	        continue;
-	    }
-	    int tex_y = (int)tex_pos;
-	    if (tex_y < 0) tex_y = 0;
-	    if (tex_y >= TEXTURE_SIZE) tex_y = TEXTURE_SIZE - 1;
-	    int color = get_texel_color(texture, tex_x, tex_y);
-	    if (data->map->map[data->player->map_y][data->player->map_x] == '2' && color == -16777216)
-	    {
-	        tex_pos += step;
-	        continue;
-	    }
-	    my_mlx_pixel_put(data->image, x, y, color);
-	    column_drawn[y] = 1;
-	    tex_pos += step;
-	}
+            tex_pos += step;
+            continue;
+        }
+        int tex_y = (int)tex_pos;
+        if (tex_y < 0) tex_y = 0;
+        if (tex_y >= TEXTURE_SIZE) tex_y = TEXTURE_SIZE - 1;
+        int color = get_texel_color(texture, tex_x, tex_y);
+        if(color != -16777216)
+            my_mlx_pixel_put(data->image, x, y, color);
+        column_drawn[y] = 1;
+        tex_pos += step;
+    }
 }

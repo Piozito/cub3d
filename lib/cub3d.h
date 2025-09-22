@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/19 12:18:44 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/09/22 08:33:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ typedef struct s_map
 	t_im		*south;
 	t_im		*east;
 	t_im		*west;
-	t_im		*door;
-	t_im		*door_1;
-	t_im		*door_2;
-	t_im		*door_3;
+	t_im		*door_top;
+	t_im		*door_bot;
 	int			door_num;
 	int			celling;
 	int			floor;
