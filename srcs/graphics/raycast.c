@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/23 13:24:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/23 13:57:18 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,6 @@ t_doors *open_closest_door(t_data *data)
             }
         }
     }
-	if(active_door)
-	{
-		printf("open: %d\n\n\n", active_door->open);
-		printf("key: %d", key);
-	}
     return active_door;
 }
 
