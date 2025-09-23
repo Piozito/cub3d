@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/22 12:50:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/23 13:24:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,50 +89,67 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->north;
 }
 
-t_doors *open_closest_door(t_data *data, t_doors *closest, int open)
+t_doors *open_closest_door(t_data *data)
 {
-	static int key = 0;
-	double min_dist = 1e9;
-	int px = (int)data->player->pos_x;
-	int py = (int)data->player->pos_y;
-	for (int i = data->map->door_num - 1; i >= 0; i--)
-	{
-		t_doors *door = data->map->doors[i];
-		double dx = door->coords[1] + 0.5 - px;
-		double dy = door->coords[0] + 0.5 - py;
-		double dist = dx * dx + dy * dy;
-		if (dist < min_dist)
-		{
-			min_dist = dist;
-			closest = door;
-		}
-	}
-	if (closest && open == 1 && min_dist < 5)
-	{
-		if(data->player->key_states[6] == 1)
-			key = 1;
-		if(data->player->flag == 0 && key == 1)
-		{
-			if(closest->open < 100)
-				closest->open+= 2;
-			if(closest->open == 100)
-			{
-				key = 0;
-				data->player->flag = 1;
-			}
-		}
-		if(data->player->flag == 1 && key == 1)
-		{
-			if(closest->open > 10)
-				closest->open-= 2;
-			if(closest->open == 10)
-			{
-				key = 0;
-				data->player->flag = 0;
-			}
-		}
+    static int key = 0;
+	static int flag = 0;
+    static t_doors *active_door = NULL;
+    double min_dist = 1e9;
+    t_doors *closest = NULL;
+
+    if (!active_door || active_door->open == 100 || active_door->open == 10)
+    {
+        key = 0;
+        for (int i = 0; i < data->map->door_num; i++)
+        {
+            t_doors *door = data->map->doors[i];
+            double dx = door->coords[1] + 0.5 - data->player->pos_x;
+            double dy = door->coords[0] + 0.5 - data->player->pos_y;
+            double dist = dx * dx + dy * dy;
+            if (dist < min_dist)
+            {
+                min_dist = dist;
+                closest = door;
+            }
+        }
+        if (closest && min_dist < 5 && data->player->key_states[6] == 1)
+        {
+            active_door = closest;
+            key = 1;
+        }
     }
-	return closest;
+
+	if (active_door && active_door->open == 100)
+		flag = 1;
+	else if(active_door && active_door->open == 10)
+		flag = 2;
+    if (active_door && key == 1)
+    {
+        if (flag == 2 && active_door->open < 100)
+        {
+            active_door->open += 2;
+            if (active_door->open >= 100)
+            {
+                active_door->open = 100;
+                key = 0;
+            }
+        }
+        else if (flag == 1 && active_door->open > 10)
+        {
+            active_door->open -= 2;
+            if (active_door->open <= 10)
+            {
+                active_door->open = 10;
+                key = 0;
+            }
+        }
+    }
+	if(active_door)
+	{
+		printf("open: %d\n\n\n", active_door->open);
+		printf("key: %d", key);
+	}
+    return active_door;
 }
 
 int vectors(void *param)
@@ -143,8 +160,6 @@ int vectors(void *param)
 
 	movement_handler(data);
 	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	t_doors *closest = NULL;
-	closest = open_closest_door(data, closest, 1);
 	while (x < WINDOW_WIDTH)
 	{
 		int column_drawn[WINDOW_HEIGHT] = {0};
@@ -180,7 +195,7 @@ int vectors(void *param)
 				tex_x = TEXTURE_SIZE - 1;
 			if ((side == 0 && data->player->ray_dir_x < 0) || (side == 1 && data->player->ray_dir_y > 0))
 				tex_x = TEXTURE_SIZE - tex_x - 1;
-			draw_texture(data, side, column_drawn, tex_x, x, closest);
+			draw_texture(data, side, column_drawn, tex_x, x);
 			if (data->map->map[data->player->map_y][data->player->map_x] == '1')
 				break;
 			i++;
@@ -211,12 +226,11 @@ t_doors *find_door(t_doors **array, int map_y, int map_x)
 	return NULL;
 }
 
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, t_doors *closest)
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x)
 {
     int draw_start = data->player->draw_start;
     int draw_end = data->player->draw_end;
 
-	(void)closest;
     if (draw_start < 0) draw_start = 0;
     if (draw_end > WINDOW_HEIGHT) draw_end = WINDOW_HEIGHT;
 
@@ -224,7 +238,7 @@ void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, t
     double step = (double)TEXTURE_SIZE / wall_height;
     double tex_pos = (draw_start - WINDOW_HEIGHT / 2.0 + wall_height / 2.0) * step;
 
-    if (data->map->map[data->player->map_y][data->player->map_x] == '2' && closest)
+    if (data->map->map[data->player->map_y][data->player->map_x] == '2')
     {
 		t_doors *door = find_door(data->map->doors, data->player->map_y, data->player->map_x);
         int percent = (100 - door->open);

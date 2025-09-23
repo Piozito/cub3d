@@ -6,33 +6,11 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:00:02 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/08 12:43:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/22 13:28:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
-
-void	draw_circle_outline(void *mlx_ptr, int radius, int color)
-{
-	int	crds[2];
-	int	err;
-
-	crds[0] = radius;
-	crds[1] = 0;
-	err = 1 - crds[0];
-	while (crds[0] >= crds[1])
-	{
-		circle_help(mlx_ptr, crds, color);
-		crds[1]++;
-		if (err < 0)
-			err += 2 * crds[1] + 1;
-		else
-		{
-			crds[0]--;
-			err += 2 * (crds[1] - crds[0]) + 1;
-		}
-	}
-}
 
 void	draw_cone(t_data *data)
 {
@@ -42,11 +20,11 @@ void	draw_cone(t_data *data)
 	int		i;
 
 	i = 0;
-	cone[0] = M_PI / 3.0;
-	cone[1] = MP_RDS / 2;
+	cone[0] = 3.16149 / 3.0;
+	cone[1] = MP_RDS / 2.8;
 	while (i <= 60)
 	{
-		angle = atan2(data->player->dir_y, data->player->dir_x);
+		angle = atan2(data->player->dir_y, data->player->dir_x) + 45;
 		angle -= cone[0] / 2.0 + cone[0] * i / 60;
 		ends[0] = MP_CTR + (int)(cone[1] * cos(angle));
 		ends[1] = MP_CTR + (int)(cone[1] * sin(angle));
@@ -92,7 +70,7 @@ void	draw_minimap(t_data *data)
 
 	count[0] = -MP_RDS;
 	color = 0x222222;
-	draw_circle(data->image, 85, 0xFF0000);
+	draw_circle(data->image, 85, 0x000000);
 	while (count[0] <= MP_RDS)
 	{
 		count[1] = -MP_RDS;

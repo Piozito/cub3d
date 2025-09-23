@@ -6,13 +6,14 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/22 08:33:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/23 13:25:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <X11/keysym.h>
@@ -104,7 +105,6 @@ typedef struct s_player
 	int			draw_end;
 	int			tex_x;
 	int			tex_y;
-	int			flag;
 	double			wall_x;
 	int			key_states[7];
 }				t_player;
@@ -163,12 +163,12 @@ void my_mlx_pixel_put(t_im *img, int x, int y, int color);
 
 double get_wall_x(t_data *data, int side);
 void helper(t_data *data);
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x, t_doors *closest);
+void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x);
 int set_side(t_data *data);
 void do_y(t_data *data, int x, int *column_drawn);
 int get_texel_color(t_im *texture, int tex_x, int tex_y);
 t_im *get_wall_texture(t_data *data, int side);
-t_doors *open_closest_door(t_data *data,t_doors *closest, int open);
+t_doors *open_closest_door(t_data *data);
 
 int check_door(t_data *data, char **map, int flag);
 int	check_next(char **map, int x, int y);
