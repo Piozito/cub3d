@@ -25,3 +25,27 @@ t_im	*prep_img(void)
 	im->file = NULL;
 	return (im);
 }
+
+void	free_doors(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	if (data->map)
+	{
+		if (data->map->doors)
+		{
+			i = data->map->door_num - 1;
+			while (i >= 0)
+			{
+				if (data->map->doors[i])
+					free(data->map->doors[i]);
+				i--;
+			}
+			if (data->map->doors)
+				free(data->map->doors);
+		}
+		if (data->map)
+			free_map(data->map);
+	}
+}

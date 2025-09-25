@@ -52,12 +52,14 @@ int	check_spaces(char **map)
 	return (0);
 }
 
-t_doors *prep_door(int x, int y)
+t_doors	*prep_door(int x, int y)
 {
-	static t_doors *old_ptr;
-	static int i = 0;
+	static t_doors	*old_ptr;
+	t_doors			*door;
+	static int		i;
 
-	t_doors *door = malloc(sizeof(t_doors));
+	i = 0;
+	door = malloc(sizeof(t_doors));
 	door->id = i;
 	door->coords[0] = x;
 	door->coords[1] = y;
@@ -65,7 +67,7 @@ t_doors *prep_door(int x, int y)
 	door->next = old_ptr;
 	old_ptr = door;
 	i++;
-	return door;
+	return (door);
 }
 
 int	parse_door(t_data *data, char **map, int x, int y)
@@ -85,7 +87,7 @@ int	check_door(t_data *data, char **map, int flag)
 {
 	int	i;
 	int	j;
-	int d;
+	int	d;
 
 	i = 0;
 	d = 0;
@@ -105,30 +107,5 @@ int	check_door(t_data *data, char **map, int flag)
 		}
 		i++;
 	}
-	return (0);
-}
-
-int	line_checker(char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	if (line[i] == '\0')
-	{
-		free(line);
-		return (1);
-	}
-	while (line[i])
-	{
-		if (line[i] != '1')
-		{
-			free(line);
-			return (1);
-		}
-		i++;
-	}
-	free(line);
 	return (0);
 }

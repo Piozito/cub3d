@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:00:02 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/22 13:28:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:14:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	draw_cone(t_data *data)
 		angle -= cone[0] / 2.0 + cone[0] * i / 60;
 		ends[0] = MP_CTR + (int)(cone[1] * cos(angle));
 		ends[1] = MP_CTR + (int)(cone[1] * sin(angle));
-		draw_line(data->image, ends, 0xFF0000);
+		draw_line(data->image, ends);
 		i++;
 	}
 }

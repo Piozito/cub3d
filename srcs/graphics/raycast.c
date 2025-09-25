@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/23 13:57:18 by pio              ###   ########.fr       */
+/*   Updated: 2025/09/25 13:41:53 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ t_doors *open_closest_door(t_data *data)
 	static int flag = 0;
     static t_doors *active_door = NULL;
     double min_dist = 1e9;
-    t_doors *closest = NULL;
 
     if (!active_door || active_door->open == 100 || active_door->open == 10)
     {
@@ -109,16 +108,12 @@ t_doors *open_closest_door(t_data *data)
             if (dist < min_dist)
             {
                 min_dist = dist;
-                closest = door;
+                active_door = door;
             }
         }
-        if (closest && min_dist < 5 && data->player->key_states[6] == 1)
-        {
-            active_door = closest;
+        if (min_dist < 5 && data->player->key_states[6] == 1)
             key = 1;
-        }
     }
-
 	if (active_door && active_door->open == 100)
 		flag = 1;
 	else if(active_door && active_door->open == 10)
@@ -144,7 +139,7 @@ t_doors *open_closest_door(t_data *data)
             }
         }
     }
-    return active_door;
+    return (active_door);
 }
 
 int vectors(void *param)
@@ -154,7 +149,7 @@ int vectors(void *param)
 	int side;
 
 	movement_handler(data);
-	mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	//mlx_mouse_move(data->mlx_ptr, data->window_ptr, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	while (x < WINDOW_WIDTH)
 	{
 		int column_drawn[WINDOW_HEIGHT] = {0};

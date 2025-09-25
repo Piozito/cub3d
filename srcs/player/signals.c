@@ -6,14 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/23 13:21:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:42:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-
-int handle_keypress(int keysym, t_data *data)
+int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
 		ft_clear(data);
@@ -32,79 +31,83 @@ int handle_keypress(int keysym, t_data *data)
 	return (0);
 }
 
-int    camera_handler(int x, int y, t_player *player)
+void	go_pos(t_data *data, int open, int mult, double *pos)
 {
-    static double   last_x = -1;
-    double          rot_speed;
-    double          old_dir_x;
-    double          old_plane_x;
-    int             delta_x;
+	double	next_x;
+	double	next_y;
 
-    (void)y;
-    if (last_x == -1)
-        last_x = x;
-    delta_x = x - last_x;
-    if (delta_x == 0)
-        return (0);
-    rot_speed = (ROT_SPEED * delta_x) * -1;
-    old_dir_x = player->dir_x;
-    player->dir_x = player->dir_x * cos(-rot_speed) - player->dir_y * sin(-rot_speed);
-    player->dir_y = old_dir_x * sin(-rot_speed) + player->dir_y * cos(-rot_speed);
-    old_plane_x = player->plane_x;
-    player->plane_x = player->plane_x * cos(-rot_speed) - player->plane_y * sin(-rot_speed);
-    player->plane_y = old_plane_x * sin(-rot_speed) + player->plane_y * cos(-rot_speed);
-    return (0);
+	if (data->player->key_states[0] == 1)
+	{
+		next_x = pos[0] + pos[2] * (WLK_SPEED * mult);
+		if ((data->map->map[(int)pos[1]][(int)next_x] != '1'
+			&& (data->map->map[(int)pos[1]][(int)next_x] != '2' || open == 10)))
+			pos[0] = next_x;
+		next_y = pos[1] + pos[3] * (WLK_SPEED * mult);
+		if ((data->map->map[(int)next_y][(int)pos[0]] != '1'
+			&& (data->map->map[(int)next_y][(int)pos[0]] != '2' || open == 10)))
+			pos[1] = next_y;
+	}
+	if (data->player->key_states[1] == 1)
+	{
+		next_x = pos[0] - pos[2] * (WLK_SPEED * mult);
+		if ((data->map->map[(int)pos[1]][(int)next_x] != '1'
+			&& (data->map->map[(int)pos[1]][(int)next_x] != '2' || open == 10)))
+			pos[0] = next_x;
+		next_y = pos[1] - pos[3] * (WLK_SPEED * mult);
+		if ((data->map->map[(int)next_y][(int)pos[0]] != '1'
+			&& (data->map->map[(int)next_y][(int)pos[0]] != '2' || open == 10)))
+			pos[1] = next_y;
+	}
 }
 
-void    movement_handler(t_data *data)
+void	go_plane(t_data *data, int open, int mult, double *pos)
 {
-    static int mult = 1;
-    double  next_x;
-    double  next_y;
-	t_doors *closest = NULL;
+	double	next_x;
+	double	next_y;
+
+	if (data->player->key_states[2] == 1)
+	{
+		next_x = pos[0] + data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
+		if (data->map->map[(int)pos[1]][(int)next_x] != '1'
+		&& (data->map->map[(int)pos[1]][(int)next_x] != '2' || open == 10))
+			pos[0] = next_x;
+		next_y = pos[1] + data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
+		if (data->map->map[(int)next_y][(int)pos[0]] != '1'
+		&& (data->map->map[(int)next_y][(int)pos[0]] != '2' || open == 10))
+			pos[1] = next_y;
+	}
+	if (data->player->key_states[3] == 1)
+	{
+		next_x = pos[0] - data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
+		if (data->map->map[(int)pos[1]][(int)next_x] != '1'
+		&& (data->map->map[(int)pos[1]][(int)next_x] != '2' || open == 10))
+			pos[0] = next_x;
+		next_y = pos[1] - data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
+		if (data->map->map[(int)next_y][(int)pos[0]] != '1'
+		&& (data->map->map[(int)next_y][(int)pos[0]] != '2' || open == 10))
+			pos[1] = next_y;
+	}
+}
+
+void	movement_handler(t_data *data)
+{
+	int		mult;
+	double	pos[4];
+	t_doors	*closest;
+
+	pos[0] = data->player->pos_x;
+	pos[1] = data->player->pos_y;
+	pos[2] = data->player->dir_x;
+	pos[3] = data->player->dir_y;
+	mult = 1;
 	closest = open_closest_door(data);
-
-    mult = 1;
-    if (data->player->key_states[4] == 1)
-        mult = 2;
-    if (data->player->key_states[0] == 1)
-    {
-        next_x = data->player->pos_x + data->player->dir_x * (WLK_SPEED * mult);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->map->map[(int)data->player->pos_y][(int)next_x] != '2' || ((closest->open == 10)))))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y + data->player->dir_y * (WLK_SPEED * mult);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->map->map[(int)next_y][(int)data->player->pos_x] != '2' || (closest->open == 10))))
-            data->player->pos_y = next_y;
-    }
-    if (data->player->key_states[1] == 1)
-    {
-        next_x = data->player->pos_x - data->player->dir_x * (WLK_SPEED * mult);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->map->map[(int)data->player->pos_y][(int)next_x] != '2' || (closest->open == 10))))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y - data->player->dir_y * (WLK_SPEED * mult);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->map->map[(int)next_y][(int)data->player->pos_x] != '2' || (closest->open == 10))))
-            data->player->pos_y = next_y;
-    }
-    if (data->player->key_states[2] == 1)
-    {
-        next_x = data->player->pos_x + data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->map->map[(int)data->player->pos_y][(int)next_x] != '2' || (closest->open == 10))))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y + data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->map->map[(int)next_y][(int)data->player->pos_x] != '2' || (closest->open == 10))))
-            data->player->pos_y = next_y;
-    }
-    if (data->player->key_states[3] == 1)
-    {
-        next_x = data->player->pos_x - data->player->plane_x * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)data->player->pos_y][(int)next_x] != '1' && (data->map->map[(int)data->player->pos_y][(int)next_x] != '2' || (closest->open == 10))))
-            data->player->pos_x = next_x;
-        next_y = data->player->pos_y - data->player->plane_y * ((WLK_SPEED * mult) + 0.025);
-        if ((data->map->map[(int)next_y][(int)data->player->pos_x] != '1' && (data->map->map[(int)next_y][(int)data->player->pos_x] != '2' || (closest->open == 10))))
-            data->player->pos_y = next_y;
-    }
+	if (data->player->key_states[4] == 1)
+		mult = 2;
+	go_pos(data, closest->open, mult, pos);
+	go_plane(data, closest->open, mult, pos);
+	data->player->pos_x = pos[0];
+	data->player->pos_y = pos[1];
 }
-
 
 int	handle_btnrelease(int keysym, t_data *data)
 {

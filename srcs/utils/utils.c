@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/22 08:42:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:44:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ void	ft_debug(t_data *data)
 	printf("Map:\n");
 	while (data->map->map[i])
 		printf("%s\n", data->map->map[i++]);
-
 	i = 0;
 	printf("Amount of doors: %d\n", data->map->door_num);
-	while(i < data->map->door_num)
+	while (i < data->map->door_num)
 	{
 		printf("//////////////\n");
 		printf("Door number %d\n", data->map->doors[i]->id + 1);
@@ -117,4 +116,29 @@ char	*ft_strndup(char *s, int n)
 	}
 	ptr[i] = '\0';
 	return (ptr);
+}
+
+int	line_checker(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	if (line[i] == '\0')
+	{
+		free(line);
+		return (1);
+	}
+	while (line[i])
+	{
+		if (line[i] != '1')
+		{
+			free(line);
+			return (1);
+		}
+		i++;
+	}
+	free(line);
+	return (0);
 }

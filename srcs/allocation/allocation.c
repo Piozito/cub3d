@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/23 13:21:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:53:07 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_data_structs(t_data *data, char *file)
 	data->player->plane_y = 0.0;
 	data->player->tex_x = 0;
 	data->player->tex_y = 0;
-	while(i < 7)
+	while (i < 7)
 		data->player->key_states[i++] = 0;
 	data->map = malloc(sizeof(t_map));
 	data->map->celling = 0;
@@ -87,8 +87,6 @@ void	free_map(t_map *map)
 
 int	ft_clear(t_data *data)
 {
-	int	i;
-
 	free_img(data->mlx_ptr, data->map->north);
 	free_img(data->mlx_ptr, data->map->south);
 	free_img(data->mlx_ptr, data->map->east);
@@ -96,19 +94,18 @@ int	ft_clear(t_data *data)
 	free_img(data->mlx_ptr, data->map->door_top);
 	free_img(data->mlx_ptr, data->map->door_bot);
 	free_img(data->mlx_ptr, data->image);
-	i = data->map->door_num - 1;
-	while(i >= 0)
-		free(data->map->doors[i--]);
-	free(data->map->doors);
-	free_map(data->map);
+	free_doors(data);
 	if (data->player)
 		free(data->player);
 	if (data->window_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->window_ptr);
 	if (data->mlx_ptr)
+	{
 		mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
-	free(data);
+		free(data->mlx_ptr);
+	}
+	if (data)
+		free(data);
 	exit(0);
 	return (0);
 }

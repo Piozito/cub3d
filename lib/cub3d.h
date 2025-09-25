@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/23 13:25:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:52:04 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	line_checker(char *line);
 
 void	draw_circle(void *mlx_ptr, int radius, int color);
 void	draw_help(int *delta, int *step, int *err, int *crds);
-void	draw_line(void *mlx_ptr, int *ends, int color);
+void	draw_line(void *mlx_ptr, int *ends);
 void	circle_help(void *mlx_ptr, int *crds, int color);
 void	draw_cone(t_data *data);
 void	draw_minimap(t_data *data);
@@ -187,5 +187,8 @@ void	draw_circle_outline(void *mlx_ptr, int radius, int color);
 void	init_file(t_data *data, char *file);
 void	init_data_structs(t_data *data, char *file);
 t_im	*prep_img(void);
+
+void	free_doors(t_data *data);
+void	free_map(t_map *map);
 
 #endif

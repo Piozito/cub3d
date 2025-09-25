@@ -46,7 +46,16 @@ void	draw_help(int *delta, int *step, int *err, int *crds)
 	}
 }
 
-void	draw_line(void *mlx_ptr, int *ends, int color)
+void	draw_line_help(void *mlx_ptr, int *cords)
+{
+	my_mlx_pixel_put(mlx_ptr, cords[0], cords[1], 0xFF0000);
+	my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] - 1, 0xFF0000);
+	my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] - 1, 0xFF0000);
+	my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] + 1, 0xFF0000);
+	my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] + 1, 0xFF0000);
+}
+
+void	draw_line(void *mlx_ptr, int *ends)
 {
 	int	delta[2];
 	int	step[2];
@@ -68,11 +77,7 @@ void	draw_line(void *mlx_ptr, int *ends, int color)
 	err[0] = delta[0] + delta[1];
 	while (1)
 	{
-		my_mlx_pixel_put(mlx_ptr, cords[0], cords[1], color);
-		my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] - 1, color);
-		my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] - 1, color);
-		my_mlx_pixel_put(mlx_ptr, cords[0] - 1, cords[1] + 1, color);
-		my_mlx_pixel_put(mlx_ptr, cords[0] + 1, cords[1] + 1, color);
+		draw_line_help(mlx_ptr, cords);
 		if (cords[0] == ends[0] && cords[1] == ends[1])
 			break ;
 		draw_help(delta, step, err, cords);
