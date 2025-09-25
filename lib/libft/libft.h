@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:47:48 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/07/16 13:19:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:18:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # include <strings.h>
 # include <unistd.h>
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 42
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 long long			ft_atoi(const char *nptr);
 void				ft_bzero(void *s, size_t n);

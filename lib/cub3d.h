@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 13:52:04 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:16:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@
 # define WINDOW_HEIGHT 1080
 # define TEXTURE_SIZE 256
 
-#define WLK_SPEED 0.075
-#define ROT_SPEED 0.00025
+# define WLK_SPEED 0.075
+# define ROT_SPEED 0.00025
 
-#define MP_ZOOM 15.0
-#define MP_RDS 75
-#define MP_CTR 120
+# define MP_ZOOM 15.0
+# define MP_RDS 75
+# define MP_CTR 120
 
 typedef struct s_im
 {
@@ -52,12 +52,10 @@ typedef struct s_im
 	char		*file;
 }				t_im;
 
-typedef struct	s_doors
+typedef struct s_doors
 {
-	int id;
-	int coords[2];
-	int open;
-	void *next;
+	int			coords[2];
+	int			open;
 }				t_doors;
 
 typedef struct s_map
@@ -88,7 +86,6 @@ typedef struct s_player
 	double		plane_x;
 	double		plane_y;
 	double		camera_x;
-	double		angle;
 	double		ray_dir_x;
 	double		ray_dir_y;
 	int			map_x;
@@ -103,9 +100,6 @@ typedef struct s_player
 	int			line_height;
 	int			draw_start;
 	int			draw_end;
-	int			tex_x;
-	int			tex_y;
-	double			wall_x;
 	int			key_states[7];
 }				t_player;
 
@@ -114,9 +108,8 @@ typedef struct s_player
 //key_states[2] D
 //key_states[3] A
 //key_states[4] Shift
-//key_states[5] Space
+//key_states[5] Space UNUSED
 //key_states[6] E
-
 
 typedef struct s_data
 {
@@ -129,66 +122,63 @@ typedef struct s_data
 	t_map		*map;
 }				t_data;
 
-void		ft_debug(t_data *data);
-int			ft_clear(t_data *data);
-void		ext_checker(char *path);
-void		map_setter(t_data *data, ssize_t j, char **map);
-void		floodfill(t_data *data, char **visited, int x, int y);
-int			rgb(char *str);
-int			vectors(void *param);
-void		mlx_starter(t_data *data);
-int			check_flag(int *flags);
-int			parsing(t_data *data);
-int			line_check(char **map);
-int			line_checker(char *line);
-int			player_check(char **map);
-int			check_attribute(char *str);
-int			top_and_bottom(char **map);
-int			check_last_char(char *line);
-int			find_spawn(t_data *data, char **map);
-int			check_visited(t_data *data, char **visited);
-int			loop_help(t_data *data, char *str, int *flags);
-char		*ft_strndup(char *s, int n);
-size_t		get_biggest_line(char **map);
-ssize_t		get_file_lines(char **argv);
-ssize_t		find_char(const char *str, char c, ssize_t len);
-
-int	handle_keypress(int keysym, t_data *data);
-int	handle_btnrelease(int keysym, t_data *data);
-
+int		rgb(char *str);
+int		vectors(void *param);
+int		parsing(t_data *data);
+int		check_flag(int *flags);
+int		line_check(char **map);
+int		ft_clear(t_data *data);
+int		set_side(t_data *data);
+int		player_check(char **map);
+int		check_spaces(char **map);
+int		line_checker(char *line);
+int		top_and_bottom(char **map);
+int		check_attribute(char *str);
+int		check_last_char(char *line);
+int		find_spawn(t_data *data, char **map);
+int		handle_keypress(int keysym, t_data *data);
+int		handle_btnrelease(int keysym, t_data *data);
+int		check_next(char **map, int x, int y);
+int		check_visited(t_data *data, char **visited);
+int		check_door(t_data *data, char **map, int flag);
 int		camera_handler(int x, int y, t_player *player);
-void	movement_handler(t_data *data);
+int		loop_help(t_data *data, char *str, int *flags);
+int		get_texel_color(t_im *texture, int tex_x, int tex_y);
 
-void my_mlx_pixel_put(t_im *img, int x, int y, int color);
-
-double get_wall_x(t_data *data, int side);
-void helper(t_data *data);
-void draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x);
-int set_side(t_data *data);
-void do_y(t_data *data, int x, int *column_drawn);
-int get_texel_color(t_im *texture, int tex_x, int tex_y);
-t_im *get_wall_texture(t_data *data, int side);
-t_doors *open_closest_door(t_data *data);
-
-int check_door(t_data *data, char **map, int flag);
-int	check_next(char **map, int x, int y);
-int	check_spaces(char **map);
-int	line_checker(char *line);
-
-void	draw_circle(void *mlx_ptr, int radius, int color);
-void	draw_help(int *delta, int *step, int *err, int *crds);
-void	draw_line(void *mlx_ptr, int *ends);
-void	circle_help(void *mlx_ptr, int *crds, int color);
+void	free_map(t_map *map);
+void	helper(t_data *data);
+void	ft_debug(t_data *data);
+void	ext_checker(char *path);
 void	draw_cone(t_data *data);
+void	free_doors(t_data *data);
+void	mlx_starter(t_data *data);
 void	draw_minimap(t_data *data);
-void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color);
-void	draw_circle_outline(void *mlx_ptr, int radius, int color);
-
+void	movement_handler(t_data *data);
+void	draw_line(void *mlx_ptr, int *ends);
 void	init_file(t_data *data, char *file);
 void	init_data_structs(t_data *data, char *file);
-t_im	*prep_img(void);
+void	do_y(t_data *data, int x, int *column_drawn);
+void	map_setter(t_data *data, ssize_t j, char **map);
+void	circle_help(void *mlx_ptr, int *crds, int color);
+void	draw_circle(void *mlx_ptr, int radius, int color);
+void	my_mlx_pixel_put(t_im *img, int x, int y, int color);
+void	draw_help(int *delta, int *step, int *err, int *crds);
+void	floodfill(t_data *data, char **visited, int x, int y);
+void	draw_circle_outline(void *mlx_ptr, int radius, int color);
+void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color);
+void	draw_texture(t_data *data, int side, int *column_drawn, int tex_x, int x);
 
-void	free_doors(t_data *data);
-void	free_map(t_map *map);
+char	*ft_strndup(char *s, int n);
+
+size_t	get_biggest_line(char **map);
+
+ssize_t	get_file_lines(char **argv);
+ssize_t	find_char(const char *str, char c, ssize_t len);
+
+double	get_wall_x(t_data *data, int side);
+
+t_im	*prep_img(void);
+t_im	*get_wall_texture(t_data *data, int side);
+t_doors	*open_closest_door(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 13:44:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:17:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ void	ft_debug(t_data *data)
 	while (i < data->map->door_num)
 	{
 		printf("//////////////\n");
-		printf("Door number %d\n", data->map->doors[i]->id + 1);
-		printf("id: %d\n", data->map->doors[i]->id);
 		printf("x: %d\n", data->map->doors[i]->coords[0]);
 		printf("y: %d\n", data->map->doors[i]->coords[1]);
 		printf("open: %d\n", data->map->doors[i]->open);
-		printf("Next: %p\n", data->map->doors[i]->next);
 		i++;
 	}
 }

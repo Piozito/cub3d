@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 13:42:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:20:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,23 @@ void	go_plane(t_data *data, int open, int mult, double *pos)
 void	movement_handler(t_data *data)
 {
 	int		mult;
+	int		open;
 	double	pos[4];
 	t_doors	*closest;
 
+	open = 100;
 	pos[0] = data->player->pos_x;
 	pos[1] = data->player->pos_y;
 	pos[2] = data->player->dir_x;
 	pos[3] = data->player->dir_y;
 	mult = 1;
 	closest = open_closest_door(data);
+	if(closest)
+		open = closest->open;
 	if (data->player->key_states[4] == 1)
 		mult = 2;
-	go_pos(data, closest->open, mult, pos);
-	go_plane(data, closest->open, mult, pos);
+	go_pos(data, open, mult, pos);
+	go_plane(data, open, mult, pos);
 	data->player->pos_x = pos[0];
 	data->player->pos_y = pos[1];
 }
