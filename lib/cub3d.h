@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 15:16:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:59:22 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void	draw_cone(t_data *data);
 void	free_doors(t_data *data);
 void	mlx_starter(t_data *data);
 void	draw_minimap(t_data *data);
+void	tex_initialiser(t_data *data);
 void	movement_handler(t_data *data);
 void	draw_line(void *mlx_ptr, int *ends);
 void	init_file(t_data *data, char *file);

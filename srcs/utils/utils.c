@@ -6,13 +6,12 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 14:17:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:07:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-//delete before delivery
 void	ft_debug(t_data *data)
 {
 	ssize_t	i;
@@ -46,7 +45,7 @@ void	ft_debug(t_data *data)
 	printf("Amount of doors: %d\n", data->map->door_num);
 	while (i < data->map->door_num)
 	{
-		printf("//////////////\n");
+		printf("--------------------\n");
 		printf("x: %d\n", data->map->doors[i]->coords[0]);
 		printf("y: %d\n", data->map->doors[i]->coords[1]);
 		printf("open: %d\n", data->map->doors[i]->open);

@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/09/25 13:43:19 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/09/25 17:00:15 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SOURCES = \
 	srcs/parsing/parsing_help.c srcs/parsing/parsing_help2.c srcs/graphics/raycast.c \
 	srcs/minimap/minimap.c srcs/player/signals.c srcs/allocation/allocation.c \
 	srcs/graphics/raycast_help.c srcs/parsing/parsing_help3.c srcs/minimap/minimap_help.c \
-	srcs/allocation/allocation_help.c srcs/player/signals_help.c
+	srcs/allocation/allocation_help.c srcs/player/signals_help.c srcs/graphics/door.c \
+	srcs/graphics/initializer.c
 OBJECTS = $(SOURCES:.c=.o)
 MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux

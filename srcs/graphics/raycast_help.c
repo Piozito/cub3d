@@ -6,15 +6,15 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:03:35 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/01 14:26:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:07:07 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-double get_wall_x(t_data *data, int side)
+double	get_wall_x(t_data *data, int side)
 {
-	double wall_x;
+	double	wall_x;
 
 	if (side == 0)
 		wall_x = data->player->pos_y + data->player->perp_wall_dist * data->player->ray_dir_y;
@@ -24,7 +24,7 @@ double get_wall_x(t_data *data, int side)
 	return (wall_x);
 }
 
-void helper(t_data *data)
+void	helper(t_data *data)
 {
 	data->player->ray_dir_x = data->player->dir_x + data->player->plane_x * data->player->camera_x;
 	data->player->ray_dir_y = data->player->dir_y + data->player->plane_y * data->player->camera_x;
@@ -54,9 +54,9 @@ void helper(t_data *data)
 	}
 }
 
-int set_side(t_data *data)
+int	set_side(t_data *data)
 {
-	int side;
+	int	side;
 
 	if (data->player->side_dist_x < data->player->side_dist_y)
 	{
@@ -70,12 +70,12 @@ int set_side(t_data *data)
 		data->player->map_y += data->player->step_y;
 		side = 1;
 	}
-	return(side);
+	return (side);
 }
 
-void do_y(t_data *data, int x, int *column_drawn)
+void	do_y(t_data *data, int x, int *column_drawn)
 {
-	int y;
+	int	y;
 
 	y = 0;
 	while (y < WINDOW_HEIGHT)
