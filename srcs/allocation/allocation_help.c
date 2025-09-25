@@ -33,7 +33,7 @@ void	free_doors(t_data *data)
 	i = 0;
 	if (data->map)
 	{
-		if (data->map->doors && data->map->door_num < 0)
+		if (data->map->doors && data->map->door_num > 0)
 		{
 			while (i < data->map->door_num)
 			{

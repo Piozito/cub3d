@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 14:20:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:17:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	handle_keypress(int keysym, t_data *data)
 		data->player->key_states[3] = 1;
 	if (keysym == XK_Shift_L)
 		data->player->key_states[4] = 1;
-	if (keysym == XK_e)
+	if (keysym == XK_e
+		&& data->map->map[(int)data->player->pos_y]
+		[(int)data->player->pos_x] != '2')
 		data->player->key_states[6] = 1;
 	return (0);
 }
@@ -103,7 +105,7 @@ void	movement_handler(t_data *data)
 	pos[3] = data->player->dir_y;
 	mult = 1;
 	closest = open_closest_door(data);
-	if(closest)
+	if (closest)
 		open = closest->open;
 	if (data->player->key_states[4] == 1)
 		mult = 2;
