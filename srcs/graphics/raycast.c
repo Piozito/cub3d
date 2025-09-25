@@ -3,61 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: pio <pio@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/09/25 13:41:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:02:30 by pio              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
-
-void	my_mlx_pixel_put(t_im *img, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = img->addr + (y * img->line_length + x * (img->bpp / 8));
-	*(int *)dst = color;
-}
-
-void	*my_mlx_xpm_image(t_data *data, char *file)
-{
-	int	width;
-	int	height;
-
-	width = data->image->width;
-	height = data->image->height;
-	return (mlx_xpm_file_to_image(data->mlx_ptr, file, &width, &height));
-}
-
-void	*my_addr(t_im *dir)
-{
-	return (mlx_get_data_addr(dir->mlx_img, &dir->bpp,
-			&dir->line_length, &dir->endian));
-}
-
-void	door_initialiser(t_data *data)
-{
-	data->map->door_top->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_top->file);
-	data->map->door_top->addr = my_addr(data->map->door_top);
-	data->map->door_bot->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_bot->file);
-	data->map->door_bot->addr = my_addr(data->map->door_bot);
-}
-
-void	tex_initialiser(t_data *data)
-{
-	data->map->east->mlx_img = my_mlx_xpm_image(data, data->map->east->file);
-	data->map->east->addr = my_addr(data->map->east);
-	data->map->north->mlx_img = my_mlx_xpm_image(data, data->map->north->file);
-	data->map->north->addr = my_addr(data->map->north);
-	data->map->south->mlx_img = my_mlx_xpm_image(data, data->map->south->file);
-	data->map->south->addr = my_addr(data->map->south);
-	data->map->west->mlx_img = my_mlx_xpm_image(data, data->map->west->file);
-	data->map->west->addr = my_addr(data->map->west);
-	door_initialiser(data);
-}
 
 void mlx_starter(t_data *data)
 {
@@ -87,59 +40,6 @@ t_im *get_wall_texture(t_data *data, int side)
 		return data->map->south;
 	else
 		return data->map->north;
-}
-
-t_doors *open_closest_door(t_data *data)
-{
-    static int key = 0;
-	static int flag = 0;
-    static t_doors *active_door = NULL;
-    double min_dist = 1e9;
-
-    if (!active_door || active_door->open == 100 || active_door->open == 10)
-    {
-        key = 0;
-        for (int i = 0; i < data->map->door_num; i++)
-        {
-            t_doors *door = data->map->doors[i];
-            double dx = door->coords[1] + 0.5 - data->player->pos_x;
-            double dy = door->coords[0] + 0.5 - data->player->pos_y;
-            double dist = dx * dx + dy * dy;
-            if (dist < min_dist)
-            {
-                min_dist = dist;
-                active_door = door;
-            }
-        }
-        if (min_dist < 5 && data->player->key_states[6] == 1)
-            key = 1;
-    }
-	if (active_door && active_door->open == 100)
-		flag = 1;
-	else if(active_door && active_door->open == 10)
-		flag = 2;
-    if (active_door && key == 1)
-    {
-        if (flag == 2 && active_door->open < 100)
-        {
-            active_door->open += 2;
-            if (active_door->open >= 100)
-            {
-                active_door->open = 100;
-                key = 0;
-            }
-        }
-        else if (flag == 1 && active_door->open > 10)
-        {
-            active_door->open -= 2;
-            if (active_door->open <= 10)
-            {
-                active_door->open = 10;
-                key = 0;
-            }
-        }
-    }
-    return (active_door);
 }
 
 int vectors(void *param)
