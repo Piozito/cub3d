@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/09/25 17:00:15 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/10/20 10:55:02 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SOURCES = \
 	srcs/minimap/minimap.c srcs/player/signals.c srcs/allocation/allocation.c \
 	srcs/graphics/raycast_help.c srcs/parsing/parsing_help3.c srcs/minimap/minimap_help.c \
 	srcs/allocation/allocation_help.c srcs/player/signals_help.c srcs/graphics/door.c \
-	srcs/graphics/initializer.c
+	srcs/graphics/initializer.c srcs/graphics/raycast_help2.c srcs/graphics/raycast_help3.c
 OBJECTS = $(SOURCES:.c=.o)
 MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux
