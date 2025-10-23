@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/20 13:09:12 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:05:57 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,15 @@ typedef struct s_player
 
 typedef struct s_tex
 {
-	int color;
-	int tex_y;
-	double wall_height;
-	double step;
-	double tex_pos;
-	int open_px;
-	int drew;
-	int y;
-	int x;
+	int			color;
+	int			tex_y;
+	double		wall_height;
+	double		step;
+	double		tex_pos;
+	int			open_px;
+	int			drew;
+	int			y;
+	int			x;
 }				t_tex;
 
 //key_states[0] W
@@ -165,7 +165,7 @@ int		texturer(t_data *data, int i, int tex_x, int *column_drawn);
 
 void	free_map(t_map *map);
 void	helper(t_data *data);
-void	ft_debug(t_data *data);
+//void	ft_debug(t_data *data);
 void	ext_checker(char *path);
 void	draw_cone(t_data *data);
 void	free_doors(t_data *data);
@@ -202,6 +202,6 @@ double	get_wall_x(t_data *data);
 t_im	*prep_img(void);
 t_im	*get_wall_texture(t_data *data);
 t_doors	*open_closest_door(t_data *data);
-t_doors *find_door(t_doors **array, int map_y, int map_x);
+t_doors	*find_door(t_doors **array, int map_y, int map_x);
 
 #endif
