@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 13:50:36 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/06 11:30:21 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	check_attribute(char *str)
 	attr[5] = "C ";
 	attr[6] = "DT ";
 	attr[7] = "DB ";
-	attr[8] = NULL;
 	while (attr[i])
 	{
 		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
@@ -80,7 +79,7 @@ int	check_attribute(char *str)
 void	set_hooks(t_data *data)
 {
 	mlx_starter(data);
-	//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+	mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
 	mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
 	mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask,
 		&camera_handler, data->player);

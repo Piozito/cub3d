@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:00:02 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 15:20:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:09:12 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	draw_cone(t_data *data)
 {
-	float	cone[2];
-	float	angle;
+	double	cone[2];
+	double	angle;
 	int		ends[2];
 	int		i;
 

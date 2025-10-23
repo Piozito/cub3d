@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 15:16:35 by pio               #+#    #+#             */
-/*   Updated: 2025/09/25 17:10:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/21 12:21:24 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,43 +46,47 @@ t_doors	*open_door_helper(t_doors *active_door, int *flag, int *key)
 	return (active_door);
 }
 
+double	*helper_door(t_data *data, double *d, t_doors **a_d, t_doors **door)
+{
+	*door = data->map->doors[(int)d[4]];
+	d[0] = (*door)->coords[1] + 0.5 - data->player->pos_x;
+	d[1] = (*door)->coords[0] + 0.5 - data->player->pos_y;
+	d[2] = d[0] * d[0] + d[1] * d[1];
+	if (d[2] < d[3])
+	{
+		d[3] = d[2];
+		*a_d = *door;
+	}
+	return (d);
+}
+
+/*d[0] = dx, d[1] = dy, d[2] = dist, d[3] = dist, d[4] = i*/
+
 t_doors	*open_closest_door(t_data *data)
 {
-	static int		key = 0;
-	static int		flag = 0;
-	static t_doors	*active_door = NULL;
-	double			min_dist;
+	static t_doors	*active_door;
 	t_doors			*door;
-	double			dx;
-	double			dy;
-	double			dist;
-	int				i;
+	double			d[5];
 
-	i = 0;
-	min_dist = 1e9;
+	d[4] = 0;
+	d[3] = 1e9;
+	door = NULL;
 	if (!active_door || active_door->open == 100 || active_door->open == 10)
 	{
-		key = 0;
-		while (i < data->map->door_num)
+		data->map->key = 0;
+		while (d[4] < data->map->door_num)
 		{
-			door = data->map->doors[i];
-			dx = door->coords[1] + 0.5 - data->player->pos_x;
-			dy = door->coords[0] + 0.5 - data->player->pos_y;
-			dist = dx * dx + dy * dy;
-			if (dist < min_dist)
-			{
-				min_dist = dist;
-				active_door = door;
-			}
-			i++;
+			helper_door(data, d, &active_door, &door);
+			d[4]++;
 		}
-		if (min_dist < 5 && data->player->key_states[6] == 1)
-			key = 1;
+		if (d[3] < 5 && data->player->key_states[6] == 1)
+			data->map->key = 1;
 	}
 	if (active_door && active_door->open == 100)
-		flag = 1;
+		data->map->flag = 1;
 	else if (active_door && active_door->open == 10)
-		flag = 2;
-	active_door = open_door_helper(active_door, &flag, &key);
+		data->map->flag = 2;
+	active_door = open_door_helper
+		(active_door, &data->map->flag, &data->map->key);
 	return (active_door);
 }
