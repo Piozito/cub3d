@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/20 11:49:09 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:11:22 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	init_data_structs(t_data *data, char *file)
 	data->map->floor = 0;
 	data->map->spawn[0] = -1;
 	data->map->spawn[1] = -1;
+	data->map->doors = NULL;
 	data->map->door_num = 0;
 	data->map->map_height = 0;
 	data->map->map_lenght = 0;
@@ -106,6 +107,7 @@ int	ft_clear(t_data *data)
 	free_img(data->mlx_ptr, data->map->door_bot);
 	free_img(data->mlx_ptr, data->image);
 	free_doors(data);
+	free(data->tex);
 	if (data->player)
 		free(data->player);
 	if (data->window_ptr)

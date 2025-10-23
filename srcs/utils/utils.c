@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/25 17:07:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:04:53 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/cub3d.h"
 
-void	ft_debug(t_data *data)
+/* void	ft_debug(t_data *data)
 {
 	ssize_t	i;
 
@@ -51,7 +51,7 @@ void	ft_debug(t_data *data)
 		printf("open: %d\n", data->map->doors[i]->open);
 		i++;
 	}
-}
+} */
 
 ssize_t	find_char(const char *str, char c, ssize_t len)
 {

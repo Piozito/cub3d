@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/06 11:30:21 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:04:57 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,11 @@ int	check_attribute(char *str)
 		return (-1);
 }
 
+//mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
+
 void	set_hooks(t_data *data)
 {
 	mlx_starter(data);
-	mlx_mouse_hide(data->mlx_ptr, data->window_ptr);
 	mlx_hook(data->window_ptr, DestroyNotify, NoEventMask, &ft_clear, data);
 	mlx_hook(data->window_ptr, MotionNotify, PointerMotionMask,
 		&camera_handler, data->player);
@@ -101,10 +102,8 @@ int	main(int argc, char **argv)
 		if (get_textures(data, argv) == 1 || parsing(data) == 1)
 		{
 			printf("Error\nInvalid map.\n");
-			ft_debug(data);
 			ft_clear(data);
 		}
-		ft_debug(data);
 		set_hooks(data);
 		mlx_loop(data->mlx_ptr);
 		ft_clear(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 13:47:32 by pio               #+#    #+#             */
-/*   Updated: 2025/09/25 17:04:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:31:36 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,27 @@ void	door_initialiser(t_data *data)
 
 void	tex_initialiser(t_data *data)
 {
-	data->map->east->mlx_img = my_mlx_xpm_image(data, data->map->east->file);
+	if (data->map->east->file && data->map->west->file
+		&& data->map->north->file && data->map->south->file)
+	{
+		data->map->east->mlx_img = my_mlx_xpm_image(data,
+				data->map->east->file);
+		data->map->north->mlx_img = my_mlx_xpm_image(data,
+				data->map->north->file);
+		data->map->south->mlx_img = my_mlx_xpm_image(data,
+				data->map->south->file);
+		data->map->west->mlx_img = my_mlx_xpm_image(data,
+				data->map->west->file);
+	}
+	if (!data->map->west->mlx_img || !data->map->east->mlx_img
+		|| !data->map->north->mlx_img || !data->map->south->mlx_img)
+	{
+		printf("Provided texture file doesn't exist.\n");
+		ft_clear(data);
+	}
 	data->map->east->addr = my_addr(data->map->east);
-	data->map->north->mlx_img = my_mlx_xpm_image(data, data->map->north->file);
-	data->map->north->addr = my_addr(data->map->north);
-	data->map->south->mlx_img = my_mlx_xpm_image(data, data->map->south->file);
-	data->map->south->addr = my_addr(data->map->south);
-	data->map->west->mlx_img = my_mlx_xpm_image(data, data->map->west->file);
 	data->map->west->addr = my_addr(data->map->west);
+	data->map->north->addr = my_addr(data->map->north);
+	data->map->south->addr = my_addr(data->map->south);
 	door_initialiser(data);
 }
