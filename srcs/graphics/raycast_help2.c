@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_help2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:52:42 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/10/23 11:51:42 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 09:48:57 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	mlx_starter(t_data *data)
 
 	t = "cub3D - Made by fragarc2 and aaleixo-";
 	data->mlx_ptr = mlx_init();
+	tex_initialiser(data);
 	data->window_ptr = mlx_new_window(data->mlx_ptr, W_W, W_H, t);
 	data->image->mlx_img = mlx_new_image(data->mlx_ptr, W_W, W_H);
 	data->image->addr = mlx_get_data_addr(data->image->mlx_img,
 			&data->image->bpp,
 			&data->image->line_length, &data->image->endian);
-	tex_initialiser(data);
 }
 
 int	get_texel_color(t_im *texture, int tex_x, int tex_y)
