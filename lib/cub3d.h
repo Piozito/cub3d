@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/28 14:30:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:37:14 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_player
 	int			draw_start;
 	int			draw_end;
 	int			side;
-	int			key_states[7];
+	int			key_states[9];
 }				t_player;
 
 typedef struct s_tex
@@ -125,6 +125,8 @@ typedef struct s_tex
 //key_states[4] Shift
 //key_states[5] Space UNUSED
 //key_states[6] E
+//key_states[7] <-
+//key_states[8] ->
 
 typedef struct s_data
 {
@@ -205,5 +207,6 @@ t_doors	*open_closest_door(t_data *data);
 t_doors	*find_door(t_doors **array, int map_y, int map_x);
 
 void	*my_malloc(t_data *data, int size);
+void	arrow_handler(t_player *player);
 
 #endif

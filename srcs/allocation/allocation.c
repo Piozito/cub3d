@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/28 14:12:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:36:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	init_data_structs(t_data *data, char *file)
 	data->player->plane_x = 0.0;
 	data->player->plane_y = 0.0;
 	data->player->side = 0;
-	while (i < 7)
+	while (i < 9)
 		data->player->key_states[i++] = 0;
 	data->map = my_malloc(data, sizeof(t_map));
 	data->map->celling = 0;
