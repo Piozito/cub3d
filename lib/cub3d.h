@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:08:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/23 13:05:57 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:30:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,9 +199,11 @@ ssize_t	find_char(const char *str, char c, ssize_t len);
 
 double	get_wall_x(t_data *data);
 
-t_im	*prep_img(void);
+t_im	*prep_img(t_data *data);
 t_im	*get_wall_texture(t_data *data);
 t_doors	*open_closest_door(t_data *data);
 t_doors	*find_door(t_doors **array, int map_y, int map_x);
+
+void	*my_malloc(t_data *data, int size);
 
 #endif

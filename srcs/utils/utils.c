@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 13:25:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/23 13:04:53 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:29:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ ssize_t	get_file_lines(char **argv)
 
 	fd = open(argv[1], O_RDONLY);
 	str = malloc(BUFFER_SIZE + 1);
+	if (!str)
+	{
+		close(fd);
+		return (-1);
+	}
 	lines = 0;
 	while (str)
 	{
@@ -137,4 +142,19 @@ int	line_checker(char *line)
 	}
 	free(line);
 	return (0);
+}
+
+void	*my_malloc(t_data *data, int size)
+{
+	void	*ptr;
+
+	ptr = malloc(size);
+	if (!ptr)
+	{
+		printf("Malloc error.\n");
+		if (data)
+			ft_clear(data);
+		exit(1);
+	}
+	return (ptr);
 }

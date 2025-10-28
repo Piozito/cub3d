@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:51:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/22 08:52:07 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:28:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ int	parsing(t_data *data)
 		return (1);
 	if (check_door(data, data->map->map, 0) == 1)
 		return (1);
-	data->map->doors = malloc(sizeof(t_doors *) * data->map->door_num);
-	check_door(data, data->map->map, 1);
+	if (data->map->door_num > 0)
+	{
+		data->map->doors = my_malloc(data, (sizeof(t_doors *)
+					* data->map->door_num));
+		check_door(data, data->map->map, 1);
+	}
 	return (0);
 }

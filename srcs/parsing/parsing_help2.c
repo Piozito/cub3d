@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:54:13 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/09/22 08:54:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:12:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	map_setter(t_data *data, ssize_t j, char **map)
 	ssize_t	i;
 
 	i = 0;
-	data->map->map = malloc(sizeof(char *) * (j + 1));
+	data->map->map = my_malloc(data, (sizeof(char *) * (j + 1)));
 	while (map[i])
 	{
 		data->map->map[i] = ft_strdup(map[i]);

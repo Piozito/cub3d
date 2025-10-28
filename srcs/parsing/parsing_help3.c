@@ -52,11 +52,11 @@ int	check_spaces(char **map)
 	return (0);
 }
 
-t_doors	*prep_door(int x, int y)
+t_doors	*prep_door(t_data *data, int x, int y)
 {
 	t_doors			*door;
 
-	door = malloc(sizeof(t_doors));
+	door = my_malloc(data, sizeof(t_doors));
 	door->coords[0] = x;
 	door->coords[1] = y;
 	door->open = 100;
@@ -94,7 +94,7 @@ int	check_door(t_data *data, char **map, int flag)
 				if (flag == 0 && parse_door(data, map, i, j) == 1)
 					return (1);
 				if (flag == 1)
-					data->map->doors[d++] = prep_door(i, j);
+					data->map->doors[d++] = prep_door(data, i, j);
 			}
 			j++;
 		}

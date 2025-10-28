@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/23 13:04:57 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:09:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	get_textures(t_data *data, char **argv)
 	i = 0;
 	help = 0;
 	str = "";
-	map = malloc(sizeof(char *) * get_file_lines(argv));
+	map = my_malloc(data, (sizeof(char *) * get_file_lines(argv)));
 	flag(flags);
 	while (str)
 	{
@@ -97,7 +97,7 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 	{
 		ext_checker(argv[1]);
-		data = malloc(sizeof(t_data));
+		data = my_malloc(NULL, sizeof(t_data));
 		init_data_structs(data, argv[1]);
 		if (get_textures(data, argv) == 1 || parsing(data) == 1)
 		{

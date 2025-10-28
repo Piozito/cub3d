@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 13:47:32 by pio               #+#    #+#             */
-/*   Updated: 2025/10/23 14:31:36 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:28:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,19 @@ void	*my_addr(t_im *dir)
 
 void	door_initialiser(t_data *data)
 {
-	data->map->door_top->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_top->file);
+	if (data->map->door_top->file && data->map->door_bot->file)
+	{
+		data->map->door_top->mlx_img = my_mlx_xpm_image(data,
+				data->map->door_top->file);
+		data->map->door_bot->mlx_img = my_mlx_xpm_image(data,
+				data->map->door_bot->file);
+	}
+	if (!data->map->door_top->mlx_img || !data->map->door_bot->mlx_img)
+	{
+		printf("Provided texture file doesn't exist.\n");
+		ft_clear(data);
+	}
 	data->map->door_top->addr = my_addr(data->map->door_top);
-	data->map->door_bot->mlx_img = my_mlx_xpm_image(data,
-			data->map->door_bot->file);
 	data->map->door_bot->addr = my_addr(data->map->door_bot);
 }
 

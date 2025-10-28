@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
+#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/10/20 10:55:02 by fragarc2         ###   ########.fr        #
+#    Updated: 2025/10/28 14:30:50 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+NAME = cub3D
 SOURCES = \
 	srcs/main.c srcs/utils/utils.c srcs/utils/utils2.c srcs/parsing/parsing.c \
 	srcs/parsing/parsing_help.c srcs/parsing/parsing_help2.c srcs/graphics/raycast.c \
@@ -46,5 +46,8 @@ fclean: clean
 	$(MAKE_LIBFT) fclean
 
 re: fclean all
+
+val: re
+	valgrind --leak-check=full --track-fds=yes --track-origins=yes ./cub3D maps/valid/test2.cub
 
 .PHONY: all clean fclean re

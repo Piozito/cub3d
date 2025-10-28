@@ -12,11 +12,11 @@
 
 #include "../../lib/cub3d.h"
 
-t_im	*prep_img(void)
+t_im	*prep_img(t_data *data)
 {
 	t_im	*im;
 
-	im = malloc(sizeof(t_im));
+	im = my_malloc(data, sizeof(t_im));
 	im->mlx_img = NULL;
 	im->addr = NULL;
 	im->bpp = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:00:02 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/20 13:09:12 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:27:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void	draw_cone(t_data *data)
 	}
 }
 
+void	draw_minimap_pixel_helper(t_data *data, int count[2], int *color)
+{
+	if (MP_CTR + count[0] >= 0 && MP_CTR + count[1] >= 0)
+		my_mlx_pixel_put(data->image,
+			MP_CTR + count[0], MP_CTR + count[1], *color);
+}
+
 void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color)
 {
 	int	i;
@@ -57,9 +64,9 @@ void	draw_minimap_pixel(t_data *data, int count[2], int map[2], int *color)
 		*color = 0x00c622;
 	else if (data->map->map[map[0]][map[1]] == '0')
 		*color = data->map->floor;
-	if (MP_CTR + count[0] >= 0 && MP_CTR + count[1] >= 0)
-		my_mlx_pixel_put(data->image,
-			MP_CTR + count[0], MP_CTR + count[1], *color);
+	else
+		return ;
+	draw_minimap_pixel_helper(data, count, color);
 }
 
 void	draw_minimap(t_data *data)

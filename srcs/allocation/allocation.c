@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 16:59:14 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/23 14:11:22 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:12:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	init_file(t_data *data, char *file)
 {
-	data->image = prep_img();
-	data->map->north = prep_img();
-	data->map->south = prep_img();
-	data->map->east = prep_img();
-	data->map->west = prep_img();
-	data->map->door_top = prep_img();
-	data->map->door_bot = prep_img();
+	data->image = prep_img(data);
+	data->map->north = prep_img(data);
+	data->map->south = prep_img(data);
+	data->map->east = prep_img(data);
+	data->map->west = prep_img(data);
+	data->map->door_top = prep_img(data);
+	data->map->door_bot = prep_img(data);
 	data->map->key = 0;
 	data->map->flag = 0;
 	data->map->fd = open(file, O_RDONLY);
@@ -29,7 +29,7 @@ void	init_file(t_data *data, char *file)
 		printf("Error\nInvalid map.\n");
 		ft_clear(data);
 	}
-	data->tex = malloc(sizeof(t_tex));
+	data->tex = my_malloc(data, sizeof(t_tex));
 	data->tex->step = 0;
 	data->tex->y = 0;
 	data->tex->color = 0;
@@ -48,7 +48,7 @@ void	init_data_structs(t_data *data, char *file)
 	i = 0;
 	data->mlx_ptr = NULL;
 	data->window_ptr = NULL;
-	data->player = malloc(sizeof(t_player));
+	data->player = my_malloc(data, sizeof(t_player));
 	data->player->dir_x = 0.0;
 	data->player->dir_y = 0.0;
 	data->player->plane_x = 0.0;
@@ -56,7 +56,7 @@ void	init_data_structs(t_data *data, char *file)
 	data->player->side = 0;
 	while (i < 7)
 		data->player->key_states[i++] = 0;
-	data->map = malloc(sizeof(t_map));
+	data->map = my_malloc(data, sizeof(t_map));
 	data->map->celling = 0;
 	data->map->floor = 0;
 	data->map->spawn[0] = -1;
