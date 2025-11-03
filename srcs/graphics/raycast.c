@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 14:33:39 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/10/23 11:45:54 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:35:41 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	vectors(void *param)
 	int		tex_x;
 
 	data = (t_data *)param;
-	data->tex->x = 0;
 	movement_handler(data);
-	mlx_mouse_move(data->mlx_ptr, data->window_ptr, W_W / 2, W_H / 2);
+	if (data->player->key_states[5] == 0)
+		mlx_mouse_move(data->mlx_ptr, data->window_ptr, W_W / 2, W_H / 2);
 	while (data->tex->x < W_W)
 	{
 		i = 0;

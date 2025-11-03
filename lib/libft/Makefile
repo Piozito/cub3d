@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/06 13:42:33 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/07/16 13:19:20 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/11/03 09:42:39 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,6 @@ $(NAME): $(OBJS)
 	ar rsc $(NAME) $(OBJS)
 
 all: $(NAME)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJS)

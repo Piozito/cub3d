@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:10:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/28 16:37:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:33:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	handle_keypress(int keysym, t_data *data)
 		data->player->key_states[3] = 1;
 	if (keysym == XK_Shift_L)
 		data->player->key_states[4] = 1;
+	if (keysym == XK_space)
+		data->player->key_states[5] = 1;
 	if (keysym == XK_Left)
 		data->player->key_states[7] = 1;
 	if (keysym == XK_Right)
@@ -102,6 +104,7 @@ void	movement_handler(t_data *data)
 	double	pos[4];
 	t_doors	*closest;
 
+	data->tex->x = 0;
 	open = 100;
 	pos[0] = data->player->pos_x;
 	pos[1] = data->player->pos_y;
@@ -132,6 +135,8 @@ int	handle_btnrelease(int keysym, t_data *data)
 		data->player->key_states[3] = 0;
 	if (keysym == XK_Shift_L)
 		data->player->key_states[4] = 0;
+	if (keysym == XK_space)
+		data->player->key_states[5] = 0;
 	if (keysym == XK_e)
 		data->player->key_states[6] = 0;
 	if (keysym == XK_Left)
