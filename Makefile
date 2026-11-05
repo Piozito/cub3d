@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 12:04:54 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/10/28 14:30:50 by aaleixo-         ###   ########.fr        #
+#    Updated: 2026/11/05 13:29:29 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ MAKE_LIBFT = make -C ./lib/libft
 MAKE_MINILIBX = make -C ./lib/minilibx-linux
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./lib/minilibx-linux
+CFLAGS = -Wall -Wextra -Werror -I./lib/minilibx-linux -g
 ADLIBS = ./lib/libft/libft.a
 MLX_FLAGS = -L./lib/minilibx-linux -lmlx -lX11 -lXext -lm
 

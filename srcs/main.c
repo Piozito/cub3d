@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 12:11:51 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/10/28 14:09:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/11/05 13:14:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_attribute(char *str)
 	attr[5] = "C ";
 	attr[6] = "DT ";
 	attr[7] = "DB ";
-	while (attr[i])
+	while (i < 8)
 	{
 		if (ft_strncmp(attr[i], str, ft_strlen(attr[i])) == 0)
 			break ;
